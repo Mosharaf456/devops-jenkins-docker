@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  jenkins_instance:
+    image: jenkins/jenkins
+    container_name: jenkins_con
+    user: root  # Run Jenkins as root to avoid permission issues with mounted volumes
+    networks:
+      - jenkins_net
+    ports:
+      - "8082:8080"  # Jenkins web UI
+      # - "50000:50000"  # Jenkins agent port
+    volumes:
+      - jenkins_home:/var/jenkins_home  # Persistent storage for Jenkins data
+      # - /var/run/docker.sock:/var/run/docker.sock  # Allow Jenkins to use Docker commands
+    # environment:
+    #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
+  
+  remote_host:
+    container_name: remote-host
+    image: remote-host
+    build:
+      context: centos
+      dockerfile: Dockerfile.centos
+      # dockerfile: Dockerfile.debian12
+      # dockerfile: Dockerfile.rockey9 
+      # dockerfile: Dockerfile.alpinlinux
+      # dockerfile: Dockerfile.fedora38
+      # dockerfile: Dockerfile.archlinux
+      # dockerfile: Dockerfile.ubuntojammyjellyfish 
+    networks:
+      - jenkins_net
+    # ports:
+    #   - "2222:22"
+networks:
+  jenkins_net:
+    driver: bridge
+volumes:
+  jenkins_home:
+    driver: local
+
+

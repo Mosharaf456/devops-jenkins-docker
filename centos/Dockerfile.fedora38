@@ -1,0 +1,31 @@
+FROM --platform=linux/amd64 fedora:38
+
+# Install OpenSSH server
+RUN dnf -y install openssh-server --setopt=debuglevel=3 && \
+    dnf clean all
+
+# Create a remote user and set up SSH access
+RUN useradd remote_user && \
+    echo "remote_user:1234" | chpasswd && \
+    mkdir /home/remote_user/.ssh && \
+    chmod 700 /home/remote_user/.ssh
+
+COPY remote-key.pub /home/remote_user/.ssh/authorized_keys
+
+RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ && \
+    chmod 600 /home/remote_user/.ssh/authorized_keys
+
+# Modify PAM configuration to disable pam_nologin for SSH
+RUN sed -i '/pam_nologin.so/s/^/#/' /etc/pam.d/sshd
+
+# Set up SSH keys and permissions
+RUN ssh-keygen -A && \
+    sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config && \
+    echo "AllowUsers remote_user" >> /etc/ssh/sshd_config
+
+# Expose SSH port
+EXPOSE 22
+
+# Start the SSH service
+CMD ["/usr/sbin/sshd", "-D"]
