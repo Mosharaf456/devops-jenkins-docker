@@ -2,9 +2,13 @@ FROM jenkins/jenkins
 
 USER root
 
-RUN curl -o https://bootstrap.pypa.io/get-pip.py && \
-  python get-pip.py && \
-  pip install awscli --upgrade
+# RUN curl -o https://bootstrap.pypa.io/get-pip.py && \
+#   python get-pip.py && \
+#   pip install awscli --upgrade
+RUN curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    pip install awscli --upgrade
+
 
 USER jenkins
 
