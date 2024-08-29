@@ -2,16 +2,21 @@ version: '3.8'
 
 services:
   jenkins_instance:
-    image: jenkins/jenkins
     container_name: jenkins_con
-    user: root  # Run Jenkins as root to avoid permission issues with mounted volumes
-    networks:
-      - jenkins_net
+    # image: jenkins/jenkins
+    image: jenkins-ansible
+    build: 
+      context: docker/jenkins-ansible
+      dockerfile: Dockerfile.jenkinsansible
+    # user: root 
     ports:
       - "8082:8080"  # Jenkins web UI
       # - "50000:50000"  # Jenkins agent port
     volumes:
-      - jenkins_home:/var/jenkins_home  # Persistent storage for Jenkins data
+      - "$PWD/jenkins_home:/var/jenkins_home"  # Persistent storage for Jenkins data
+    networks:
+      - jenkins_net
+
       # - /var/run/docker.sock:/var/run/docker.sock  # Allow Jenkins to use Docker commands
     # environment:
     #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
@@ -20,7 +25,7 @@ services:
     container_name: remote-host
     image: remote-host
     build:
-      context: centos
+      context: docker
       dockerfile: Dockerfile.centos
       # dockerfile: Dockerfile.debian12
       # dockerfile: Dockerfile.rockey9 
@@ -32,11 +37,73 @@ services:
       - jenkins_net
     # ports:
     #   - "2222:22"
+    
+  mariadb_db_instance:
+    container_name: pbx-db
+    image: pbx-db-image:v1.0.1
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile.mariadb
+    ports:
+      - "3308:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: ippbx
+      MYSQL_USER: ippbx
+      # MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    # secrets:
+    #   - db_root_password
+    #   - db_password
+    volumes:
+      - pbx-db-data-vol:/var/lib/mysql
+    networks:
+      pbx-app-network:
+        ipv4_address: 50.50.50.4
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+  
+  phpmyadmin_instance:
+    container_name: pbx-dbmanager
+    image: phpmyadmin:latest
+    links:
+      - mariadb_db_instance
+    networks:
+      pbx-app-network:
+        ipv4_address: 50.50.50.5
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8081:80
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+# secrets:
+#   db_root_password:
+#     file: ./dist/secrets/mariadb-secrets/db_root_password.txt
+#   db_password:
+#     file: ./dist/secrets/mariadb-secrets/db_password.txt
+
+volumes:
+  pbx-db-data-vol:
+  pbx-asterisk-log-data-vol:
+  jenkins_home:
+    driver: local
+
 networks:
   jenkins_net:
     driver: bridge
-volumes:
-  jenkins_home:
-    driver: local
+
+
+
 
 
