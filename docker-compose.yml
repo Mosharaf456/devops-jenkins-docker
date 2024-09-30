@@ -4,43 +4,43 @@ services:
   jenkins_instance:
     container_name: jenkins_con
     # image: jenkins/jenkins
-    image: jenkins-ansible
+    image: jenkins-ansible:v2.0.0
     build: 
       context: docker/jenkins-ansible
       dockerfile: Dockerfile.jenkinsansible
     # user: root 
+    previleged: true
     ports:
       - "8082:8080"  # Jenkins web UI
       # - "50000:50000"  # Jenkins agent port
     volumes:
-      - "$PWD/jenkins_home:/var/jenkins_home"  # Persistent storage for Jenkins data
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - jenkins_net
-
-      # - /var/run/docker.sock:/var/run/docker.sock  # Allow Jenkins to use Docker commands
     # environment:
     #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
   
   remote_host:
-    container_name: remote-host
-    image: remote-host
+    container_name: remote-host-ssh
+    image: remote-host-ssh:v2.0.0
     build:
       context: docker
-      dockerfile: Dockerfile.centos
-      # dockerfile: Dockerfile.debian12
-      # dockerfile: Dockerfile.rockey9 
-      # dockerfile: Dockerfile.alpinlinux
-      # dockerfile: Dockerfile.fedora38
-      # dockerfile: Dockerfile.archlinux
-      # dockerfile: Dockerfile.ubuntojammyjellyfish 
+      dockerfile: docker/ssh/Dockerfile.centos
+      # dockerfile: docker/ssh/Dockerfile.debian12
+      # dockerfile: docker/ssh/Dockerfile.rockey9 
+      # dockerfile: docker/ssh/Dockerfile.alpinlinux
+      # dockerfile: docker/ssh/Dockerfile.fedora38
+      # dockerfile: docker/ssh/Dockerfile.archlinux
+      # dockerfile: docker/ssh/Dockerfile.ubuntojammyjellyfish 
     networks:
       - jenkins_net
-    # ports:
-    #   - "2222:22"
+    ports:
+      - "2222:22"
     
   mariadb_db_instance:
-    container_name: pbx-db
-    image: pbx-db-image:v1.0.1
+    container_name: test-db
+    image: test-db-image:v2.0.0
     build: 
       context: .
       dockerfile: ./docker/Dockerfile.mariadb
@@ -48,18 +48,14 @@ services:
       - "3308:3306"
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-      MYSQL_DATABASE: ippbx
-      MYSQL_USER: ippbx
-      # MYSQL_PASSWORD_FILE: /run/secrets/db_password
-    # secrets:
-    #   - db_root_password
-    #   - db_password
+      MYSQL_ROOT_PASSWORD: brotecs1230
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: brotecs1230
     volumes:
-      - pbx-db-data-vol:/var/lib/mysql
+      - db-data-vol:/var/lib/mysql
     networks:
-      pbx-app-network:
-        ipv4_address: 50.50.50.4
+      - jenkins_net
     deploy:
       resources:
         limits:
@@ -68,13 +64,12 @@ services:
           memory: 512M
   
   phpmyadmin_instance:
-    container_name: pbx-dbmanager
+    container_name: test-dbmanager
     image: phpmyadmin:latest
     links:
       - mariadb_db_instance
     networks:
-      pbx-app-network:
-        ipv4_address: 50.50.50.5
+      - jenkins_net
     environment:
       - PMA_ARBITRARY=1
     ports:
@@ -87,21 +82,19 @@ services:
         reservations:
           memory: 128M
 
-# secrets:
-#   db_root_password:
-#     file: ./dist/secrets/mariadb-secrets/db_root_password.txt
-#   db_password:
-#     file: ./dist/secrets/mariadb-secrets/db_password.txt
-
-volumes:
-  pbx-db-data-vol:
-  pbx-asterisk-log-data-vol:
-  jenkins_home:
-    driver: local
 
 networks:
   jenkins_net:
     driver: bridge
+
+
+volumes:
+  jenkins_home:
+  db-data-vol:
+  jenkins-docker-certs:
+
+
+
 
 
 
