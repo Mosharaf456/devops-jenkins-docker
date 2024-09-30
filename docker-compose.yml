@@ -43,7 +43,7 @@ services:
     image: test-db-image:v2.0.0
     build: 
       context: .
-      dockerfile: ./docker/Dockerfile.mariadb
+      dockerfile: ./docker/db/Dockerfile.mariadb
     ports:
       - "3308:3306"
     restart: always
