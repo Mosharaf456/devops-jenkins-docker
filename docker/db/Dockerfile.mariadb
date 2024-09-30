@@ -4,8 +4,8 @@ LABEL maintainer="Mosharaf Hossain <mosharaf.hossain@brotecs.com>" \
       contributors="Mosharaf Hossain <mosharaf.hossain@brotecs.com>" \
       description="Build custom image for MariaDB database"
 
-COPY ./www/abc.sql /docker-entrypoint-initdb.d/
-RUN chmod -R 755 /docker-entrypoint-initdb.d/abc.sql
+# COPY ./www/abc.sql /docker-entrypoint-initdb.d/
+# RUN chmod -R 755 /docker-entrypoint-initdb.d/abc.sql
 
 USER mysql
 RUN chown -R mysql:mysql /var/lib/mysql && chmod -R 755 /var/lib/mysql
