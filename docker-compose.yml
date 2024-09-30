@@ -1,42 +1,42 @@
-version: '3'
+version: '3.8'
 
 services:
-  # jenkins_instance:
-  #   container_name: jenkins_con
-  #   # image: jenkins/jenkins
-  #   image: jenkins-ansible:v2.0.0
-  #   build: 
-  #     context: docker/jenkins-ansible
-  #     dockerfile: Dockerfile.jenkinsansible
-  #   # user: root 
-  #   # previleged: true
-  #   ports:
-  #     - "8082:8080"  # Jenkins web UI
-  #     # - "50000:50000"  # Jenkins agent port
-  #   volumes:
-  #     - jenkins_home:/var/jenkins_home
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   networks:
-  #     - jenkins_net
-  #   # environment:
-  #   #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
+  jenkins_instance:
+    container_name: jenkins_con
+    # image: jenkins/jenkins
+    image: jenkins-ansible:v2.0.0
+    build: 
+      context: .
+      dockerfile: docker/jenkins-ansible/Dockerfile.jenkinsansible
+    # user: root 
+    # previleged: true
+    ports:
+      - "8082:8080"  # Jenkins web UI
+      # - "50000:50000"  # Jenkins agent port
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins_net
+    # environment:
+    #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
   
-  # remote_host:
-  #   container_name: remote-host-ssh
-  #   image: remote-host-ssh:v2.0.0
-  #   build:
-  #     context: docker
-  #     dockerfile: docker/ssh/Dockerfile.centos
-  #     # dockerfile: docker/ssh/Dockerfile.debian12
-  #     # dockerfile: docker/ssh/Dockerfile.rockey9 
-  #     # dockerfile: docker/ssh/Dockerfile.alpinlinux
-  #     # dockerfile: docker/ssh/Dockerfile.fedora38
-  #     # dockerfile: docker/ssh/Dockerfile.archlinux
-  #     # dockerfile: docker/ssh/Dockerfile.ubuntojammyjellyfish 
-  #   networks:
-  #     - jenkins_net
-  #   ports:
-  #     - "2222:22"
+  remote_host:
+    container_name: remote-host-ssh
+    image: remote-host-ssh:v2.0.0
+    build:
+      context: .
+      dockerfile: docker/ssh/Dockerfile.centos
+      # dockerfile: docker/ssh/Dockerfile.debian12
+      # dockerfile: docker/ssh/Dockerfile.rockey9 
+      # dockerfile: docker/ssh/Dockerfile.alpinlinux
+      # dockerfile: docker/ssh/Dockerfile.fedora38
+      # dockerfile: docker/ssh/Dockerfile.archlinux
+      # dockerfile: docker/ssh/Dockerfile.ubuntojammyjellyfish 
+    networks:
+      - jenkins_net
+    ports:
+      - "2222:22"
     
   mariadb_db_instance:
     container_name: test-db
