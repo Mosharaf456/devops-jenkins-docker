@@ -1,3 +1,11 @@
 l6
 jenkins + ansible
 
+check ansible installed or not
+> ansible
+> ansible --version
+
+47DONE
+
+
+
