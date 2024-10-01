@@ -30,5 +30,20 @@ credentials that we created
 check connection
 
 
+---NOW remote-task item--
+new item created
+remote-task
+build steps
+select
+Execute shell script on remote host using ssh
+
+"then commands"
+
+NAME=Mosharaf
+echo "Hello $NAME, Current date and time is $(date)" > /tmp/remote-info
+
+
+
+
 
 
