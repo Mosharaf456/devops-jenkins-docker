@@ -10,3 +10,25 @@ sudo netstat -tuln | grep -i :4569
 
 
 
+JENKINS+DOCKER:l4
+
+manage/credentials/ 
+click on it 
+then 
+Stores scoped to Jenkins
+click on it
+http://192.168.29.14:8082/manage/credentials/store/system/domain/_/
+
+AGAIN
+dashboard->manage Jenkin->system
+manage/configure
+search this 
+SSH remote hosts
+add container hostname
+port 22
+credentials that we created 
+check connection
+
+
+
+
