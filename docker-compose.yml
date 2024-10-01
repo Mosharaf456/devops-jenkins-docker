@@ -3,18 +3,14 @@ version: '3.8'
 services:
   jenkins_instance:
     container_name: jenkins_con
-    # image: jenkins/jenkins
-    image: jenkins-ansible:v2.0.0
+    image: jenkins-test-image:v2.0.0
     build: 
       context: .
       dockerfile: docker/jenkins-ansible/Dockerfile.jenkinsansible
-    # user: root 
-    # previleged: true
     ports:
       - "8082:8080"  # Jenkins web UI
-      # - "50000:50000"  # Jenkins agent port
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - var-jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - jenkins_net
@@ -23,7 +19,7 @@ services:
   
   remote_host:
     container_name: remote-host-ssh
-    image: remote-host-ssh:v2.0.0
+    image: remote-host-ssh-test-image:v2.0.0
     build:
       context: .
       dockerfile: docker/ssh/Dockerfile.centos
@@ -40,7 +36,7 @@ services:
     
   mariadb_db_instance:
     container_name: test-db
-    image: test-db-image:v2.0.0
+    image: db-test-image:v2.0.0
     build: 
       context: .
       dockerfile: docker/db/Dockerfile.mariadb
@@ -89,9 +85,8 @@ networks:
 
 
 volumes:
-  jenkins_home:
+  var-jenkins_home:
   db-data-vol:
-  jenkins-docker-certs:
 
 
 
