@@ -1,31 +1,38 @@
 # FROM --platform=linux/amd64 debian:12
 FROM --platform=linux/amd64 debian:12-slim
 
-# Install OpenSSH server
+## Install OpenSSH server 
 RUN apt-get update && \
     apt-get install -y openssh-server && \
     apt-get clean
 
-# Create necessary directories
 RUN mkdir -p /run/sshd
-
-# Create a remote user and set up SSH access
 RUN useradd -m remote_user && \
-    echo "remote_user:1234" | chpasswd && \
+    echo "remote_user:brotecs1230" | chpasswd && \
     mkdir /home/remote_user/.ssh && \
     chmod 700 /home/remote_user/.ssh
 
-COPY remote-key.pub /home/remote_user/.ssh/authorized_keys
-
+COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
 RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ && \
     chmod 600 /home/remote_user/.ssh/authorized_keys
 
-# Modify SSH configuration
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
     echo "AllowUsers remote_user" >> /etc/ssh/sshd_config
+## end OpenSSH server
+
+RUN apt-get update && apt-get install -y  \
+    net-tools \
+    telnet \
+    procps \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 # Expose SSH port
 EXPOSE 22
 
 # Start the SSH service
-CMD ["/usr/sbin/sshd", "-D"]
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+

@@ -13,6 +13,15 @@ RUN apt-get update && \
 
 RUN pipx install awscli
 
+# RUN apt-get update && apt-get install -y  \
+#     net-tools \
+#     telnet \
+#     procps \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 USER jenkins
 
 EXPOSE 8080

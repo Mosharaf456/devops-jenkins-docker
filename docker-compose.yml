@@ -12,7 +12,7 @@ services:
     volumes:
       - var-jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - dist/script.sh:/tmp/script.sh 
+      - ./dist/script.sh:/tmp/script.sh 
     networks:
       - jenkins_net
     # environment:
@@ -23,8 +23,8 @@ services:
     image: remote-host-ssh-test-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh/Dockerfile.centos
       # dockerfile: docker/ssh/Dockerfile.debian12
+      dockerfile: docker/ssh/Dockerfile.centos
       # dockerfile: docker/ssh/Dockerfile.rockey9 
       # dockerfile: docker/ssh/Dockerfile.alpinlinux
       # dockerfile: docker/ssh/Dockerfile.fedora38
