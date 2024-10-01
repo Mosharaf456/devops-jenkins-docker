@@ -6,6 +6,13 @@ check ansible installed or not
 > ansible --version
 
 47DONE
+jenkins@dfd2907c6cfa:/$ cd $HOME
+jenkins@dfd2907c6cfa:~$ pwd
+/var/jenkins_home
+
+docker exec -it jenkins_con bash
+
+docker exec -it remote-host-ssh bash
 
 
 
