@@ -2,7 +2,7 @@
 
 NAME=$1
 LASTNAME=$2
-$SHOW=$3
+SHOW=$3
 
 if [ "$SHOW" = "true" ]; then
     echo " My name is $NAME $LASTNAME $NICKNAME and date time is $(date)"
@@ -27,4 +27,24 @@ fi
 # 1234
 
 # echo $?
+
+# jenkins job
+# Build Steps
+# Execute shell
+# echo "Hello World"
+# echo "Current date and time is $(date)"
+
+
+# NAME=Mosharaf
+# echo "Hello $NAME, Current date and time is $(date)" > /tmp/info
+
+
+
+
+# NAME=Mosharaf
+# LASTNAME=Hossain
+# SHOW=true
+# /tmp/script.sh $NAME $LASTNAME $SHOW
+
+
 
