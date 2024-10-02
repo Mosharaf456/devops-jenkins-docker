@@ -50,5 +50,14 @@ https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 **** run command 
 >>>> ansible-playbook -i /var/jenkins_home/ansible/hosts /var/jenkins_home/ansible/play.yml
 
+51 
+Integrate ansible and jenkins (Ansible plugin)
+http://192.168.29.14:8082/manage/pluginManager/updates/
+
+manage->plugin 
+available plugin -> ansible 
+select describe as :
+Invoke Ansible Ad-Hoc commands and playbooks.
+
 
 
