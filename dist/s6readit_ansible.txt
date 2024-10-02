@@ -137,7 +137,15 @@ so this and more.
 
 56. Create the DB that will hold all the users
 
+show databases;
 
+create database people;
+use people;
+create table register (id int(6), name varchar(256), lastname varchar(256), age int(3));
+show tables;
+desc register;
+
+random name generate
 
 
 
