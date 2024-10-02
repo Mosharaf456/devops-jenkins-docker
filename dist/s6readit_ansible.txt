@@ -59,5 +59,16 @@ available plugin -> ansible
 select describe as :
 Invoke Ansible Ad-Hoc commands and playbooks.
 
+52 
+Execute playbook from a jenkins 
+**create a new item named as ansible-test
+build steps -> Invoke Ansible Playbook ->  set Playbook path and Inventory - File or host list
+no space will use otherwise error comes in.
+
+Now build 
+it will execute automatically this command :
+ansible-playbook "/var/jenkins_home/ansible/play.yml" -i /var/jenkins_home/ansible/hosts -f 5
+
+
 
 
