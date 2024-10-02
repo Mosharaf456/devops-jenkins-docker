@@ -32,7 +32,7 @@ execute this to test inventory
 > ansible -i  /var/jenkins_home/ansible/hosts -m ping test1
 
 #####DONE
-50
+s6->50
 create your first ansible playbook
 
 
