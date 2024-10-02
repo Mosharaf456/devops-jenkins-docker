@@ -29,6 +29,8 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventori
 execute this to test inventory 
 > ansible -i  /var/jenkins_home/ansible/hosts -m ping test1
 
+#####
+s6-49
 
 
 
