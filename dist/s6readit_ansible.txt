@@ -69,10 +69,26 @@ Now build
 it will execute automatically this command :
 >> ansible-playbook "/var/jenkins_home/ansible/play.yml" -i /var/jenkins_home/ansible/hosts -f 5
 
-53 - in progress
+53 - 
 Add parameters to ansible and jenkins 
 
 $ANSIBLE_MSG
+
+54- missing the colors playbook 
+
+AnsiColor plugin to install
+Adds ANSI coloring to the Console Output
+
+for colors
+Then::
+Configure
+Build Environment
+ Color ANSI Console Output
+
+ 
+
+
+
 
 
 
