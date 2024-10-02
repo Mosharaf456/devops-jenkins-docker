@@ -67,7 +67,7 @@ no space will use otherwise error comes in.
 
 Now build 
 it will execute automatically this command :
-ansible-playbook "/var/jenkins_home/ansible/play.yml" -i /var/jenkins_home/ansible/hosts -f 5
+>> ansible-playbook "/var/jenkins_home/ansible/play.yml" -i /var/jenkins_home/ansible/hosts -f 5
 
 
 
