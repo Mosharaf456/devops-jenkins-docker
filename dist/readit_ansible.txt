@@ -15,4 +15,21 @@ docker exec -it jenkins_con bash
 docker exec -it remote-host-ssh bash
 
 
+https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-directory
+
+https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#valid-variable-names
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories
+
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories
+
+
+## test1 alias ansible simple inventory  test it 
+execute this to test inventory 
+> ansible -i  /var/jenkins_home/ansible/hosts -m ping test1
+
+
+
+
 
