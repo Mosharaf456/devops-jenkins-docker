@@ -13,6 +13,7 @@ services:
       - var-jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dist/script.sh:/tmp/script.sh 
+      - ./dist/play.yml:/var/jenkins_home/ansible/play.yml
     networks:
       - jenkins_net
     # environment:

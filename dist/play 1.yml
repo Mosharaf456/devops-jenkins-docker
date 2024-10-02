@@ -1,0 +1,11 @@
+- hosts: test1  # docker cp play.yml jenkins_con:/var/jenkins_home/ansible
+  tasks:
+    - shell: echo Hello, ansible playbook running! >> /tmp/anbible-file.txt
+    
+    # - name: Copy file to remote host
+    #   copy:
+    #     src: /tmp/anbible-file.txt
+    #     dest: /tmp/anbible-file.txt
+    #     owner: root
+    #     group: root
+    #     mode: 0644
