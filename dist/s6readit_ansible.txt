@@ -34,7 +34,7 @@ execute this to test inventory
 #####DONE
 s6->50
 create your first ansible playbook
-
+Note****: All of the Ansible playbooks are written in yml
 
 
 
