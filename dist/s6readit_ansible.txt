@@ -35,7 +35,17 @@ execute this to test inventory
 s6->50
 create your first ansible playbook
 Note****: All of the Ansible playbooks are written in yml
+REF: 
+https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-syntax
 
+Ansible Playbooks offer a repeatable, reusable, simple configuration management and multi-machine deployment system,
+one that is well suited to deploying complex applications.
+If you need to execute a task with Ansible more than once, write a playbook and put it under source control. 
+Then you can use the playbook to push out new configuration or confirm the configuration of remote systems.
+
+ref :https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax
+
+https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 
 
 

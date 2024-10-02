@@ -26,6 +26,7 @@ RUN mkdir -p /var/jenkins_home/ansible
 COPY ./dist/remote-key /var/jenkins_home/ansible/remote-key
 COPY ./dist/hosts /var/jenkins_home/ansible/hosts  
 
+COPY ./dist/play.yml /var/jenkins_home/ansible/play.yml
 
 EXPOSE 8080
 
