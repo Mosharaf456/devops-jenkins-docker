@@ -147,6 +147,14 @@ desc register;
 
 random name generate
 
+59.
+show database;
+use people;
+show tables;
+delete from register;
+
+60. in progress
+
 
 
 
