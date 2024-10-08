@@ -153,7 +153,10 @@ use people;
 show tables;
 delete from register;
 
-60. in progress
+60. Start building a Docker Nginx Web Server + PHP
+in progress
+
+
 
 
 
