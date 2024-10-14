@@ -18,14 +18,23 @@ services:
       - jenkins_net
     # environment:
     #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    depends_on:
+      - remote_host
+      - mariadb_db_instance
   
   remote_host:
     container_name: remote-host-ssh
     image: remote-host-ssh-test-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh/Dockerfile.debian12
-      # dockerfile: docker/ssh/Dockerfile.centos
+      # dockerfile: docker/ssh/Dockerfile.debian12
+      dockerfile: docker/ssh/Dockerfile.centos
       # dockerfile: docker/ssh/Dockerfile.rockey9 
       # dockerfile: docker/ssh/Dockerfile.alpinlinux
       # dockerfile: docker/ssh/Dockerfile.fedora38
@@ -36,6 +45,20 @@ services:
     ports:
       - "2222:22"
     
+  web:
+    container_name: web-ansible
+    image: web-ansible-image:v1.0.0
+    build: 
+      context: .
+      dockerfile: docker/web/Dockerfile.web
+    ports:
+      - "8080:80"
+    networks:
+      - jenkins_net
+    depends_on:
+      - remote_host
+      - mariadb_db_instance
+
   mariadb_db_instance:
     container_name: test-db
     image: db-test-image:v2.0.0

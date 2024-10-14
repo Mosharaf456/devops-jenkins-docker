@@ -3,36 +3,30 @@ FROM --platform=linux/amd64 centos:8
 # Update repository URLs to use CentOS Vault
 RUN sed -i 's|mirrorlist.centos.org|vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
-    yum clean all
+    dnf clean all
 
-# Install OpenSSH server
-RUN yum -y install openssh-server && \
-    yum clean all
+# Install OpenSSH server and Python
+RUN dnf -y install openssh-server python3 && \
+    dnf clean all
 
-# Create necessary directories
-RUN mkdir -p /run/sshd
-
-# Create a remote user and set up SSH access
-RUN useradd -m remote_user && \
+# Create necessary directories and set up SSH
+RUN mkdir -p /run/sshd && \
+    useradd -m remote_user && \
     echo "remote_user:brotecs1230" | chpasswd && \
     mkdir /home/remote_user/.ssh && \
-    chmod 700 /home/remote_user/.ssh
-
-COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
-
-RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ && \
+    chmod 700 /home/remote_user/.ssh && \
+    touch /home/remote_user/.ssh/authorized_keys && \
+    chown remote_user:remote_user -R /home/remote_user/.ssh && \
     chmod 600 /home/remote_user/.ssh/authorized_keys
 
-# Modify PAM configuration to disable pam_nologin for SSH
-RUN sed -i '/pam_nologin.so/s/^/#/' /etc/pam.d/sshd
+# Copy SSH public key for remote_user
+COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
 
-# Set up SSH keys and permissions
-RUN ssh-keygen -A && \
+# Modify PAM configuration and SSHD config
+RUN sed -i '/pam_nologin.so/s/^/#/' /etc/pam.d/sshd && \
+    ssh-keygen -A && \
     sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    sed -i 's/UsePAM yes/UsePAM yes/' /etc/ssh/sshd_config && \
     echo "AllowUsers remote_user" >> /etc/ssh/sshd_config
-
-
 
 # Expose SSH port
 EXPOSE 22
