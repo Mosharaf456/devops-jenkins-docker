@@ -1,49 +1,41 @@
-# Use CentOS 7 as the base image
-# FROM centos:7
 FROM remote-host-ssh-test-image:v2.0.0
+# FROM centos:8
 
-# Install yum-utils and setup the necessary repositories
-RUN yum install -y yum-utils && \
-    yum install -y https://centos7.iuscommunity.org/ius-release.rpm && \
-    yum clean all
+RUN dnf install -y epel-release && \
+    dnf install -y \
+    nginx \
+    php \
+    php-fpm \
+    php-mysqli \
+    php-pdo \
+    php-pdo_mysql \
+    php-soap \
+    php-xml \
+    php-zip \
+    php-json \
+    php-mbstring \
+    php-gd \
+    openssl && \
+    dnf clean all
 
-# Copy custom Nginx repository configuration
-COPY ./dist/web/conf/nginx.repo /etc/yum.repos.d/nginx.repo
+RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php.ini && \
+    sed -i 's/user = apache/user = nginx/' /etc/php-fpm.d/www.conf && \
+    sed -i 's/group = apache/group = nginx/' /etc/php-fpm.d/www.conf
 
-# Install Nginx, OpenSSL, and PHP 7.1 from IUS repository
-RUN yum install -y \
-    nginx-1.12.2 \
-    openssl \
-    --enablerepo=nginx && \
-    yum install -y \
-    php71u-fpm \
-    php71u-cli \
-    php71u-mysqlnd \
-    php71u-soap \
-    php71u-xml \
-    php71u-zip \
-    php71u-json \
-    php71u-mcrypt \
-    php71u-mbstring \
-    php71u-gd \
-    --enablerepo=ius && \
-    yum clean all
+WORKDIR /var/www/html
 
-# Define volumes for Nginx, PHP-FPM, and web root
+RUN echo "<?php phpinfo(); ?>" > /var/www/html/index.php
+
+RUN chown -R nginx:nginx /var/www/html
+
 VOLUME /var/www/html /var/log/nginx /var/log/php-fpm /var/lib/php-fpm
 
-# Uncomment this line if you need to set file access control lists (ACLs) for a specific user
-# RUN setfacl -R -m u:remote_user:rwx /var/www/html
 
-# Copy Nginx configuration and the start script
 COPY ./dist/web/conf/nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./dist/web/conf/start.sh /start.sh
 
-# Make the start script executable
 RUN chmod +x /start.sh
 
-# Expose ports for HTTP and HTTPS
-EXPOSE 80 443
+EXPOSE 80 443 9000
 
-# Set the entry point to the start script
 ENTRYPOINT ["/start.sh"]

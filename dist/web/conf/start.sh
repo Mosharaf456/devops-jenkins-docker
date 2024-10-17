@@ -4,7 +4,7 @@ set -e
 
 /usr/sbin/sshd -D & 
 
-/usr/sbin/php-fpm -c /etc/php/fpm 
+php-fpm -D &
 
 nginx -g "daemon off;"
 
