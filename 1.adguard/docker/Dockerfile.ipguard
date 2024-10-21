@@ -1,0 +1,44 @@
+FROM golang:1.22.5 AS builder
+
+RUN apt-get update && \
+    apt-get install -y make git nodejs npm && \
+    apt-get clean
+
+WORKDIR /app
+
+ENV EY_PASSPHRASE='not-a-real-password' \
+    RACE='0' \
+    SIGN='1' \
+    SIGNER_API_KEY='not-a-real-key' \
+    NEXTAPI='0' \
+    VERBOSE='0' \
+    VERSION='v0.0.0'
+
+# COPY ./icyberhunt_iprivguard ./
+# RUN cd /app/source && make
+
+ARG GIT_USERNAME=''
+ARG GIT_TOKEN=''
+RUN git clone https://${GIT_USERNAME}:${GIT_TOKEN}@abc/cv/xyz.git ./
+RUN cd /app && git checkout release-v1.0.0-alpha
+
+RUN cd /app/source && make
+
+
+
+
+FROM alpine:latest
+# Install necessary dependencies
+RUN apk add --no-cache ca-certificates
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/source/AdGuardHome /usr/local/bin/AdGuardHome
+
+WORKDIR /etc/AdGuardHome
+
+EXPOSE 53 53/udp 67 67/udp 80 443
+
+ENTRYPOINT ["/usr/local/bin/AdGuardHome"]
+
+
+

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  adguardhome:
+    image: adguard/adguardhome:v1.0.0
+    container_name: adguardhome_con
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile.adguard
+      # dockerfile: docker/Dockerfile.ipguard
+    ports:
+      - "5318:53"
+      - "5318:53/udp"
+      - "671:67"
+      - "671:67/udp"
+      - "8000:80"
+      - "443:443"
+      - '3001:3000/tcp'
+       # DNS-over-TLS
+      - '853:853/tcp'
+      # DNS-over-QUIC
+      - '784:784/udp'
+      - '853:853/udp'
+      - '8853:8853/udp'
+      # DNSCrypt
+      - '5443:5443/tcp'
+      - '5443:5443/udp'
+    volumes:
+      - adguard_data:/etc/AdGuardHome
+    restart: unless-stopped
+    networks:
+      - adguardhome_net
+
+volumes:
+  adguard_data:
+
+
+networks:
+  adguardhome_net:
+    driver: bridge 
+     
+ 
+
+

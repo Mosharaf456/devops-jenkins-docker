@@ -1,0 +1,32 @@
+FROM golang:1.22.5 AS builder
+
+RUN apt-get update && \
+    apt-get install -y make git nodejs npm && \
+    apt-get clean
+
+WORKDIR /app
+
+# RUN git clone --depth 1 https://github.com/AdguardTeam/AdGuardHome.git ./
+
+COPY ./AdGuardHome ./
+
+RUN make
+
+
+
+
+FROM alpine:latest
+# Install necessary dependencies
+RUN apk add --no-cache ca-certificates
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/AdGuardHome /usr/local/bin/AdGuardHome
+
+WORKDIR /etc/AdGuardHome
+
+EXPOSE 53 53/udp 67 67/udp 80 443
+
+ENTRYPOINT ["/usr/local/bin/AdGuardHome"]
+
+
+
