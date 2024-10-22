@@ -52,7 +52,7 @@ services:
       context: .
       dockerfile: docker/web/Dockerfile.web
     ports:
-      - "8080:80"
+      - "8088:80"
     networks:
       - jenkins_net
     depends_on:
