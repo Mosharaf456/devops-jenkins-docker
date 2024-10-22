@@ -40,6 +40,9 @@
     </tfoot>
     </table>
 
+<?php
+// $con=mysqli_connect("localhost","root","1234","test");
+?>
 </body>
 </html>
 
