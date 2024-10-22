@@ -26,7 +26,9 @@ WORKDIR /var/www/html
 
 # RUN echo "<?php phpinfo(); ?>" > /var/www/html/index.php
 
-RUN echo "<?php echo 'Hello World'; ?>" > /var/www/html/index.php
+# RUN echo "<?php echo 'Hello World'; ?>" > /var/www/html/index.php
+
+COPY www/source/* /var/www/html/
 
 RUN chown -R nginx:nginx /var/www/html
 
