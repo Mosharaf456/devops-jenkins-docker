@@ -58,6 +58,8 @@ services:
     depends_on:
       - remote_host
       - mariadb_db_instance
+    volumes:
+      - "./www/source:/var/www/html"
 
   mariadb_db_instance:
     container_name: test-db
@@ -69,10 +71,10 @@ services:
       - "3308:3306"
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: brotecs1230
       MYSQL_DATABASE: testdb
       MYSQL_USER: admin
-      MYSQL_PASSWORD: 1234
+      MYSQL_PASSWORD: brotecs1230
     volumes:
       - db-data-vol:/var/lib/mysql
     networks:
