@@ -20,7 +20,7 @@ RUN mkdir -p /run/sshd && \
     chmod 600 /home/remote_user/.ssh/authorized_keys
 
 # Copy SSH public key for remote_user
-COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
+COPY ./dist/ssh-key/remote-key.pub /home/remote_user/.ssh/authorized_keys
 
 # Modify PAM configuration and SSHD config
 RUN sed -i '/pam_nologin.so/s/^/#/' /etc/pam.d/sshd && \

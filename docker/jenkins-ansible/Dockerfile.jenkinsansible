@@ -23,10 +23,10 @@ RUN pipx install awscli
 RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/jenkins_home/ansible
-COPY ./dist/remote-key /var/jenkins_home/ansible/remote-key
-COPY ./dist/hosts /var/jenkins_home/ansible/hosts  
+COPY ./dist/ssh-key/remote-key /var/jenkins_home/ansible/remote-key
+COPY ./dist/ansible/inventory/hosts /var/jenkins_home/ansible/hosts  
 
-COPY ./dist/play.yml /var/jenkins_home/ansible/play.yml
+COPY ./dist/ansible/pbook-script/play.yml /var/jenkins_home/ansible/play.yml
 
 EXPOSE 8080
 
