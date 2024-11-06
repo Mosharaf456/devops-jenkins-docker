@@ -1,4 +1,7 @@
-l6
+Section:6
+//To see OS version
+cat /etc/*os-release*
+
 jenkins + ansible
 
 check ansible installed or not
@@ -16,14 +19,56 @@ docker exec -it remote-host-ssh bash
 
 ######49
 create your simple ansible inventory
+. The YAML acronym was shorthand for Yet Another Markup Language. But the maintainers renamed it to YAML Ain't Markup Language to place more emphasis on its data-oriented features.
+. The INI short for initialization , is a type of configuration file used by software programs to store settings.
+
+You can create your inventory file in one of many formats, depending on the inventory plugins you have. 
+The most common formats are INI and YAML. 
+A basic INI /etc/ansible/inventory/hosts.example might look like this:
+mail.example.com
+
+[webservers]
+foo.example.com
+bar.example.com
+
+[dbservers]
+one.example.com
+two.example.com
+three.example.com
+
+
+The headings in brackets are group names, which are used in classifying hosts and deciding what hosts 
+you are controlling at what times and for what purpose. 
+Group names should follow the same guidelines as Creating valid variable names.
+ref: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#valid-variable-names
+https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+
+Here’s that same basic inventory file in YAML format:
+ungrouped:
+  hosts:
+    mail.example.com:
+webservers:
+  hosts:
+    foo.example.com:
+    bar.example.com:
+dbservers:
+  hosts:
+    one.example.com:
+    two.example.com:
+    three.example.com:
+
+Even if you do not define any groups in your inventory file, Ansible creates two default groups: all and ungrouped.
+The all group contains every host. The ungrouped group contains all hosts that don’t have another group aside from all. 
+Every host will always belong to at least 2 groups (all and ungrouped or all and some other group).
+
+For example, in the basic inventory above, the host mail.example.com belongs to the all group and the ungrouped group; 
+the host two.example.com belongs to the all group and the dbservers group. Though all and ungrouped are always present,
+they can be implicit and not appear in group listings like group_names.
+
+Hosts in multiple groups:
+You can put each host in more than one group.
 
 https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-directory
-
-https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#valid-variable-names
-
-https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories
-
-
 https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories
 
 
