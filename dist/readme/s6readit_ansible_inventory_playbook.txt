@@ -67,6 +67,7 @@ they can be implicit and not appear in group listings like group_names.
 
 Hosts in multiple groups:
 You can put each host in more than one group.
+You can create parent/child relationships among groups. Parent groups are also known as nested groups or groups of groups.
 
 https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-directory
 https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories
