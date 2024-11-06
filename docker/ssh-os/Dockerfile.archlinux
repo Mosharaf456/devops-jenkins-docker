@@ -1,16 +1,17 @@
-FROM --platform=linux/amd64 rockylinux:9
+FROM --platform=linux/amd64 archlinux:latest
 
 # Install OpenSSH server
-RUN dnf -y install openssh-server && \
-    dnf clean all
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm openssh && \
+    pacman -Scc --noconfirm
 
 # Create a remote user and set up SSH access
-RUN useradd remote_user && \
+RUN useradd -m remote_user && \
     echo "remote_user:brotecs1230" | chpasswd && \
     mkdir /home/remote_user/.ssh && \
     chmod 700 /home/remote_user/.ssh
 
-COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
+COPY ./dist/ssh-key/remote-key.pub /home/remote_user/.ssh/authorized_keys
 
 RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ && \
     chmod 600 /home/remote_user/.ssh/authorized_keys

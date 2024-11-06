@@ -33,13 +33,13 @@ services:
     image: remote-host-ssh-test-image:v2.0.0
     build:
       context: .
-      # dockerfile: docker/ssh/Dockerfile.debian12
-      dockerfile: docker/ssh/Dockerfile.centos
-      # dockerfile: docker/ssh/Dockerfile.rockey9 
-      # dockerfile: docker/ssh/Dockerfile.alpinlinux
-      # dockerfile: docker/ssh/Dockerfile.fedora38
-      # dockerfile: docker/ssh/Dockerfile.archlinux
-      # dockerfile: docker/ssh/Dockerfile.ubuntojammyjellyfish 
+      dockerfile: docker/ssh-os/Dockerfile.debian12
+      # dockerfile: docker/ssh-os/Dockerfile.centos
+      # dockerfile: docker/ssh-os/Dockerfile.rockey9 
+      # dockerfile: docker/ssh-os/Dockerfile.alpinlinux
+      # dockerfile: docker/ssh-os/Dockerfile.fedora38
+      # dockerfile: docker/ssh-os/Dockerfile.archlinux
+      # dockerfile: docker/ssh-os/Dockerfile.ubuntojammyjellyfish 
     networks:
       - jenkins_net
     ports:
@@ -50,7 +50,8 @@ services:
     image: web-ansible-image:v1.0.0
     build: 
       context: .
-      dockerfile: docker/web/Dockerfile.web
+      dockerfile: docker/web/Dockerfile.webdebian
+      # dockerfile: docker/web/Dockerfile.webcentos
     ports:
       - "8088:80"
     networks:

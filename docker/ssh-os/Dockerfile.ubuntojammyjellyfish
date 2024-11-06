@@ -1,20 +1,20 @@
-FROM --platform=linux/amd64 alpine:3.18
+FROM --platform=linux/amd64 ubuntu:22.04
 
 # Install OpenSSH server
-RUN apk update && \
-    apk add --no-cache openssh
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    apt-get clean
 
-# Create necessary directories and generate host keys
-RUN mkdir -p /run/sshd && \
-    ssh-keygen -A
+# Create necessary directories
+RUN mkdir -p /run/sshd
 
 # Create a remote user and set up SSH access
-RUN adduser -D remote_user && \
+RUN useradd -m remote_user && \
     echo "remote_user:brotecs1230" | chpasswd && \
     mkdir /home/remote_user/.ssh && \
     chmod 700 /home/remote_user/.ssh
 
-COPY ./dist/remote-key.pub /home/remote_user/.ssh/authorized_keys
+COPY ./dist/ssh-key/remote-key.pub /home/remote_user/.ssh/authorized_keys
 
 RUN chown remote_user:remote_user -R /home/remote_user/.ssh/ && \
     chmod 600 /home/remote_user/.ssh/authorized_keys
