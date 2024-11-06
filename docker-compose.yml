@@ -33,8 +33,8 @@ services:
     image: remote-host-ssh-test-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12
-      # dockerfile: docker/ssh-os/Dockerfile.centos
+      # dockerfile: docker/ssh-os/Dockerfile.debian12
+      dockerfile: docker/ssh-os/Dockerfile.centos
       # dockerfile: docker/ssh-os/Dockerfile.rockey9 
       # dockerfile: docker/ssh-os/Dockerfile.alpinlinux
       # dockerfile: docker/ssh-os/Dockerfile.fedora38
@@ -50,8 +50,8 @@ services:
     image: web-ansible-image:v1.0.0
     build: 
       context: .
-      dockerfile: docker/web/Dockerfile.webdebian
-      # dockerfile: docker/web/Dockerfile.webcentos
+      # dockerfile: docker/web/Dockerfile.webdebian
+      dockerfile: docker/web/Dockerfile.webcentos
     ports:
       - "8088:80"
     networks:
