@@ -57,7 +57,9 @@ dbservers:
     two.example.com:
     three.example.com:
 
-Even if you do not define any groups in your inventory file, Ansible creates two default groups: all and ungrouped.
+****Even if you do not define any groups in your inventory file, ***
+Ansible creates two default groups: 
+all and ungrouped.
 The all group contains every host. The ungrouped group contains all hosts that don’t have another group aside from all. 
 Every host will always belong to at least 2 groups (all and ungrouped or all and some other group).
 
