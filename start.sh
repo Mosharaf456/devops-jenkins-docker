@@ -2,8 +2,8 @@
 
 set -e
 
-docker-compose down 
-docker-compose up --build
+docker compose down 
+docker compose up --build
 
 exit 0
 
