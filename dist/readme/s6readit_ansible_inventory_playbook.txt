@@ -87,6 +87,8 @@ execute this to test inventory
 #####DONE
 s6->50
 create your first ansible playbook
+A playbook in Ansible is something like an script that defines all of the things 
+that Ansible should do.
 Note****: All of the Ansible playbooks are written in yml
 REF: 
 https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-syntax
