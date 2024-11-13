@@ -18,7 +18,9 @@ docker exec -it jenkins_con bash
 docker exec -it remote-host-ssh bash
 
 ######49
-create your simple ansible inventory
+create your simple ansible 
+inventory - It is a key concept of ansible but the file where define all hosts.
+
 . The YAML acronym was shorthand for Yet Another Markup Language. But the maintainers renamed it to YAML Ain't Markup Language to place more emphasis on its data-oriented features.
 . The INI short for initialization , is a type of configuration file used by software programs to store settings.
 
@@ -58,9 +60,12 @@ dbservers:
     three.example.com:
 
 ****Even if you do not define any groups in your inventory file, ***
-Ansible creates two default groups: 
+Group -  a group is a name that defines a bunch of servers that have things in common.
+Ansible creates two default groups:
 all and ungrouped.
 The all group contains every host. The ungrouped group contains all hosts that don’t have another group aside from all. 
+The ungrouped group contains all hosts that do not have another group.
+
 Every host will always belong to at least 2 groups (all and ungrouped or all and some other group).
 
 For example, in the basic inventory above, the host mail.example.com belongs to the all group and the ungrouped group; 
