@@ -8,12 +8,15 @@ services:
       context: .
       dockerfile: docker/jenkins-ansible/Dockerfile.jenkinsansible
     ports:
-      - "8082:8080"  # Jenkins web UI
+      - "8082:8080"  # Jenkins web UI  mosharaf/brotecs
     volumes:
       - var-jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+      # - jenkins-temp-vol:/tmp
       - ./dist/extrascript/script.sh:/tmp/script.sh 
-      - ./dist/ansible/pbook-script/play.yml:/var/jenkins_home/ansible/play.yml
+      - ./dist/ssh-key/remote-key:/tmp/ansible/remote-key
+      - ./dist/ansible/inventory/hosts:/tmp/ansible/hosts
+      - ./dist/ansible/pbook/:/tmp/ansible
     networks:
       - jenkins_net
     # environment:
@@ -115,6 +118,7 @@ networks:
 volumes:
   var-jenkins_home:
   db-data-vol:
+  jenkins-temp-vol:
 
 
 

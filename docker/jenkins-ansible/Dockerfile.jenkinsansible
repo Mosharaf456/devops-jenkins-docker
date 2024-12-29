@@ -1,6 +1,7 @@
 FROM jenkins/jenkins:latest 
 
-LABEL maintainer="BroTecs Technologies Ltd. mosharaf.hossain@brotecs.com"
+LABEL maintainer="Jr. Software Engineer mosharaf111hossain@gmail.com" 
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
@@ -22,15 +23,15 @@ RUN pipx install awscli
 
 RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/jenkins_home/ansible
-COPY ./dist/ssh-key/remote-key /var/jenkins_home/ansible/remote-key
-COPY ./dist/ansible/inventory/hosts /var/jenkins_home/ansible/hosts  
+RUN mkdir -p /tmp/ansible/ && chmod -R 755 /tmp/ansible
+COPY ./dist/ssh-key/remote-key /tmp/ansible/remote-key
+COPY ./dist/ansible/inventory/hosts /tmp/ansible/hosts  
+COPY ./dist/ansible/pbook/ /tmp/ansible
+COPY ./dist/extrascript/script.sh /tmp/script.sh 
 
-COPY ./dist/ansible/pbook-script/* /var/jenkins_home/ansible/
-
-EXPOSE 8080
 
 USER jenkins
 
-# Start Jenkins
-CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
