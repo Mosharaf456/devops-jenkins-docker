@@ -18,7 +18,9 @@ services:
       - ./dist/ansible/inventory/hosts:/tmp/ansible/hosts
       - ./dist/ansible/pbook/:/tmp/ansible
     networks:
-      - jenkins_net
+      jenkins_net:
+        ipv4_address: 192.168.1.100
+
     # environment:
     #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
     deploy:
@@ -44,7 +46,8 @@ services:
       # dockerfile: docker/ssh-os/Dockerfile.archlinux
       # dockerfile: docker/ssh-os/Dockerfile.ubuntojammyjellyfish 
     networks:
-      - jenkins_net
+      jenkins_net:
+        ipv4_address: 192.168.1.101
     ports:
       - "2222:22"
     
@@ -58,7 +61,8 @@ services:
     ports:
       - "8088:80"
     networks:
-      - jenkins_net
+      jenkins_net:
+        ipv4_address: 192.168.1.102
     depends_on:
       - remote_host
       - mariadb_db_instance
@@ -82,7 +86,8 @@ services:
     volumes:
       - db-data-vol:/var/lib/mysql
     networks:
-      - jenkins_net
+      jenkins_net:
+        ipv4_address: 192.168.1.103
     deploy:
       resources:
         limits:
@@ -96,7 +101,8 @@ services:
     links:
       - mariadb_db_instance
     networks:
-      - jenkins_net
+      jenkins_net:
+        ipv4_address: 192.168.1.104
     environment:
       - PMA_ARBITRARY=1
     ports:
@@ -113,6 +119,12 @@ services:
 networks:
   jenkins_net:
     driver: bridge
+    name: jenkins_net
+    ipam:
+      # driver: default
+      config:
+        - subnet: 192.168.1.0/24
+
 
 
 volumes:
