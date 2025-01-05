@@ -135,7 +135,7 @@ volumes:
   # jenkins-temp-vol:
   #   name: jenkins-temp-vol
 
-
+# one named volume to another named volume copy
 # docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  ubuntu bash -c "cd /from ; cp -av . /to"
 
 
