@@ -129,9 +129,14 @@ networks:
 
 volumes:
   var-jenkins_home:
+    name: var-jenkins_home
   db-data-vol:
-  jenkins-temp-vol:
+    name: db-data-vol
+  # jenkins-temp-vol:
+  #   name: jenkins-temp-vol
 
+
+# docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  ubuntu bash -c "cd /from ; cp -av . /to"
 
 
 
