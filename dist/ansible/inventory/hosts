@@ -15,3 +15,4 @@ client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs12
 # > ansible -i hosts -m ping test1 
 #  ansible dev -m ping
 # ansible -i hosts -m ping client1
+# ansible -i hosts -m ping dev
