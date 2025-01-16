@@ -1,0 +1,6 @@
+for open ssh ,, passless any user switch <=> 
+> su -s
+> ssh user1@192.168.1.102
+
+# vim /etc/sudouser.tmp
+# user1 ALL=(ALL) NOPASSWD:ALL
