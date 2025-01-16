@@ -6,23 +6,21 @@ RUN apt-get update && \
 
 RUN mkdir -p /run/sshd
 
-# Create user1 with no password (passwordless login)
 RUN useradd -m user1 && \
     passwd -d user1
 
-# Create user2 with a password and allow SSH key or password login
 RUN useradd -m user2 && \
-    echo "user2:yourpassword" | chpasswd
+    echo "user2:brotecs1230" | chpasswd
 
-# Create root user with a password and allow SSH key or password login
-RUN echo "root:rootpassword" | chpasswd
+RUN echo "root:brotecs1230" | chpasswd
 
 # Setup SSH keys for user2 and root
 RUN mkdir -p /home/user2/.ssh && \
-    mkdir -p /root/.ssh && \
-    cp /dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys && \
-    cp /dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys && \
-    chmod 700 /home/user2/.ssh /root/.ssh && \
+    mkdir -p /root/.ssh 
+COPY ./dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys 
+COPY ./dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys
+
+RUN chmod 700 /home/user2/.ssh /root/.ssh && \
     chmod 600 /home/user2/.ssh/authorized_keys /root/.ssh/authorized_keys && \
     chown -R user2:user2 /home/user2/.ssh && \
     chown -R root:root /root/.ssh
@@ -34,7 +32,6 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
 
-# Install additional packages if required
 RUN apt-get update && apt-get install -y \
     net-tools \
     telnet \
@@ -46,5 +43,4 @@ RUN apt-get update && apt-get install -y \
 
 EXPOSE 22
 
-# Start the SSH service
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]

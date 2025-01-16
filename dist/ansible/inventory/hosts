@@ -1,8 +1,14 @@
 [all:vars]
 ansible_connection = ssh
 
-[test]
-test1 ansible_host=remote-host-ssh ansible_user=remote_user ansible_private_key_file=/var/jenkins_home/ansible/remote-key ansible_python_interpreter=/usr/bin/python3   
+[dev]
+client1 ansible_host=192.168.1.101  ansible_user=mh ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+
+client2 ansible_host=192.168.1.102 ansible_user=user1
+
+client3 ansible_host=192.168.1.102  ansible_user=user2 ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+
+client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
 
 # inside container test
 # cd /var/jenkins_home/ansible
