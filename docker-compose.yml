@@ -38,8 +38,10 @@ services:
     image: client1_remote-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12.passless
-      # docker/ssh-os/Dockerfile.debian12
+      dockerfile: docker/ssh-os/Dockerfile.debian12
+      # docker/ssh-os/Dockerfile.debian12.org
+      # docker/ssh-os/Dockerfile.debian12.passless
+      # docker/ssh-os/Dockerfile.debian12.passwithkey
       # dockerfile: docker/ssh-os/Dockerfile.centos
       # dockerfile: docker/ssh-os/Dockerfile.rockey9 
       # dockerfile: docker/ssh-os/Dockerfile.alpinlinux
@@ -57,9 +59,10 @@ services:
     image: client2_remote-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12.passwithkey
+      dockerfile: docker/ssh-os/Dockerfile.debian12.test1
       # docker/ssh-os/Dockerfile.debian12.passless
       # docker/ssh-os/Dockerfile.debian12
+      # docker/ssh-os/Dockerfile.debian12.org
       # dockerfile: docker/ssh-os/Dockerfile.centos
       # dockerfile: docker/ssh-os/Dockerfile.rockey9 
       # dockerfile: docker/ssh-os/Dockerfile.alpinlinux
