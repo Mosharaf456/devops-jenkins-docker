@@ -4,3 +4,11 @@ for open ssh ,, passless any user switch <=>
 
 # vim /etc/sudouser.tmp
 # user1 ALL=(ALL) NOPASSWD:ALL
+
+
+---------------
+
+why not work ?
+ansible -i hosts -m command -a "ping" dev --become -k 
+
+
