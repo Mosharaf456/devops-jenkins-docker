@@ -7,20 +7,22 @@ RUN apt-get update && \
 RUN mkdir -p /run/sshd
 
 # Create user1 with password-based SSH
-RUN useradd -m user1 && \
-    echo "user1:user1password" | chpasswd
+RUN useradd -m mh1 && \
+    echo "mh1:brotecs1230" | chpasswd && \
+    mkdir /home/mh1/.ssh && \
+    chmod 700 /home/mh1/.ssh
 
-# Create user2 with SSH key-based authentication
-RUN useradd -m user2 && \
-    mkdir /home/user2/.ssh && \
-    chmod 700 /home/user2/.ssh
+# Create mh2 with SSH key-based authentication
+RUN useradd -m mh2 && \
+    mkdir /home/mh2/.ssh && \
+    chmod 700 /home/mh2/.ssh
 
-COPY ./dist/ssh-key/user2-key.pub /home/user2/.ssh/authorized_keys
-RUN chown user2:user2 -R /home/user2/.ssh/ && \
-    chmod 600 /home/user2/.ssh/authorized_keys
+COPY ./dist/ssh-key/remote-key.pub /home/mh2/.ssh/authorized_keys
+RUN chown mh2:mh2 -R /home/mh2/.ssh/ && \
+    chmod 600 /home/mh2/.ssh/authorized_keys
 
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    echo "AllowUsers user1 user2" >> /etc/ssh/sshd_config
+    echo "AllowUsers mh1 mh2" >> /etc/ssh/sshd_config
 
 RUN apt-get update && apt-get install -y  \
     net-tools \

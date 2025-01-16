@@ -6,11 +6,11 @@ RUN apt-get update && \
 
 RUN mkdir -p /run/sshd
 
-RUN useradd -m passless && \
-    passwd -d passless
+RUN useradd -m mh && \
+    passwd -d mh
 
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    echo "AllowUsers passless" >> /etc/ssh/sshd_config && \
+    echo "AllowUsers mh" >> /etc/ssh/sshd_config && \
     echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config

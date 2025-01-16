@@ -29,13 +29,13 @@ services:
           memory: 2G
         reservations:
           memory: 512M
-    depends_on:
-      - remote_host
-      - mariadb_db_instance
+    # depends_on:
+    #   - client1_remote
+    #   - mariadb_db_instance
   
-  remote_host:
-    container_name: remote-host-ssh
-    image: remote-host-ssh-test-image:v2.0.0
+  client1_remote:
+    container_name: client1_remote
+    image: client1_remote-image:v2.0.0
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12.passless
@@ -51,70 +51,92 @@ services:
         ipv4_address: 192.168.1.101
     ports:
       - "2222:22"
-    
-  web:
-    container_name: web-ansible
-    image: web-ansible-image:v1.0.0
-    build: 
+
+  client2_remote:
+    container_name: client2_remote
+    image: client2_remote-image:v2.0.0
+    build:
       context: .
-      dockerfile: docker/web/Dockerfile.webdebian
-      # dockerfile: docker/web/Dockerfile.webcentos
-    ports:
-      - "8088:80"
+      dockerfile: docker/ssh-os/Dockerfile.debian12.passwithkey
+      # docker/ssh-os/Dockerfile.debian12.passless
+      # docker/ssh-os/Dockerfile.debian12
+      # dockerfile: docker/ssh-os/Dockerfile.centos
+      # dockerfile: docker/ssh-os/Dockerfile.rockey9 
+      # dockerfile: docker/ssh-os/Dockerfile.alpinlinux
+      # dockerfile: docker/ssh-os/Dockerfile.fedora38
+      # dockerfile: docker/ssh-os/Dockerfile.archlinux
+      # dockerfile: docker/ssh-os/Dockerfile.ubuntojammyjellyfish 
     networks:
       jenkins_net:
         ipv4_address: 192.168.1.102
-    depends_on:
-      - remote_host
-      - mariadb_db_instance
-    volumes:
-      - "./www/source:/var/www/html"
+    ports:
+      - "2223:22"
+      
+    
+  # it is working but skip for now down below 
+  # web:
+  #   container_name: web-ansible
+  #   image: web-ansible-image:v1.0.0
+  #   build: 
+  #     context: .
+  #     dockerfile: docker/web/Dockerfile.webdebian
+  #     # dockerfile: docker/web/Dockerfile.webcentos
+  #   ports:
+  #     - "8088:80"
+  #   networks:
+  #     jenkins_net:
+  #       ipv4_address: 192.168.1.103
+  #   depends_on:
+  #     - client1_remote
+  #     - mariadb_db_instance
+  #   volumes:
+  #     - "./www/source:/var/www/html"
 
-  mariadb_db_instance:
-    container_name: test-db
-    image: db-test-image:v2.0.0
-    build: 
-      context: .
-      dockerfile: docker/db/Dockerfile.mariadb
-    ports:
-      - "3308:3306"
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: brotecs1230
-      MYSQL_DATABASE: testdb
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: brotecs1230
-    volumes:
-      - db-data-vol:/var/lib/mysql
-    networks:
-      jenkins_net:
-        ipv4_address: 192.168.1.103
-    deploy:
-      resources:
-        limits:
-          memory: 1G
-        reservations:
-          memory: 512M
+  # mariadb_db_instance:
+  #   container_name: test-db
+  #   image: db-test-image:v2.0.0
+  #   build: 
+  #     context: .
+  #     dockerfile: docker/db/Dockerfile.mariadb
+  #   ports:
+  #     - "3308:3306"
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: brotecs1230
+  #     MYSQL_DATABASE: testdb
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: brotecs1230
+  #   volumes:
+  #     - db-data-vol:/var/lib/mysql
+  #   networks:
+  #     jenkins_net:
+  #       ipv4_address: 192.168.1.104
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 1G
+  #       reservations:
+  #         memory: 512M
   
-  phpmyadmin_instance:
-    container_name: test-dbmanager
-    image: phpmyadmin:latest
-    links:
-      - mariadb_db_instance
-    networks:
-      jenkins_net:
-        ipv4_address: 192.168.1.104
-    environment:
-      - PMA_ARBITRARY=1
-    ports:
-      - 8081:80
-    restart: always
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-        reservations:
-          memory: 128M
+  # phpmyadmin_instance:
+  #   container_name: test-dbmanager
+  #   image: phpmyadmin:latest
+  #   links:
+  #     - mariadb_db_instance
+  #   networks:
+  #     jenkins_net:
+  #       ipv4_address: 192.168.1.105
+  #   environment:
+  #     - PMA_ARBITRARY=1
+  #   ports:
+  #     - 8081:80
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 256M
+  #       reservations:
+  #         memory: 128M
 
 
 networks:
@@ -137,8 +159,8 @@ volumes:
   #   name: jenkins-temp-vol
 
 # one named volume to another named volume copy
-# docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  ubuntu bash -c "cd /from ; cp -av . /to"
-
+# docker run --rm -it  -v  devops-jenkins-docker_var-jenkins_home:/from -v var-jenkins_home:/to  nginx bash -c "cd /from ; cp -av . /to"
+# docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  nginx bash -c "cd /from ; cp -av . /to"
 
 
 
