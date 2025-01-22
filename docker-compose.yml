@@ -36,6 +36,8 @@ services:
   client1_remote:
     container_name: client1_remote
     image: client1_remote-image:v2.0.0
+    volumes:
+      - backup-temp:/tmp/test.log
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12
@@ -157,6 +159,8 @@ volumes:
     name: var-jenkins_home
   db-data-vol:
     name: db-data-vol
+  backup-temp:
+    name: backup-temp
   # jenkins-temp-vol:
   #   name: jenkins-temp-vol
 
