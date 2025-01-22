@@ -7,3 +7,5 @@
 # ansible -i hosts -m ping client1
 # ansible -i hosts -m ping dev
 
+why not work ? == where client root access available then this root cmd works for that client
+> ansible -i hosts -m command -a "ping" dev --become -k 

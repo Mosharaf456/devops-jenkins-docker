@@ -8,7 +8,7 @@ for open ssh ,, passless any user switch <=>
 
 ---------------
 
-why not work ?
+why not work ? == where client root access available then this root cmd works for that client
 ansible -i hosts -m command -a "ping" dev --become -k 
 
 
