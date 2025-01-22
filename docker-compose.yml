@@ -58,7 +58,7 @@ services:
     image: client2_remote-image:v2.0.0
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12.m # user1 no pass + user2 pass + root pass 
+      dockerfile: docker/ssh-os/Dockerfile.debian12.root # user1 no pass + user2 pass + root pass 
       # docker/ssh-os/Dockerfile.debian12.passless
       # docker/ssh-os/Dockerfile.debian12
       # docker/ssh-os/Dockerfile.debian12.org

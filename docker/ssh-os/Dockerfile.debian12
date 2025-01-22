@@ -15,8 +15,25 @@ COPY ./dist/ssh-key/remote-key.pub /home/mh/.ssh/authorized_keys
 RUN chown mh:mh -R /home/mh/.ssh/ && \
     chmod 600 /home/mh/.ssh/authorized_keys
 
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    echo "AllowUsers mh" >> /etc/ssh/sshd_config
+
+RUN useradd -m user2 && \
+    echo "user2:brotecs1230" | chpasswd
+
+RUN echo "root:brotecs1230" | chpasswd
+
+# Setup SSH keys for user2 and root
+RUN mkdir -p /home/user2/.ssh && \
+    mkdir -p /root/.ssh 
+COPY ./dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys 
+COPY ./dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys
+
+RUN chmod 700 /home/user2/.ssh /root/.ssh && \
+    chmod 600 /home/user2/.ssh/authorized_keys /root/.ssh/authorized_keys && \
+    chown -R user2:user2 /home/user2/.ssh && \
+    chown -R root:root /root/.ssh
+
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    echo "AllowUsers mh user2 root" >> /etc/ssh/sshd_config
 ## end OpenSSH server
 
 RUN apt-get update && apt-get install -y  \
