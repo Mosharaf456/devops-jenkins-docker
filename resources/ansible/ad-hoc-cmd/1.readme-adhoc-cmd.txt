@@ -129,6 +129,16 @@ or the host keys are added to known_hosts.
 
 > ansible -m command -a "uptime" dev --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
 
+it removes the host's SSH key from your known hosts file.
+> ssh-keygen -R 192.168.30.186
+To generate
+> ssh-keygen
+
+Copy the public key to the remote server:
+> ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.30.186
+
+
+
 
 
 
