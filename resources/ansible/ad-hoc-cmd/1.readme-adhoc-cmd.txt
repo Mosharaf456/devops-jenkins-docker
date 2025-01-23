@@ -66,3 +66,70 @@ servers lists of an specific group
 
 
 
+ 
+ansible -m command -a "uptime" groupNameOfTheHosts
+
+
+ssh key related issue 
+
+
+The errors you're encountering stem from SSH's strict host key verification and potential changes to the SSH host key fingerprints of the target servers. Let's address the issues step-by-step:
+
+1. Host Key Changed
+The error shows that the host key for some servers (e.g., 192.168.1.101) has changed. This usually happens when:
+
+The server has been reinstalled.
+The SSH key on the server was regenerated.
+You're connecting to a different server at the same IP address.
+Solution: You need to remove the old key from the ~/.ssh/known_hosts file.
+
+Run the following commands:
+ssh-keygen -f "/home/btl-671/.ssh/known_hosts" -R "192.168.1.101"
+ssh-keygen -f "/home/btl-671/.ssh/known_hosts" -R "192.168.1.102"
+
+
+This removes the old host keys for the respective IPs.
+
+
+The errors you're encountering stem from SSH's strict host key verification and potential changes to the SSH host key fingerprints of the target servers. Let's address the issues step-by-step:
+
+1. Host Key Changed
+The error shows that the host key for some servers (e.g., 192.168.1.101) has changed. This usually happens when:
+
+The server has been reinstalled.
+The SSH key on the server was regenerated.
+You're connecting to a different server at the same IP address.
+Solution: You need to remove the old key from the ~/.ssh/known_hosts file.
+
+Run the following commands:
+
+bash
+Copy
+Edit
+ssh-keygen -f "/home/btl-671/.ssh/known_hosts" -R "192.168.1.101"
+ssh-keygen -f "/home/btl-671/.ssh/known_hosts" -R "192.168.1.102"
+This removes the old host keys for the respective IPs.
+
+2. Adding New Host Key
+Option A (Recommended): Pre-add the Host Keys Connect manually to each host to save the new key:
+ssh root@192.168.1.101
+ssh root@192.168.1.102
+
+B.(Automate with Strict Checking Disabled): Edit your ansible.cfg file and add the following:
+[defaults]
+host_key_checking = False
+
+Or set the ANSIBLE_HOST_KEY_CHECKING environment variable:
+export ANSIBLE_HOST_KEY_CHECKING=False
+
+If you're using sshpass for password authentication, ensure host key checking is disabled 
+or the host keys are added to known_hosts.
+
+> sshpass -p "your_password" ssh -o StrictHostKeyChecking=no user@192.168.1.101
+
+> ansible -m command -a "uptime" dev --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+
+
+
+
+
