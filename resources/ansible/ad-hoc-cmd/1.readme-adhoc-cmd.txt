@@ -20,8 +20,7 @@ groupadd admin
 usermod -aG admin mosharaf1
 ls -al /tmp/test.log
 
->> ansible -m file -a "dest=/tmp/test.log mode=777 owner=mosharaf1 \
-group=admin" client1 --become --become-method=sudo --become-user=root -k 
+>> ansible -m file -a "dest=/tmp/test.log mode=777 owner=mosharaf1 group=admin" client1 --become --become-method=sudo --become-user=root -k 
 
 
 *******ansible.cfg**********
@@ -138,8 +137,20 @@ Copy the public key to the remote server:
 > ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.30.186
 
 
+/// ping test 
+> ansible -m ping dev
+
+
+// copy file with verbose -vvv
+> ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev  -vvv
+// for root user
+>  ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev --become -k
 
 
 
+// file permission change,, nedd to that user on the ssh client
+// useradd unixadm
+// passwd unixadm
+>  ansible -m file -a "dest=/tmp/test1 mode=777 owner=unixadm" --become -k dev 
 
 
