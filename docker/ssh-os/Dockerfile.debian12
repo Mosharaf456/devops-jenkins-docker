@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 RUN mkdir -p /run/sshd
 RUN useradd -m mh && \
-    echo "mh:brotecs1230" | chpasswd && \
+    echo "mh:1234" | chpasswd && \
     mkdir /home/mh/.ssh && \
     chmod 700 /home/mh/.ssh
 
@@ -17,9 +17,9 @@ RUN chown mh:mh -R /home/mh/.ssh/ && \
 
 
 RUN useradd -m user2 && \
-    echo "user2:brotecs1230" | chpasswd
+    echo "user2:1234" | chpasswd
 
-RUN echo "root:brotecs1230" | chpasswd
+RUN echo "root:1234" | chpasswd
 
 # Setup SSH keys for user2 and root
 RUN mkdir -p /home/user2/.ssh && \
@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y  \
     net-tools \
     telnet \
     procps \
+    vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -49,6 +50,12 @@ RUN apt-get update \
     && apt-get install -y python3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Add a new user with a password
+RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
+
+# Optional: Add the user to specific groups (e.g., sudo)
+RUN usermod -aG sudo unixadm
 
 # Expose SSH port
 EXPOSE 22

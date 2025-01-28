@@ -20,26 +20,25 @@ client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs12
 # ansible -i hosts -m ping dev
 
 
-
-
 [all:vars]
 ansible_connection = ssh
 
 
 [dev]
-client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3
 
-client5 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+client5 ansible_host=192.168.1.102  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3
 
 
 [test]
-client2 ansible_host=192.168.1.101  ansible_user=mh ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+client2 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3
 
-client4 ansible_host=192.168.1.102  ansible_user=user2 ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+client4 ansible_host=192.168.1.102  ansible_user=user2 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3
 
 
 [test2]
 client3 ansible_host=192.168.1.102 ansible_user=user1 ansible_python_interpreter=/usr/bin/python3
+
 
 
 
