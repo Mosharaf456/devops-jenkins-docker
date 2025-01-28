@@ -37,7 +37,7 @@ services:
     container_name: client1_remote
     image: client1_remote-image:v2.0.0
     volumes:
-      - backup-temp:/tmp/test.log
+      - backup-temp:/tmp
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12
@@ -58,6 +58,8 @@ services:
   client2_remote:
     container_name: client2_remote
     image: client2_remote-image:v2.0.0
+    volumes:
+      - backup-temp:/tmp
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12.root # user1 no pass + user2 pass + root pass 
