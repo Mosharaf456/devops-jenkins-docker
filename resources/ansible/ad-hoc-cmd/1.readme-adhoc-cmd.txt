@@ -59,7 +59,7 @@ group=admin" client1
 ////////////////////////////end///////////////////////////////
 
 --------------------Ad hoc command ansible---------------
-
+-------plb1:
 servers lists of an specific group 
 > ansible --list-hosts dev
 

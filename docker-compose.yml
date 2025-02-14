@@ -37,7 +37,7 @@ services:
     container_name: client1_remote
     image: client1_remote-image:v2.0.0
     volumes:
-      - backup-temp:/tmp
+      - backup-temp-c1:/tmp
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12  # mh pass: 1234, user2 pass, root pass
@@ -59,7 +59,7 @@ services:
     container_name: client2_remote
     image: client2_remote-image:v2.0.0
     volumes:
-      - backup-temp:/tmp
+      - backup-temp-c2:/tmp
     build:
       context: .
       dockerfile: docker/ssh-os/Dockerfile.debian12.root # user1 no pass + user2 pass + root pass 
@@ -161,8 +161,11 @@ volumes:
     name: var-jenkins_home
   db-data-vol:
     name: db-data-vol
-  backup-temp:
-    name: backup-temp
+  backup-temp-c1:
+    name: backup-temp-c1
+  backup-temp-c2:
+    name: backup-temp-c2
+    
   # jenkins-temp-vol:
   #   name: jenkins-temp-vol
 
