@@ -19,6 +19,12 @@ client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs12
 # ansible -i hosts -m ping client1
 # ansible -i hosts -m ping dev
 
+# Then, remove ansible_ssh_common_args from the inventory. best practice
+# ssh-keyscan -H 192.168.1.101 >> ~/.ssh/known_hosts
+# ssh-keyscan -H 192.168.1.102 >> ~/.ssh/known_hosts
+
+# It can running securoty risk MITM- man in the middle 
+# Running Ansible in Jenkins or CI/CD pipelines to avoid SSH key verification issues.
 
 [all:vars]
 ansible_connection = ssh
