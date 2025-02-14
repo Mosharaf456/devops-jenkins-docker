@@ -140,10 +140,12 @@ Copy the public key to the remote server:
 /// ping test 
 > ansible -m ping dev
 
+// copy file with current ssh user wise copy file owner
+> ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" test1
 
-// copy file with verbose -vvv
-> ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev  -vvv
-// for root user
+// copy file with verbose -vvv and with current ssh user wise copy file owner
+> ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" test1  -vvv
+// for root user wise copy file owner
 >  ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev --become -k
 
 
