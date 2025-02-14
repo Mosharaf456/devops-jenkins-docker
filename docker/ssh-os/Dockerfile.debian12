@@ -54,9 +54,10 @@ RUN apt-get update \
 
 RUN apt update && apt install -y sudo   
 
+# but if I add this all permission and user goes at root
 RUN usermod -aG sudo mh 
 RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
+# end of but if I add this all permission and user goes at root
 
 # Add a new user with a password
 RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
