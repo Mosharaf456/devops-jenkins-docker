@@ -62,7 +62,7 @@ services:
       - backup-temp-c2:/tmp
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12.root # user1 no pass + user2 pass + root pass 
+      dockerfile: docker/ssh-os/Dockerfile.debian12.root # user1 pass:1234 + root pass  +  passless no pass based user 
       # docker/ssh-os/Dockerfile.debian12.passless
       # docker/ssh-os/Dockerfile.debian12
       # docker/ssh-os/Dockerfile.debian12.org

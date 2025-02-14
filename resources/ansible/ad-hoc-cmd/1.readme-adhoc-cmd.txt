@@ -146,7 +146,7 @@ Copy the public key to the remote server:
 // copy file with verbose -vvv and with current ssh user wise copy file owner
 > ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" test1  -vvv
 // for root user wise copy file owner
->  ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev --become -k
+>  ansible -m copy -a  "src=/etc/ansible/hosts dest=/tmp/hosts" dev --become -K
 
 
 

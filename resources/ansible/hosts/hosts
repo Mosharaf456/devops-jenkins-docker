@@ -26,6 +26,7 @@ client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs12
 # It can running securoty risk MITM- man in the middle 
 # Running Ansible in Jenkins or CI/CD pipelines to avoid SSH key verification issues.
 
+
 [all:vars]
 ansible_connection = ssh
 
@@ -37,13 +38,19 @@ client2 ansible_host=192.168.1.102  ansible_user=root ansible_password=1234 ansi
 
 
 [test1]
-client3 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+client3 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 
 
-client4 ansible_host=192.168.1.102  ansible_user=user2 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-
+client4 ansible_host=192.168.1.102  ansible_user=user1 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 
 
 [test2]
-client5 ansible_host=192.168.1.102 ansible_user=user1 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+client3 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_become=True
+
+client4 ansible_host=192.168.1.102  ansible_user=user1 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_become=True
+
+
+[test3]
+client5 ansible_host=192.168.1.102 ansible_user=passless ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
 
 
 
