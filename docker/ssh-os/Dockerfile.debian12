@@ -11,6 +11,12 @@ RUN useradd -m mh && \
     mkdir /home/mh/.ssh && \
     chmod 700 /home/mh/.ssh
 
+# but if I add this all permission and user goes at root
+# RUN apt update && apt install -y sudo   
+# RUN usermod -aG sudo mh 
+# RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# end of but if I add this all permission and user goes at root
+
 COPY ./dist/ssh-key/remote-key.pub /home/mh/.ssh/authorized_keys
 RUN chown mh:mh -R /home/mh/.ssh/ && \
     chmod 600 /home/mh/.ssh/authorized_keys
@@ -52,12 +58,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN apt update && apt install -y sudo   
-
-# but if I add this all permission and user goes at root
-RUN usermod -aG sudo mh 
-RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# end of but if I add this all permission and user goes at root
+# # but if I add this all permission and user goes at root
+# RUN apt update && apt install -y sudo   
+# RUN usermod -aG sudo mh 
+# RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# # end of but if I add this all permission and user goes at root
 
 # Add a new user with a password
 RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
