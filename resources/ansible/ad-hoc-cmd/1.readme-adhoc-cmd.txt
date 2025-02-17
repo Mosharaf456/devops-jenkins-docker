@@ -1,3 +1,7 @@
+What is an ad hoc command in Ansible?
+= A single-line command used to perform a quick task on managed nodes.
+
+
 # >  ansible --list-hosts dev
 # > ansible -m command -a "uptime" dev
 # inside container test
@@ -158,3 +162,157 @@ Copy the public key to the remote server:
 
 // to delete the file , need root ssh 
 > ansible -m file -a "dest=/tmp/test.log mode=777 state=absent" --become -K dev
+
+//command Vs shell module 
+// command module cannot access shell environment or perform shell operations such as redirection and piping.
+
+//Where commands require shell processing, administrators can use the shell module. 
+
+// set command display the setted variable which are set already whatever but command will not get access that , so use shell module 
+> ansible dev -m command -a set 
+
+// solution 
+> ansible dev -m shell -a set 
+
+How do you specify the target hosts for an ad hoc command?
+= using --hosts option 
+
+Which option allows you to specify the user to connect to the managed nodes when running an ad hoc command?
+= --user 
+
+What is the default module used in an ad hoc command if no module is specified explicitly?
+= ping 
+
+How do you run an ad hoc command with elevated privileges (i.e., as a privileged user or root)?
+= by setting the --become option 
+
+Which option allows you to pass extra variables to an ad hoc command?
+= --extra-vars 
+
+How can you run a shell command that requires using shell-specific syntax in an ad hoc command?
+= Use the shell module explicitly with the --module-name option 
+
+What is the purpose of the --limit option in an ad hoc command?
+= To restrict the execution of the ad hoc command to a specific host or group of hosts.
+
+How do you run an ad hoc command in check mode to see what changes would be made without actually applying them?
+= Use the --check option
+
+Which Ansible command is used to execute ad hoc commands?
+= ansible 
+
+Please perform the below tasks:
+Tasks:
+1. Set up a basic Ansible inventory with managed nodes.
+2. Run ad hoc commands to gather information about managed nodes.
+3. Perform system maintenance tasks using ad hoc commands.
+4. Explore and utilize different modules in ad hoc commands.
+
+1. Set up a Basic Ansible Inventory with Managed Nodes
+Ansible uses an inventory file (hosts.ini) to define managed nodes.
+Create an inventory file (hosts.ini):host.ini 
+[web]
+web1 ansible_host=192.168.1.10 ansible_user=root
+web2 ansible_host=192.168.1.11 ansible_user=root
+
+[db]
+db1 ansible_host=192.168.1.20 ansible_user=root
+
+Verify connectivity with the managed nodes:
+> ansible all -i hosts.ini -m ping
+
+
+
+2. Run Ad Hoc Commands to Gather Information About Managed Nodes
+Check system uptime:
+> ansible all -i hosts.ini -m command -a "uptime"
+
+Get OS details:
+> ansible all -i hosts.ini -m setup | grep "ansible_distribution"
+
+Check free disk space:
+>ansible all -i hosts.ini -m shell -a "df -h"
+
+
+
+
+3. Perform System Maintenance Tasks Using Ad Hoc Commands
+
+Update package lists (Debian-based systems):
+> ansible all -i hosts.ini -m apt -a "update_cache=yes" --become
+
+Install htop on all nodes:
+> ansible all -i hosts.ini -m package -a "name=htop state=present" --become
+
+Restart a service (e.g., Apache):
+> ansible web -i hosts.ini -m service -a "name=apache2 state=restarted" --become
+
+Reboot all nodes:
+> ansible all -i hosts.ini -m reboot --become
+
+
+
+4. Explore and Utilize Different Modules in Ad Hoc Commands
+Copy a file to all nodes:
+> ansible all -i hosts.ini -m copy -a "src=/etc/hosts dest=/tmp/hosts" --become
+
+Check user existence:
+> ansible all -i hosts.ini -m command -a "id ansible"
+
+Create a new user:
+> ansible all -i hosts.ini -m user -a "name=deploy state=present" --become
+
+Change file permissions:
+> ansible all -i hosts.ini -m file -a "path=/var/www/html mode=0755 state=directory" --become
+
+Fetch a file from remote nodes:
+> ansible all -i hosts.ini -m fetch -a "src=/etc/passwd dest=./backup/" --become
+
+
+////////////
+Please perform the below tasks:
+
+Tasks:
+
+1. Set up a basic Ansible inventory with managed nodes.
+2. Run ad hoc commands to gather information about managed nodes.
+3. Perform system maintenance tasks using ad hoc commands.
+4. Explore and utilize different modules in ad hoc commands.
+
+1.Set up a basic Ansible inventory with managed nodes:
+
+Ensure you have at least two managed nodes (physical or virtual machines) that are accessible via SSH from the Ansible control node.
+
+Create an Ansible inventory file named hosts and add the IP addresses or hostnames of your managed nodes. For example:
+
+node1 ansible_host=192.168.1.101
+node2 ansible_host=192.168.1.102
+
+2. Run ad hoc commands to gather information about managed nodes:
+
+Use the ping module to check if the managed nodes are accessible and responding to Ansible. Run the following command:
+
+ansible all -i hosts -m ping
+Use the setup module to gather facts about the managed nodes' hardware and operating system. Run the following command:
+
+ansible all -i hosts -m setup
+
+3. Perform system maintenance tasks using ad hoc commands:
+
+Use the yum module to update packages on the managed nodes. Run the following command:
+
+ansible all -i hosts -m yum -a "name=* state=latest" --become
+Use the file module to create a directory on the managed nodes. Run the following command:
+
+ansible all -i hosts -m file -a "path=/tmp/mydir state=directory" --become
+
+4. Explore and utilize different modules in ad hoc commands:
+
+Refer to the Ansible documentation to discover more modules and their usage in ad hoc commands. Try running additional ad hoc commands with different modules to perform various tasks on your managed nodes.
+
+
+####################S6L21Implementing Playbooks##################
+
+
+
+
