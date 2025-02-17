@@ -156,4 +156,5 @@ Copy the public key to the remote server:
 // capital K used 
 >  ansible -m file -a "dest=/tmp/test1 mode=777 owner=unixadm" --become -K dev 
 
-
+// to delete the file , need root ssh 
+> ansible -m file -a "dest=/tmp/test.log mode=777 state=absent" --become -K dev
