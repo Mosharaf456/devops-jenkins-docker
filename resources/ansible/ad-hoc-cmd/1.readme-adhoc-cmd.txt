@@ -153,6 +153,7 @@ Copy the public key to the remote server:
 // file permission change need root user acces or need to run by root user,, nedd to that user on the ssh client
 // useradd unixadm
 // passwd unixadm
->  ansible -m file -a "dest=/tmp/test1 mode=777 owner=unixadm" --become -k dev 
+// capital K used 
+>  ansible -m file -a "dest=/tmp/test1 mode=777 owner=unixadm" --become -K dev 
 
 
