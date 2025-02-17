@@ -310,6 +310,11 @@ ansible all -i hosts -m file -a "path=/tmp/mydir state=directory" --become
 
 Refer to the Ansible documentation to discover more modules and their usage in ad hoc commands. Try running additional ad hoc commands with different modules to perform various tasks on your managed nodes.
 
+Verify the SSH Service is Running
+> ansible -i inventory.ini all -m shell -a "pgrep -x sshd"
+
+Test connectivity with:
+>ansible -i hosts all -m ping
 
 ####################S6L21Implementing Playbooks##################
 

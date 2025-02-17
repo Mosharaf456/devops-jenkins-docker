@@ -311,7 +311,260 @@ ansible all -i hosts -m file -a "path=/tmp/mydir state=directory" --become
 Refer to the Ansible documentation to discover more modules and their usage in ad hoc commands. Try running additional ad hoc commands with different modules to perform various tasks on your managed nodes.
 
 
+########## Playbooks ###########
+
 ####################S6L21Implementing Playbooks##################
+Goal : write Ansible plays and execute a playbook 
+What is playbook? 
+= Playbooks are the files where Ansible code is written. YAML formated because it is very easy for humans to understand, 
+read, write than other common data formats like XML or JSON.
+
+Core features of Ansible and tell Ansible what to execute.
+
+Single time task or one time task using ansible playbooks.
+
+Each playbook is an aggregation of one or more plays in it.
+Playbooks are structured using plays.
+There can be more than one play inside a playbook.
+
+When you run, it run plays in a sequence way.
+YAML syntax start, and optinal three dot end of file marker
+
+> cat /etc/os-release
+
+
+---
+
+---
+
+
+---
+
+- hosts:dev
+  become:true 
+  become_user:root 
+  tasks: 
+    - name:run the script 
+      script:/home/btl-671/ansible/scr.sh 
+      when:ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "22"
+
+---
+
+// start any service check running or not then do that 
+
+---
+-   hosts: all 
+    become:true 
+    become_user:root
+    tasks: 
+        - name: stat sftp service 
+          service
+            name: sftp
+            state: started
+---
+
+
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Check if SSH service is running
+      command: pgrep -x sshd
+      register: ssh_status
+      ignore_errors: yes
+
+    - name: Start SSH service if not running
+      service:
+        name: ssh
+        state: started
+      when: ssh_status.rc != 0
+--
+
+
+Alternative Approach Using systemctl
+For systems with systemd, you could replace pgrep with:
+---
+    - name: Check if SSH service is active
+      shell: systemctl is-active ssh
+      register: ssh_status
+      ignore_errors: yes
+
+    - name: Start SSH service if not active
+      service:
+        name: ssh
+        state: started
+      when: ssh_status.stdout != "active"
+---
+
+
+ansible-project/
+│-- inventory.ini
+│-- ansible.cfg
+│-- site.yml
+│-- roles/
+│   ├── ssh_service/
+│   │   ├── tasks/
+│   │   │   ├── main.yml
+│   │   ├── handlers/
+│   │   │   ├── main.yml
+│   │   ├── defaults/
+│   │   │   ├── main.yml
+│   │   ├── vars/
+│   │   │   ├── main.yml
+│   │   ├── meta/
+│   │   │   ├── main.yml
+│   │   ├── templates/
+│   │   ├── files/
+│   │   ├── README.md
+
+
+
+
+
+
+
+
+
+
+Inventory File (inventory.ini)
+root@mosharaf-desktop:/etc/ansible# cat inventory.ini 
+[all:vars]
+ansible_connection = ssh
+
+
+[dev]
+client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+
+Ansible Configuration (ansible.cfg)
+This avoids specifying -i inventory.ini every time.
+
+[defaults]
+inventory = inventory.ini
+remote_user = root
+host_key_checking = False
+timeout = 30
+
+
+
+
+
+ansible-playbook site.yml
+
+root@mosharaf-desktop:/etc/ansible# cat site.yml 
+---
+- hosts: all
+  become: true
+  roles:
+    - ssh_service
+
+
+Role Folder (roles/ssh_service/)
+
+
+Tasks (roles/ssh_service/tasks/main.yml)
+---
+- name: Check if SSH service is running
+  command: pgrep -x sshd
+  register: ssh_status
+  ignore_errors: yes
+
+- name: Start SSH service if not running
+  service:
+    name: ssh
+    state: started
+  when: ssh_status.rc != 0
+
+
+Handlers (roles/ssh_service/handlers/main.yml)
+---
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+
+
+Variables (roles/ssh_service/vars/main.yml)
+---
+ssh_service_name: ssh
+
+Defaults (roles/ssh_service/defaults/main.yml)
+---
+ssh_port: 22
+
+Metadata (roles/ssh_service/meta/main.yml)
+---
+galaxy_info:
+  author: "Your Name"
+  description: "Manage SSH Service"
+  license: "MIT"
+  min_ansible_version: "2.9"
+
+
+
+Running the Playbook
+Use the following command:
+ansible-playbook site.yml
+
+
+Why Use Roles?
+✔ Reusable & Scalable → Organize tasks efficiently.
+✔ Maintainable → Each role has dedicated files.
+✔ Modular → Easily enable/disable specific roles.
+
+Let me know if you need modifications! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
