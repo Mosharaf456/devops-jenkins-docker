@@ -101,3 +101,48 @@ ansible all -m systemd -a "name=apache2 enabled=yes" --become -K
 ansible all -m shell -a "service apache2 status" --become -K
 
 ansible all -m shell -a "systemctl is-enabled apache2" --become -K
+
+
+// Write playbook strategy
+when possible , try to avoid the command,shell and raw modules in playbooks beacuse these take arbitrary commands,
+it is very easy to write non-idempotent playbooks with these modules.
+
+
+non-idempotent vs idempotent 
+## playbook
+--- 
+- name: Non-idempotent approach with shell module 
+  shell: echo "nameserver 192.168.1.101" > /etc/resolv.conf 
+
+
+--- 
+- name: Non-idempotent approach with shell module 
+  shell: echo "nameserver 192.168.1.101" > /etc/resolv.conf 
+
+
+same content puted if runs multiple times, not checked available or not. Same task does again and again this is called 
+non-idempotent behaviour.
+
+
+## idempotent
+instead of shell module use copy module for idempotent 
+
+- name: idempotent approach with copy module 
+  copy: 
+    dest:/etc/resolv.conf
+    content:"nameserver 192.168.1.101\n"
+
+
+If theere already existence , then can easily test to see if the state has already been met, if it has will make no changes.
+
+
+Idempotent playbooks can be run repeatedly to ensure systems are in a particular state 
+without disrupting those systems if they already are. 
+
+
+
+
+
+
+
+
