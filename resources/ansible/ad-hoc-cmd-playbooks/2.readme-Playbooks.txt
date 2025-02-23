@@ -319,16 +319,17 @@ What is playbook?
 = Playbooks are the files where Ansible code is written. YAML formated because it is very easy for humans to understand, 
 read, write than other common data formats like XML or JSON.
 
-Core features of Ansible and tell Ansible what to execute.
+Core features of Ansible and tell Ansible what to execute.In simple word if have multiple task then have to write a playbook.
 
 Single time task or one time task using ansible playbooks.
+And also if you need to execute multiple task in scripted way , playbook help to run in a scripted way.
 
 Each playbook is an aggregation of one or more plays in it.
 Playbooks are structured using plays.
 There can be more than one play inside a playbook.
 
 When you run, it run plays in a sequence way.
-YAML syntax start, and optinal three dot end of file marker
+YAML syntax start optinal three dot, and optinal three dot end of file marker too.
 
 > cat /etc/os-release
 
@@ -345,7 +346,7 @@ YAML syntax start, and optinal three dot end of file marker
   become_user:root 
   tasks: 
     - name:run the script 
-      script:/home/btl-671/ansible/scr.sh 
+      script:/home/btl-671/Downloads/extra/ansible/scriptrun1.sh
       when:ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "22"
 
 ---
@@ -396,7 +397,7 @@ For systems with systemd, you could replace pgrep with:
       when: ssh_status.stdout != "active"
 ---
 
-
+ //***** simple project structure*******
 ansible-project/
 │-- inventory.ini
 │-- ansible.cfg
@@ -448,8 +449,8 @@ timeout = 30
 
 
 
-
-ansible-playbook site.yml
+//To run playbook project 
+> ansible-playbook site.yml
 
 root@mosharaf-desktop:/etc/ansible# cat site.yml 
 ---
@@ -515,54 +516,100 @@ Why Use Roles?
 Let me know if you need modifications! 
 
 
+###########lec22
+---
+- hosts: all
+  beocme: true
+  become_user: root
+  tasks: 
+    - name: stat sftpd service
+      service:
+        name: ssh
+        state: started
+
+
+
+
+### service nginx start 2.nginx-start.yml 
+## to run  > ansible-playbook 2.nginx-start.yml -K
+
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+
+
+## ansible-playbook 3.copyfile.yml -K
+# id unixadm
+
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks: 
+    - name: Copy the file
+      copy: 
+        src: /tmp/testabc.txt 
+        dest: /tmp/testabc.txt
+        owner: unixadm
+        group: root
+        mode: 0777
 
 
 
 
 
+## ansible-playbook 4.copyfile_cond.yml -K
+####### put condition on it 
+### id unixadm
+
+> ansible all -m setup | grep -i "distribution"
+root@mosharaf-desktop:/etc/ansible# ansible all -m setup | grep -i "distribution"
+        "ansible_distribution": "Debian",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/os-release",
+        "ansible_distribution_file_variety": "Debian",
+        "ansible_distribution_major_version": "12",
+        "ansible_distribution_minor_version": "9",
+        "ansible_distribution_release": "bookworm",
+        "ansible_distribution_version": "12.9",
+        "ansible_distribution": "Debian",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/os-release",
+        "ansible_distribution_file_variety": "Debian",
+        "ansible_distribution_major_version": "12",
+        "ansible_distribution_minor_version": "9",
+        "ansible_distribution_release": "bookworm",
+        "ansible_distribution_version": "12.9",
 
 
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Debug Ansible Facts
+      debug:
+        msg: "Distribution: {{ ansible_facts['distribution'] }}, Version: {{ ansible_facts['distribution_major_version'] }}"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - name: Copy the file
+      copy: 
+        src: /tmp/testabc1.txt 
+        dest: /tmp/testabc1.txt
+        owner: unixadm
+        group: root
+        mode: 0777
+      when: 
+        - ansible_facts['distribution'] == "Debian"
+        - ansible_facts['distribution_major_version'] == "12"
 
 
 
