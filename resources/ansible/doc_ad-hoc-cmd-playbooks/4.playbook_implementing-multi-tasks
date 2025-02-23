@@ -1,0 +1,104 @@
+Installation of a packages of multitasks in playbook: 
+
+tree packages
+
+1. mount OS media drive .... to chekc > df -h
+2. create local repository 
+3. install required packages 
+4. enabled the services 
+
+####note: failed to mount it as setup is container used 
+---
+- name: Set up the system environment
+  hosts: dev
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Mount the OS media drive
+      mount:
+        path: /mnt
+        src: /dev/sr0
+        fstype: iso9660
+        state: mounted
+
+    - name: Copy the local repo file
+      copy:
+        src: /home/btl-671/Downloads/extra/ansible/server1.repo
+        dest: /etc/apt/sources.list.d/
+        mode: '0644'
+
+    - name: Update apt repository cache
+      apt:
+        update_cache: yes
+
+    - name: Install tree latest package
+      apt:
+        name: tree
+        state: latest
+
+    - name: Start and enable the apache2 service
+      service:
+        name: apache2
+        state: started
+        enabled: true
+---
+
+
+
+
+
+
+### advance but not applied yet down below 
+### /etc/apt/sources.list.d  ### advance 
+---
+- name: Set up the system environment
+  hosts: dev
+  become: yes  # Run tasks with elevated privileges (root)
+
+  tasks:
+    - name: Mount the OS media drive
+      mount:
+        path: /mnt/os_media
+        src: /dev/cdrom
+        fstype: iso9660
+        state: mounted
+
+    - name: Create local repository directory
+      file:
+        path: /etc/apt/sources.list.d/local_repo.list
+        state: touch
+
+    - name: Set up the local repository configuration
+      template:
+        src: local_repo.list.j2
+        dest: /etc/apt/sources.list.d/local_repo.list
+
+    - name: Update apt repository cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - apache2
+          - git
+          - vim
+        state: present
+
+    - name: Enable and start required services
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - apache2
+        - cron
+
+
+###############
+
+
+
+
+
