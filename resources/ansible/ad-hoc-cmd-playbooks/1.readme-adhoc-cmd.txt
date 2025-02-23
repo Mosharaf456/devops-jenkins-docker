@@ -1,5 +1,6 @@
 What is an ad hoc command in Ansible?
 = A single-line command used to perform a quick task on managed nodes.
+To run run a single task or one time task using the ad hoc commands.
 
 
 # >  ansible --list-hosts dev
