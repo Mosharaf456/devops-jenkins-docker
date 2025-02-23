@@ -106,8 +106,210 @@ tree packages
 ##l32
 syntax verification and dry check playbook
 
+Before run actual playbook , whether this playbook actually run successfully or not.
+In this case we can use capital C option , which will do a dry chek.
+Actually this playbook using c option , the playbook is not going to do anything on the server.
+Just cross check whether this playbook will successfully run on the server , would be successfull or not.
+This causes ansible to report what changes would have occurred , if the playbook were executed.
+But it doesn,t change actual chnages on the managed host.
+Example: 
 executing dry run means: 
-
 > ansible-playbook -C web.yml
+
+For syntax verification of a playbook correct r not
+To check any synxtax error.
+> ansible-playbook --syntax-check <playbok-file-name>.yml 
+
+Playbook for executing interactively or step by step 
+> ansible-playbook --step webserver.yml 
+>  ansible-playbook --step webserver.yml -K -C 
+
+Steps for the installation of apache web server 
+
+1. install latest package of apache2 
+2. start, enable apache2 server 
+3. Install latest package for firewalld 
+4. start , enable firewalld service 
+5. permit apache2 service at firewall
+6. create simple html web page 
+7. defining web server name i.e www.client1.e.com 
+8. Update its entry in /etc/hosts file 
+
+9.webserver.yml 
+---
+- hosts: dev
+  become: true
+  tasks:
+    - name: Install Apache2 server
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Start and enable the web server
+      service:
+        name: apache2
+        enabled: yes 
+        state: started
+
+    - name: Ensure UFW is installed 
+      apt:
+        name: ufw
+        state: present
+        update_cache: yes
+
+    - name: Start and enable ufw
+      service:
+        name: ufw
+        enabled: true
+        state: started
+
+          #    - name: Allow Apache through UFW
+          #      ufw:
+          #        rule: allow
+          #        name: "Apache Full"
+          #        state: enabled
+
+    - name: Create a simple HTML web page
+      copy:
+        content: "Welcome to the Ansible learning"
+        dest: /var/www/html/index.html
+
+    - name: Define web server name (www.client1.e.com)
+      lineinfile:
+        path: /etc/apache2/apache2.conf
+        line: "ServerName www.client1.e.com:80"
+        insertafter: "^#ServerName"
+
+    - name: Update its entry in /etc/hosts file
+      lineinfile:
+        path: /etc/hosts
+        line: "192.168.1.101 www.client1.e.com"
+
+
+
+Assignment::::
+
+Please perform the below tasks:
+
+1. Install Apache and start the service on the web server.
+
+2. Deploy a simple website on the web server.
+
+3. Install MySQL and start the service on the database server.
+
+4. Create a database and a user for the website.
+
+    Ansible installed on the control node.
+
+    Two separate hosts set up as the web server and the database server.
+
+    SSH access from the control node to both web and database servers.
+
+
+---
+- name: Configure Web and Database Servers
+  hosts: webservers:dbservers
+  become: true
+
+  tasks:
+    - name: Install Apache on Web Server
+      apt:
+        name: apache2
+        state: present
+      when: "'web' in group_names"
+      notify: Restart Apache
+
+    - name: Deploy Website on Web Server
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      when: "'web' in group_names"
+
+    - name: Start Apache Service
+      service:
+        name: apache2
+        state: started
+      when: "'web' in group_names"
+
+    - name: Install MySQL on Database Server
+      apt:
+        name: mysql-server
+        state: present
+      when: "'db' in group_names"
+      notify: Restart MySQL
+
+    - name: Start MySQL Service
+      service:
+        name: mysql
+        state: started
+      when: "'db' in group_names"
+
+    - name: Create Database and User for Website
+      mysql_db:
+        name: mydb
+        state: present
+      mysql_user:
+        name: myuser
+        password: mypassword
+        priv: 'mydb.*:ALL'
+      when: "'db' in group_names"
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
+---
+
+
+    The playbook uses hosts: webservers:dbservers to target hosts in the "webservers" and "dbservers" groups.
+
+    The become: true statement is used to execute tasks with root privileges.
+
+    Multi-tasks are defined for each configuration step based on the group names ('web' in group_names and 'db' in group_names).
+
+    Handlers are defined to restart Apache and MySQL services when configuration changes are made.
+
+Sample index.html File:
+
+Create a file named index.html with the following content:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>Welcome to my website.</p>
+</body>
+</html>
+
+
+Answers:
+
+    Save the playbook in a file named multi_task_playbook.yml.
+
+    Create the index.html file with the sample content provided.
+
+    Ensure you have proper SSH access to the web and database servers from the control node.
+
+    Run the playbook using the following command:
+
+    ansible-playbook multi_task_playbook.yml
+
+    The playbook will configure the web server and the database server based on the tasks and conditions defined in the playbook.
+
+Note: This is a simple example to illustrate multi-tasks in an Ansible playbook. In a real-world scenario, you may need to modify the playbook according to your specific environment and requirements.
+
+Always validate your playbook against your actual infrastructure before applying changes to production systems.
+
 
 

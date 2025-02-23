@@ -1,0 +1,51 @@
+---
+- hosts: dev
+  become: true
+  tasks:
+    - name: Install Apache2 server
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Start and enable the web server
+      service:
+        name: apache2
+        enabled: yes 
+        state: started
+
+    - name: Ensure UFW is installed 
+      apt:
+        name: ufw
+        state: present
+        update_cache: yes
+
+    - name: Start and enable ufw
+      service:
+        name: ufw
+        enabled: true
+        state: started
+
+          #    - name: Allow Apache through UFW
+          #      ufw:
+          #        rule: allow
+          #        name: "Apache Full"
+          #        state: enabled
+
+    - name: Create a simple HTML web page
+      copy:
+        content: "Welcome to the Ansible learning"
+        dest: /var/www/html/index.html
+
+    - name: Define web server name (www.client1.e.com)
+      lineinfile:
+        path: /etc/apache2/apache2.conf
+        line: "ServerName www.client1.e.com:80"
+        insertafter: "^#ServerName"
+
+    - name: Update its entry in /etc/hosts file
+      lineinfile:
+        path: /etc/hosts
+        line: "192.168.1.101 www.client1.e.com"
+
+
