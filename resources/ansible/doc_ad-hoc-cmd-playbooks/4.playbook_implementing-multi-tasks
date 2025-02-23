@@ -108,5 +108,6 @@ syntax verification and dry check playbook
 
 executing dry run means: 
 
+> ansible-playbook -C web.yml
 
 
