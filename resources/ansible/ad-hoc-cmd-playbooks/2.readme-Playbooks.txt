@@ -612,6 +612,81 @@ root@mosharaf-desktop:/etc/ansible# ansible all -m setup | grep -i "distribution
         - ansible_facts['distribution_major_version'] == "12"
 
 
+Questions for this assignment
+Please perform the below tasks:
+
+1. Create the inventory file with managed node details.
+
+2. Write an Ansible playbook to install and configure the web server.
+
+3. Execute the playbook to set up the web server on managed nodes.
+
+::Assessment & Conclusion:::
+
+1. Create the inventory file with managed node details:
+
+Open a text editor and create a file named hosts.
+
+Add the IP addresses or hostnames of your managed nodes, along with their connection details. For example:
+
+[webservers]
+192.168.1.101 ansible_user=your_username ansible_ssh_pass=your_password
+192.168.1.102 ansible_user=your_username ansible_ssh_pass=your_password
+
+
+2.
+Replace your_username and your_password with the appropriate credentials to connect to the managed nodes.
+
+Write an Ansible playbook to install and configure the web server:
+
+Open a text editor and create a file named webserver.yml.
+
+Add the following content to the webserver.yml file:
+---
+- name: Install and configure web server
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Install Apache web server
+      package:
+        name: apache2
+        state: present
+
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Create index.html file
+      copy:
+        content: "Hello from Ansible on {{ ansible_hostname }}"
+        dest: /var/www/html/index.html
+
+
+
+Execute the playbook to set up the web server on managed nodes:
+
+Open a terminal and navigate to the directory where the webserver.yml and hosts files are located.
+
+Run the following command to execute the playbook:
+
+>> ansible-playbook -i hosts webserver.yml
+
+
+Assessment & Conclusion
+
+Assessment: The assessment for this project is based on whether the web server is successfully set up on the managed nodes. Verify that you can access the web server using the IP addresses of the managed nodes in your web browser and see the "Hello from Ansible on {hostname}" message.
+
+Conclusion: By completing this project, you have created an Ansible playbook to automate the setup of a web server on managed nodes. Playbooks are a powerful tool in Ansible that allows you to define and execute a series of tasks on remote systems. Continue exploring Ansible's features and modules to automate various tasks and manage your infrastructure efficiently.
+
+
+
 
 
 
