@@ -18,6 +18,24 @@ maintained by the community , not by ansible team. for manging newer technology 
 3. Custom modules - are modules devloped by end users and not shifted by Ansible.  If a module does not
 already exist for a task, an administrator can write a new module to implement it.-- using python language 
 
+Custom modules location : 
+$ANSIBLE_LIBRARY environment variable 
+
+#library = /usr/share/my_modules
+
+for Red Hat /usr/lib/pythonx.x/site-packages/ansible/modules directory
+
+
+
+## Modules categories:: 
+cloud, packaging,utilities,clustering,network
+
+files,soucre control , web interface, inventory , commands 
+
+notification, system, windows, messaging, monitoring, database.
+
+
+
 
 
 
