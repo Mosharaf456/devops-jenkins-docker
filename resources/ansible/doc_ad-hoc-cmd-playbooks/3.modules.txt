@@ -169,6 +169,79 @@ root@mosharaf-desktop:/etc/ansible# cat 6.idempotent.yml
 
 
 
+Please perform the below tasks:
+
+1. Set up a basic Ansible inventory with managed nodes.
+
+2. Write an Ansible playbook to perform tasks using different modules.
+
+3. Execute the playbook to see the modules in action.
+
+Instructions:
+
+Set up a basic Ansible inventory with managed nodes:
+
+Ensure you have at least two managed nodes (physical or virtual machines) that are accessible via SSH from the Ansible control node.
+
+Create an Ansible inventory file named hosts and add the IP addresses or hostnames of your managed nodes. For example:
+
+node1 ansible_host=192.168.1.101
+node2 ansible_host=192.168.1.102
+
+2.Write an Ansible playbook to perform tasks using different modules:
+
+Use a text editor to create a YAML file named modules_playbook.yml for the playbook.
+
+Add the following content to the modules_playbook.yml file to perform tasks using different modules:
+
+---
+- name: Lab Project - Exploring Modules in Ansible
+  hosts: all
+  tasks:
+    - name: Ensure Nginx is installed
+      package:
+        name: nginx
+        state: present
+      become: yes
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create a file on managed nodes
+      file:
+        path: /tmp/hello.txt
+        state: touch
+
+    - name: Ensure a directory exists
+      file:
+        path: /tmp/my_directory
+        state: directory
+
+    - name: Install the "tree" package
+      package:
+        name: tree
+        state: present
+      become: yes
+
+
+3. Execute the playbook to see the modules in action:
+
+Open a terminal and navigate to the directory where the modules_playbook.yml and hosts files are located.
+
+Run the following command to execute the playbook:
+
+> ansible-playbook -i hosts modules_playbook.yml 
+
+
+2. Assessment & conclusion
+
+Assessment: The assessment for this lab project is based on whether the tasks defined in the playbook are successfully executed on the managed nodes. Verify that Nginx is installed and running, the file /tmp/hello.txt is created, the directory /tmp/my_directory exists, and the tree package is installed.
+
+Conclusion: By completing this lab project, you have explored and used different Ansible modules to perform various tasks on managed nodes. Ansible modules provide a wide range of functionalities for managing configurations, packages, files, services, and more. Continue experimenting with different modules and exploring the Ansible documentation to learn more about how to automate tasks effectively in your infrastructure.
+
 
 
 
