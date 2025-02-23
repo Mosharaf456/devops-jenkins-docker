@@ -216,6 +216,8 @@ Please perform the below tasks:
 ---
 - name: Configure Web and Database Servers
   hosts: dev, db
+  vars:
+    ansible_python_interpreter: /usr/bin/python3 
   become: true
 
   tasks:
@@ -247,11 +249,44 @@ Please perform the below tasks:
       when: "'db' in group_names"
       notify: Restart MySQL
 
-    - name: Start MySQL Service
+    - name: Start MariaDB Service
       service:
-        name: mysql
+        name: mariadb
         state: started
       when: "'db' in group_names"
+
+
+
+    - name: Install required system packages
+      apt:
+        name:
+          - python3-pip
+          - python3-venv
+          - python3-dev
+          - libmariadb-dev-compat
+          - libmariadb-dev
+        state: present
+        update_cache: yes
+      when: "'db' in group_names"
+    
+    - name: Create a virtual environment
+      command: python3 -m venv /opt/venv
+      args:
+        creates: /opt/venv/bin/python
+      when: "'db' in group_names"
+
+    - name: Install mysqlclient in the virtual environment
+      pip:
+        name: mysqlclient
+        executable: /opt/venv/bin/pip
+        state: present
+      when: "'db' in group_names"
+
+    - name: Set Python interpreter to the virtual environment
+      set_fact:
+        ansible_python_interpreter: /opt/venv/bin/python
+      when: "'db' in group_names"
+
 
     - name: Create Database for Website
       mysql_db:
@@ -281,6 +316,20 @@ Please perform the below tasks:
         name: mysql
         state: restarted
       when: "'db' in group_names"
+
+# inventory.ini
+# mosharaf@pop-os:/etc/ansible$ cat inventory.ini 
+# [all:vars]
+# ansible_connection = ssh
+
+
+# [dev]
+# client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+# [db]
+# client2 ansible_host=192.168.1.102  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+
 
 
 The playbook uses hosts: webservers:dbservers to target hosts in the "webservers" and "dbservers" groups.

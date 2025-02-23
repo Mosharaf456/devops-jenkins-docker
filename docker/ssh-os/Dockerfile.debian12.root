@@ -60,32 +60,12 @@ RUN apt-get update && apt-get install -y python3-apt
 # Update the apt package list
 RUN apt-get update && apt-get install -y python3-pip
 
-# Install PyMySQL using pip
-# RUN pip3 install PyMySQL
-# Install necessary dependencies for building Python packages
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-venv \
-    python3-dev \
-    build-essential \
-    pkg-config \
-    libmariadb-dev-compat \
-    libmariadb-dev  # These are the replacements for libmysqlclient-dev
-
-# Create a virtual environment
-RUN python3 -m venv /venv
-
-# Install mysqlclient inside the virtual environment
-RUN /venv/bin/pip install mysqlclient
-
-
 
 # install nginx service 
 # RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Expose HTTP port
-EXPOSE 80
 
-EXPOSE 22
+# Expose necessary ports
+EXPOSE 80 22
 
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
