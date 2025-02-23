@@ -34,6 +34,17 @@ files,soucre control , web interface, inventory , commands
 
 notification, system, windows, messaging, monitoring, database.
 
+for details of modules: 
+website: docs.ansible.com 
+
+>> ansible-doc apt
+ MODULE ansible.builtin.apt (/usr/lib/python3/dist-packages/ansible/modules/apt.py)
+
+location: /usr/lib/python3/dist-packages/ansible/modules/apt.py
+
+
+
+
 
 
 
