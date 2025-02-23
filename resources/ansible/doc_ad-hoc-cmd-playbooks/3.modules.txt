@@ -42,15 +42,62 @@ website: docs.ansible.com
 
 location: /usr/lib/python3/dist-packages/ansible/modules/apt.py
 
+search packages :
+> dpkg -l | grep -iw tree
+> apt-cache search -n ^tree$
+// manually installation 
+> apt update && apt install -y tree
+
+1. Show Enabled Repositories
+> apt-cache policy
+
+2. 4. Use apt-add-repository (If Available)
+> apt-add-repository --list
+
+3. Check Repository Files in /etc/apt/sources.list.d/
+> ls -l /etc/apt/sources.list.d/
+To see the contents of a specific repository file:
+> cat /etc/apt/sources.list.d/*.list
+
+# install package 
+>ansible -m apt -a "name=tree state=present" dev
+> dpkg -l | grep -iw tree
+
+## remove package 
+>ansible -m apt -a "name=tree state=absent" dev
+> dpkg -l | grep -iw tree
+
+## apache2
+ansible -m apt -a "name=apache2 state=present" dev
+
+ansible -m apt -a "name=apache2 state=absent" dev
+
+# service apache2 start
+>ansible -m service -a "name=apache2 state=started" dev
+
+> ansible -m service -a "name=apache2 state=started" dev
+
+> ansible all -m command -a "service apache2 start" --become -K
+
+> ansible all -m command -a "apache2ctl -D FOREGROUND" --become -K
+
+
+## nginx
+ansible all -m service -a "name=nginx state=stopped" --become -K
+ansible all -m command -a "nginx -s stop" --become -K
+ansible all -m command -a "service nginx stop" --become -K
+
+###To Verify Nginx is Stopped
+ansible all -m shell -a "ps aux | grep nginx" --become -K
+ansible all -m shell -a "netstat -tulnp | grep :80" --become -K
 
 
 
+## enabled a service 
+ansible all -m systemd -a "name=apache2 enabled=yes" --become -K
 
+> ansible all -m service -a "name=apache2 enabled=yes state=started" --become -K 
 
+ansible all -m shell -a "service apache2 status" --become -K
 
-
-
-
-
-
-
+ansible all -m shell -a "systemctl is-enabled apache2" --become -K
