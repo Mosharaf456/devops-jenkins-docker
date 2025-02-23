@@ -140,6 +140,35 @@ Idempotent playbooks can be run repeatedly to ensure systems are in a particular
 without disrupting those systems if they already are. 
 
 
+#### lab session behaviour idempotent  and non-idempotent 
+
+> ansible-playbook 5.non-idempotent.yml 
+
+
+##check on client machine 
+date
+Sun Feb 23 09:08:09 UTC 2025
+root@5c305aa56ecf:/tmp# ls -ltrh resolve.conf 
+-rw-r--r-- 1 root root 23 Feb 23 09:08 resolve.conf
+root@5c305aa56ecf:/tmp# 
+
+##### idempotent 
+> ansible-playbook 6.idempotent.yml
+
+root@mosharaf-desktop:/etc/ansible# cat 6.idempotent.yml
+---
+- hosts: dev
+  become: true
+  become_user: root
+  tasks: 
+    - name: Idempotent approach with shell module 
+      copy:
+        dest: /tmp/resolv1.conf
+        content: "nameserver 192.168.1.102\n"
+
+
+
+
 
 
 
