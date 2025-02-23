@@ -1,0 +1,69 @@
+
+---
+- name: Configure Web and Database Servers
+  hosts: dev, db
+  become: true
+
+  tasks:
+    # Web Server Tasks (only for hosts in 'dev' group)
+    - name: Install Apache on Web Server
+      apt:
+        name: apache2
+        state: present
+      when: "'dev' in group_names"
+      notify: Restart Apache
+
+    - name: Deploy Website on Web Server
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      when: "'dev' in group_names"
+
+    - name: Start Apache Service
+      service:
+        name: apache2
+        state: started
+      when: "'dev' in group_names"
+
+    # Database Server Tasks (only for hosts in 'db' group)
+    - name: Install MariaDB on Database Server
+      apt:
+        name: mariadb-server
+        state: present
+      when: "'db' in group_names"
+      notify: Restart MySQL
+
+    - name: Start MariaDB Service
+      service:
+        name: mariadb
+        state: started
+      when: "'db' in group_names"
+
+    - name: Create Database for Website
+      mysql_db:
+        name: mydb
+        state: present
+      when: "'db' in group_names"
+
+    - name: Create MySQL User and Grant Privileges
+      mysql_user:
+        name: myuser
+        password: mypassword
+        priv: 'mydb.*:ALL'
+        state: present
+      when: "'db' in group_names"
+
+  handlers:
+    # Handler for Apache
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+      when: "'dev' in group_names"
+
+    # Handler for MySQL
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+      when: "'db' in group_names"

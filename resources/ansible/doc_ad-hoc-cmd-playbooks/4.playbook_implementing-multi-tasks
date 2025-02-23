@@ -112,6 +112,10 @@ Actually this playbook using c option , the playbook is not going to do anything
 Just cross check whether this playbook will successfully run on the server , would be successfull or not.
 This causes ansible to report what changes would have occurred , if the playbook were executed.
 But it doesn,t change actual chnages on the managed host.
+
+In "dry-run" mode, which of the following will not be executed?
+handlers
+
 Example: 
 executing dry run means: 
 > ansible-playbook -C web.yml
@@ -211,32 +215,34 @@ Please perform the below tasks:
 
 ---
 - name: Configure Web and Database Servers
-  hosts: webservers:dbservers
+  hosts: dev, db
   become: true
 
   tasks:
+    # Web Server Tasks (only for hosts in 'dev' group)
     - name: Install Apache on Web Server
       apt:
         name: apache2
         state: present
-      when: "'web' in group_names"
+      when: "'dev' in group_names"
       notify: Restart Apache
 
     - name: Deploy Website on Web Server
       copy:
         src: index.html
         dest: /var/www/html/index.html
-      when: "'web' in group_names"
+      when: "'dev' in group_names"
 
     - name: Start Apache Service
       service:
         name: apache2
         state: started
-      when: "'web' in group_names"
+      when: "'dev' in group_names"
 
-    - name: Install MySQL on Database Server
+    # Database Server Tasks (only for hosts in 'db' group)
+    - name: Install MariaDB on Database Server
       apt:
-        name: mysql-server
+        name: mariadb-server
         state: present
       when: "'db' in group_names"
       notify: Restart MySQL
@@ -247,37 +253,43 @@ Please perform the below tasks:
         state: started
       when: "'db' in group_names"
 
-    - name: Create Database and User for Website
+    - name: Create Database for Website
       mysql_db:
         name: mydb
         state: present
+      when: "'db' in group_names"
+
+    - name: Create MySQL User and Grant Privileges
       mysql_user:
         name: myuser
         password: mypassword
         priv: 'mydb.*:ALL'
+        state: present
       when: "'db' in group_names"
 
   handlers:
+    # Handler for Apache
     - name: Restart Apache
       service:
         name: apache2
         state: restarted
+      when: "'dev' in group_names"
 
+    # Handler for MySQL
     - name: Restart MySQL
       service:
         name: mysql
         state: restarted
+      when: "'db' in group_names"
 
----
 
+The playbook uses hosts: webservers:dbservers to target hosts in the "webservers" and "dbservers" groups.
 
-    The playbook uses hosts: webservers:dbservers to target hosts in the "webservers" and "dbservers" groups.
+The become: true statement is used to execute tasks with root privileges.
 
-    The become: true statement is used to execute tasks with root privileges.
+Multi-tasks are defined for each configuration step based on the group names ('web' in group_names and 'db' in group_names).
 
-    Multi-tasks are defined for each configuration step based on the group names ('web' in group_names and 'db' in group_names).
-
-    Handlers are defined to restart Apache and MySQL services when configuration changes are made.
+Handlers are defined to restart Apache and MySQL services when configuration changes are made.
 
 Sample index.html File:
 
@@ -297,17 +309,17 @@ Create a file named index.html with the following content:
 
 Answers:
 
-    Save the playbook in a file named multi_task_playbook.yml.
+Save the playbook in a file named multi_task_playbook.yml.
 
-    Create the index.html file with the sample content provided.
+Create the index.html file with the sample content provided.
 
-    Ensure you have proper SSH access to the web and database servers from the control node.
+Ensure you have proper SSH access to the web and database servers from the control node.
 
-    Run the playbook using the following command:
+Run the playbook using the following command:
 
-    ansible-playbook multi_task_playbook.yml
+ansible-playbook multi_task_playbook.yml
 
-    The playbook will configure the web server and the database server based on the tasks and conditions defined in the playbook.
+The playbook will configure the web server and the database server based on the tasks and conditions defined in the playbook.
 
 Note: This is a simple example to illustrate multi-tasks in an Ansible playbook. In a real-world scenario, you may need to modify the playbook according to your specific environment and requirements.
 

@@ -57,6 +57,13 @@ RUN usermod -aG sudo unixadm
 
 RUN apt-get update && apt-get install -y python3-apt
 
+# Update the apt package list
+RUN apt-get update && apt-get install -y python3-pip
+
+# Install PyMySQL using pip
+RUN pip3 install PyMySQL
+
+
 # install nginx service 
 # RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/*
 
