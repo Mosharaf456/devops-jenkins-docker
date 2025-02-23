@@ -1,0 +1,7 @@
+****Modules***
+Modules are programs that ansible used to perform operations on managed nodes / hosts . 
+They are ready to use tools designed to perform specific opeartions. 
+Modules can be executed from the ansible commandline  or used in ansible playbook s to execute tasks. 
+
+When run, modules are copied to the manged host and execute there.
+
