@@ -5,3 +5,23 @@ Modules can be executed from the ansible commandline  or used in ansible playboo
 
 When run, modules are copied to the manged host and execute there.
 
+Ansible comes packaged with over 500 modules available for use. These prepackaged modules can be 
+used to perform a wide range of tasks, such as cloud, user, package and service management.
+
+There are three types of ansible modules:
+1. Core modules - insluded with ansible by installing by ansible installtion and manged by ansible dev team.
+It is the most important modules and used for administritive tasks.
+
+2. Extra modules -  are currently included with Ansible but shift seperate in future.
+maintained by the community , not by ansible team. for manging newer technology such as OpenStack.
+
+3. Custom modules - are modules devloped by end users and not shifted by Ansible.  If a module does not
+already exist for a task, an administrator can write a new module to implement it.
+
+
+
+
+
+
+
+
