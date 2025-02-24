@@ -97,7 +97,23 @@ ansible_user=root
 
 
 
-##sl40
+##sl41###############Ansible facts##############
+Ansible facts are variables that are automatically discovered by Ansible from a manged host.
+In simple word: Ansible facts are predefined variable.
+
+
+And with the help of setup module from your ansible server, 
+you can retrieve the values of those variables from your manged host at any time.
+
+Facts are pulled by the setup module and contain usefull information stored into variables that administrators can reuse.
+Ansible facts can be part of playbooks, in coditions, loops, or any other dynamic statement that depends on a value for administrators 
+managed host.
+
+For example : 
+A server can be retstarted depending on the current kernal version
+Users can be created depending on the host machine.
+
+
 
 
 

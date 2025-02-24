@@ -1,14 +1,14 @@
 ---
 - hosts: dev
   vars:
-    - ansible_user: root
-    - ansible_ssh_pass: 1234
-    - ansible_become_pass: 1234
-    - ansible_python_interpreter: /usr/bin/python3
-    - ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-    - remote_dir: /etc/ansible/facts.d 
-    - remote_file: /etc/ansible/facts.d/test24.log
-    - facts_file: /tmp/test24.log
+    ansible_user: root
+    ansible_ssh_pass: 1234
+    ansible_become_pass: 1234
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    remote_dir: /etc/ansible/facts.d 
+    remote_file: /etc/ansible/facts.d/test24.log
+    facts_file: /tmp/test24.log
   tasks:
     - name: Define variable
       debug:
