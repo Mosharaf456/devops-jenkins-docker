@@ -32,3 +32,69 @@ ansible -m setup -a "filter=ansible_os_family" dev
         (ansible_os_family == "Debian" and ansible_distribution_major_version|int >= 6) 
         and (item in ["hello1", "hello2"])
 
+
+
+---
+- hosts: dev
+  tasks:
+    - apt:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - postfix
+        - tree
+
+
+
+#############
+---
+- hosts: dev
+  vars: 
+    mail_services:
+      - postfix
+      - dovecot
+  tasks:
+    - apt:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ mail_services }}"
+
+########### multi dimentinal array 
+---
+- hosts: dev
+  vars:
+    users:
+      - name: 'jane'
+        groups: 'wheel'
+      - name: 'joe'
+        groups: 'root'
+  tasks:
+    - user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      with_items: "{{ users }}"
+#############
+--- 
+- hosts: dev
+  tasks:
+    - user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      with_items:
+        - { name: 'jane', groups: 'wheel' }
+        - { name: 'joe', groups: 'root' }
+#############
+
+
+##########L46 ANSIBLE handlers###########
+A handler is exactly the same as a task, but it will run when called by another task . 
+A handler will take an action when called by an event it listens for: 
+
+
+
+
+
+
+

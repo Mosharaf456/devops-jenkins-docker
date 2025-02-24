@@ -89,7 +89,7 @@ tasks:
    name: "{{ item.name }}"
    state: present
    groups: "{{ item.groups }}"
- with_items:
+  with_items:
    - { name: 'jane', groups: 'wheel' }
 
 # ===============

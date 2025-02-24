@@ -1,0 +1,4 @@
+##########L46 ANSIBLE handlers###########
+A handler is exactly the same as a task, but it will run when called by another task . 
+A handler will take an action when called by an event it listens for: 
+

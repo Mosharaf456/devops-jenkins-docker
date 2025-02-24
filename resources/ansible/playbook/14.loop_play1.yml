@@ -1,0 +1,53 @@
+---
+- hosts: dev
+  tasks:
+    - apt:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - postfix
+        - tree
+
+
+
+#############
+---
+- hosts: dev
+  vars: 
+    mail_services:
+      - postfix
+      - dovecot
+  tasks:
+    - apt:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ mail_services }}"
+
+########### multi dimentinal array 
+---
+- hosts: dev
+  vars:
+    users:
+      - name: 'jane'
+        groups: 'wheel'
+      - name: 'joe'
+        groups: 'root'
+  tasks:
+    - user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      with_items: "{{ users }}"
+#############
+--- 
+- hosts: dev
+  tasks:
+    - user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      with_items:
+        - { name: 'jane', groups: 'wheel' }
+        - { name: 'joe', groups: 'root' }
+#############
+
