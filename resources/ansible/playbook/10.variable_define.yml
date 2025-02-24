@@ -1,0 +1,49 @@
+---
+- hosts: dev
+  vars:
+    - ansible_user: root
+    - ansible_ssh_pass: 1234
+    - ansible_become_pass: 1234
+    - ansible_python_interpreter: /usr/bin/python3
+    - ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    - remote_dir: /etc/ansible/facts.d 
+    - remote_file: /etc/ansible/facts.d/test24.log
+    - facts_file: /tmp/test24.log
+  tasks:
+    - name: Define variable
+      debug:
+        msg: "ansible_user: {{ ansible_user }}, ansible_ssh_pass: {{ ansible_ssh_pass }}, ansible_become_pass: {{ ansible_become_pass }}"
+    
+    - name: Create a remote directory 
+      file:
+        state: directory  
+        recurse: yes
+        path: "{{ remote_dir }}"
+    - name: Copy a file to remote directory
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ remote_dir }}"
+        mode: 0644
+
+    - name: Check if the file exists before fetching
+      stat:
+        path: "{{ remote_file }}"
+      register: file_stat
+
+    - debug:
+        msg: "File exists: {{ file_stat.stat.exists }}"
+        
+    - name: Copy file to manged host from client 
+      fetch:
+        src: "{{ remote_file }}"
+        dest: /tmp/
+        flat: yes
+    
+      
+    - name: Display the content of the file
+      shell: cat "{{ remote_file }}"
+      register: result
+    - debug:
+        var: result.stdout_lines
+
+    

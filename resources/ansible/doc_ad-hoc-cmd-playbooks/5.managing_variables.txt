@@ -1,0 +1,103 @@
+Managing variables
+ansible variable is similar to using variables like any programming language.
+That can be used to store values which can be reused throughout files in an entire ansible project.
+
+Variables provie a convenient wat to mange dynamic values for a given environment in your ansible project.
+
+Some example of values that variable might contain include.
+
+1. User to create 
+2. Package to install 
+3. Service restart 
+4. Files to remove
+
+Naming variables: 
+consist of string, must start letter, can only contain alphanumeric, underscores.
+
+################********variable scope*******:
+Global scope: Variable set from command line or Ansible configuration.
+Play scope: Variables set in the play and related structures.
+Host scope: Vaiables set on host groups and individual hosts by the inventory, fact gathering or registered tasks.
+
+Variables in playbooks
+When writing playbooks, administrators can use their own variables and call them in a task.
+
+For example, a variable web_package can be defined with a value of apache2 and called by the apt module in order to 
+install the apache2 package.
+
+---
+- name: Install apache and start the servcie 
+  hosts: dev 
+  vars:
+    web_pkg: apache2
+    firewall_pkg: ufw 
+    web_service: apache2 
+    python_pkg: python-httplib2 
+    rule: apache2 
+  tasks: 
+    - name: Install the required packages 
+      apt:
+        - "{{ web_pkg }}"
+        - "{{ firewall_pkg }}"  
+        - "{{ python_pkg }}"
+      state: present
+
+##########
+l38
+Host and group Variables -- it is defined in the hosts file , means  inventory file 
+it is inventory variable 
+
+1. demo.example.com ansible_user=root - ansible_user - it is host variable that applied to a specific host demo.example.com
+
+2. 
+[dep:vars]
+ansible_user=root - group variable applied to all host in that group 
+
+Note: keep in mind host variable is a precedence over the group variable. Overwrite it value for same variable 
+as host variable is taking precedence. 
+Variable defines in the playbooks which take precedence i both host, group.
+playbook variable >host variable >group variable 
+
+
+example::: 
+
+> ansible -i hosts --list-hosts dep
+
+[all:vars]
+ansible_connection = ssh
+
+
+[dev]
+client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+client2 ansible_host=192.168.1.102  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+
+[test1]
+client3 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 
+
+client4 ansible_host=192.168.1.102  ansible_user=user1 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 
+
+[test2]
+client3 ansible_host=192.168.1.101  ansible_user=mh ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_become=True
+
+client4 ansible_host=192.168.1.102  ansible_user=user1 ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ansible_become=True
+
+
+[test3]
+client5 ansible_host=192.168.1.102 ansible_user=passless ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+
+
+[dep:children]
+dev
+test1
+
+[dep:vars]
+ansible_user=root
+
+
+
+##sl40
+
+
+
