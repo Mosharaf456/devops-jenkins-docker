@@ -120,6 +120,20 @@ Users can be created depending on the host machine.
 // to see the name of the variable 
 >  ansible dev -m setup 
 for filtering the output
+> ansible dev -m setup -a "filter=ansible_virtualization_type" 
+client1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_virtualization_type": "docker"
+    },
+    "changed": false
+}
+client2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_virtualization_type": "docker"
+    },
+    "changed": false
+}
+
 > ansible dev -m setup -a "filter=hostname" 
 > ansible dev -m setup -a "filter=*ipv4"
 
