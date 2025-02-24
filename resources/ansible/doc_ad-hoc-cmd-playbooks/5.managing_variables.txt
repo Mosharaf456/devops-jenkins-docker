@@ -113,6 +113,21 @@ For example :
 A server can be retstarted depending on the current kernal version
 Users can be created depending on the host machine.
 
+{{ ansible_hostname }}
+{{ ansible_default_ipv4.address }}
+{{ ansible_dns.nameservers }}
+{{ ansible_kernel }}
+// to see the name of the variable 
+>  ansible dev -m setup 
+for filtering the output
+> ansible dev -m setup -a "filter=hostname" 
+> ansible dev -m setup -a "filter=*ipv4"
+
+> ansible <server name> -m setup 
+
+
+
+
 
 
 
