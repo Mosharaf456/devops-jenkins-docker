@@ -1,0 +1,19 @@
+What is ansible roles? 
+In simple word: 
+Ansible role are a way to group multiple tasks together into one container to do the automation 
+in a very effective manner with clean and directory structure.
+Whenever we need to do big taks 
+that have multiple tasks , multiple playbooks are there , it is difficult to manage in a single file .
+
+To do proper way , organized way : 
+we always go with the roles. 
+
+roles allow: 
+- to create minimal playbooks 
+- that then look to a directory structure to determine actual configuration steps that need to perform.
+
+roles are set of tasks and additional file for certain role which allow you to break up the configurations
+and you also easily reuse the codes by anyone it the role is suitable to someone.
+
+Organizing things into roles allows you to reuse the common configuration steps between different types.
+
