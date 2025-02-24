@@ -1,2 +1,10 @@
 ---
-  
+- hosts: dev
+  become: true
+  become_user: root
+  gather_facts: yes  # Ensure Ansible gathers facts
+  tasks:
+    - name: Display the facts
+      debug:
+        msg: "ansible_os_family: {{ ansible_os_family }}, ansible_distribution: {{ ansible_distribution }}, ansible_distribution_version: {{ ansible_distribution_version }}"
+
