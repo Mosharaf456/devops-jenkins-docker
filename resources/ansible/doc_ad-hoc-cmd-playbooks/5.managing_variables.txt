@@ -139,6 +139,21 @@ client2 | SUCCESS => {
 
 > ansible <server name> -m setup 
 
+What is the scope of a variable defined in a playbook?
+Task scope - accessible only within the specific task it,s defined for. 
+
+What is the order of precedence for variables in Ansible?
+Host variables> Playbook Variables > Group var > Role defaults 
+
+Which Ansible command-line option allows you to display all the variables defined for a specific host?
+> anisble --list-hostvars
+
+Which Ansible module allows you to display facts for a specific host?
+> ansible -m setup 
+
+How can you disable facts gathering for a specific playbook?
+
+Set gather_fatc: false in the playbook 
 
 
 
