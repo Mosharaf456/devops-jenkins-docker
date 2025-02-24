@@ -17,4 +17,18 @@ ansible -m setup -a "filter=ansible_os_family" dev
             command: /sbin/shutdown -t now
             when: ansible_os_family == "Debian"
 
+---
+- hosts: dev
+  tasks:
+    - name: Ansible Loop
+      debug:
+        msg: "{{ item }}"
+      loop:
+        - "hello1"
+        - "hello2"
+        - "hello3"
+        - "hello4"
+      when: 
+        (ansible_os_family == "Debian" and ansible_distribution_major_version|int >= 6) 
+        and (item in ["hello1", "hello2"])
 
