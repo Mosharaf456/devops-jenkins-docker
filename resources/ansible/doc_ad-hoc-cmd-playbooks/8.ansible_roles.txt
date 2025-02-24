@@ -17,3 +17,15 @@ and you also easily reuse the codes by anyone it the role is suitable to someone
 
 Organizing things into roles allows you to reuse the common configuration steps between different types.
 
+TO create a Ansible roles, use ansible-galaxy command which has the template to create it. 
+
+#ansible-galaxy init /etc/ansible/roles/apache --offline 
+
+--apache was created successfully 
+
+Where , ansible-galaxy is the command to create the role using the template 
+Init is to initialize the role. 
+apache is the name of the role 
+offline - create offline mode rather than getting from online repository .
+
+
