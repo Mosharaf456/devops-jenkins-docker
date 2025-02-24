@@ -54,6 +54,7 @@ services:
         ipv4_address: 192.168.1.101
     ports:
       - "2222:22"
+      - "8090:80"
 
   client2_remote:
     container_name: client2_remote
@@ -77,6 +78,7 @@ services:
         ipv4_address: 192.168.1.102
     ports:
       - "2223:22"
+      - "8091:80"
       
     
   # it is working but skip for now down below 

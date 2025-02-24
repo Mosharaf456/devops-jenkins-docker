@@ -29,3 +29,51 @@ apache is the name of the role
 offline - create offline mode rather than getting from online repository .
 
 
+root@mosharaf-desktop:/etc/ansible# ansible-galaxy init roles/apache --offline
+- Role roles/apache was created successfully
+root@mosharaf-desktop:/etc/ansible/roles# tree
+.
+├── apache
+│   ├── defaults
+│   │   └── main.yml
+│   ├── files
+│   ├── handlers
+│   │   └── main.yml
+│   ├── meta
+│   │   └── main.yml
+│   ├── README.md
+│   ├── tasks
+│   │   └── main.yml
+│   ├── templates
+│   ├── tests
+│   │   ├── inventory
+│   │   └── test.yml
+│   └── vars
+│       └── main.yml
+└── ssh_service
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    └── vars
+        └── main.yml
+
+
+vars is a variable 
+
+default for default variable declare 
+
+vars> default 
+files that need to transfer to client machine 
+templates - like config template 
+
+meta to store author like which patient 
+
+main file is tasks 
+
