@@ -92,9 +92,36 @@ ansible -m setup -a "filter=ansible_os_family" dev
 A handler is exactly the same as a task, but it will run when called by another task . 
 A handler will take an action when called by an event it listens for: 
 
+#####Quiz 
+What is the purpose of task control in Ansible?
+= to define the order in which tasks are executed 
 
 
+Which Ansible keyword is used to loop over a list of items in a task?
+= loop 
 
+How can you specify that a task should only run on a specific host or group of hosts in Ansible?
+= by setting the "hosts" parameter to the disered host or group 
+
+What does the "ignore_errors" parameter do in an Ansible task?
+= Skips the task if an error occurs and continues with the next task 
+
+Which Ansible keyword allows you to pause a playbook's execution and prompt for user input?
+= pause 
+
+How can you specify that a task should only be executed when a specific condition is met in Ansible?
+= using "when" condition 
+
+What is the default loop in Ansible that iterates over a given list of items?
+= with_items 
+What are Ansible Handlers used for?
+= to execute tasks only when notified by other tasks .
+
+How are handlers notified to run in Ansible?
+
+= notify 
+In which section of an Ansible playbook are handlers defined?
+= handlers 
 
 
 
