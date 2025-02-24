@@ -11,3 +11,7 @@
       when: 
         (ansible_os_family == "Debian" and ansible_distribution_major_version|int >= 6) 
         and (item in ["hello1", "hello2"])
+
+    - name: Convert string to integer
+      debug:
+        msg: "{{ '10' | int + 5 }}"  # 10 (converted) + 5 = 15
