@@ -7,9 +7,9 @@
             command: /sbin/shutdown -t now
             when: ansible_os_family == "Debian"
 
-===================
-===================
-         
+# ===================
+# ===================
+
 ---
 - hosts: Prod
   become: true
@@ -17,11 +17,11 @@
   tasks:
           - name: Shutdown CentOS Systems
             command: poweroff
-            when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+            when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6" or (ansible_os_family == "Centos" and ansible_distribution_major_version == "7")
 
 
-===================
-===================
+# ===================
+# ===================
 
 ---
 - hosts: Prod
@@ -38,8 +38,8 @@
 
 
 
-==============
-==============
+# ==============
+# ==============
 # The following loops are supported by Ansible:
 
 # Simple loops:
@@ -92,8 +92,8 @@ tasks:
  with_items:
    - { name: 'jane', groups: 'wheel' }
 
-===============
-===============
+# ===============
+# ===============
 ---
 - hosts: Prod
   become: true
