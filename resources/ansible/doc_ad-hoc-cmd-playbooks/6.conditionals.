@@ -1,0 +1,20 @@
+Conditionals in ansible 
+
+Ansible can use conditionals to execute tasks or plays when certain conditions are met.
+
+to use conditional use the when statement
+
+
+
+ansible -m setup -a "filter=ansible_os_family" dev
+
+---
+- hosts: dev
+  become: true
+  become_user: root
+  tasks:
+          - name: Shutdown Debian Systems
+            command: /sbin/shutdown -t now
+            when: ansible_os_family == "Debian"
+
+
