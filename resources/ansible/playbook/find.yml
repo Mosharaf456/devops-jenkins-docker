@@ -1,0 +1,8 @@
+- hosts: dev
+  gather_facts: no
+  tasks:
+    - name: Recursively find /tmp files older than 200 sec
+      ansible.builtin.find:
+        paths: /tmp
+        age: 200
+        recurse: yes

@@ -1,0 +1,26 @@
+- hosts: dev
+  vars:
+    cmdb_status: "to-be-notstaged"
+  tasks:
+  - name: Example using fail and when together
+    ansible.builtin.fail:
+      msg: The system may not be provisioned according to the CMDB status.
+    when: cmdb_status != "to-be-staged"
+    
+  - name: Example using assert and when together
+    ansible.builtin.assert:
+      that: cmdb_status == "to-be-staged"
+      fail_msg: The system may not be provisioned according to the CMDB status.
+
+  - name: Example using debug 
+    ansible.builtin.debug:
+      msg: "The system is provisioned according to the CMDB status."
+
+  - name: Example using debug with verbosity
+    ansible.builtin.debug:
+      msg: "The system is provisioned according to the CMDB status."
+    verbosity: 2
+  - name: Example using debug with verbosity
+    ansible.builtin.debug:
+      msg: "The system is provisioned according to the CMDB status."
+    verbosity: 3

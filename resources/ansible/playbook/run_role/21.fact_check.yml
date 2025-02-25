@@ -1,0 +1,14 @@
+---
+- hosts: dev
+  become: true
+  become_user: root
+  vars_prompt:
+    - name: username
+      prompt: What is your username?
+      private: false
+
+    - name: password
+      prompt: What is your password?
+
+  roles: 
+    - facts_var

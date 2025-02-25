@@ -1,0 +1,89 @@
+- name: Change file ownership, group and permissions
+  ansible.builtin.file:
+    path: /tmp/test.log
+    owner: unixadm
+    group: unixadm
+    mode: '0644'
+
+- name: Give insecure permissions to an existing file
+  ansible.builtin.file:
+    path: /tmp/test.log
+    owner: root
+    group: root
+    mode: '1777'
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /tmp/test.log
+    dest: /tmp/test.log
+    owner: unixadm
+    group: unixadm
+    state: link
+
+- name: Create two hard links
+  ansible.builtin.file:
+    src: '/tmp/{{ item.src }}'
+    dest: '{{ item.dest }}'
+    state: hard
+  loop:
+    - { src: test.log, dest: test.log }
+    - { src: test.log, dest: test.log }
+
+- name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+  ansible.builtin.file:
+    path: /tmp/test.log
+    state: touch
+    mode: u=rw,g=r,o=r
+
+- name: Touch the same file, but add/remove some permissions
+  ansible.builtin.file:
+    path:  /tmp/test.log
+    state: touch
+    mode: u+rw,g-wx,o-rwx
+
+- name: Touch again the same file, but do not change times this makes the task idempotent
+  ansible.builtin.file:
+    path:  /tmp/test.log
+    state: touch
+    mode: u+rw,g-wx,o-rwx
+    modification_time: preserve
+    access_time: preserve
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /tmp/test_script_dir
+    state: directory
+    mode: '0755'
+
+- name: Update modification and access time of given file
+  ansible.builtin.file:
+    path:  /tmp/test.log
+    state: file
+    modification_time: now
+    access_time: now
+
+- name: Set access time based on seconds from epoch value
+  ansible.builtin.file:
+    path:  /tmp/test.log
+    state: file
+    access_time: '{{ "%Y%m%d%H%M.%S" | strftime(stat_var.stat.atime) }}'
+
+- name: Recursively change ownership of a directory
+  ansible.builtin.file:
+    path: /tmp/test_script_dir
+    state: directory
+    recurse: yes
+    owner: unixadm
+    group: root
+
+- name: Remove file (delete file)
+  ansible.builtin.file:
+    path: /tmp/test.log
+    state: absent
+
+- name: Recursively remove directory
+  ansible.builtin.file:
+    path: /tmp/test_script_dir
+    state: absent
+
+    

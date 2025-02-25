@@ -1,0 +1,14 @@
+# the ansible.builtin.fail module will terminate the execution of the current playbook when it is triggered.
+---
+- hosts: dev
+  gather_facts: no
+  tasks:
+    - name: Fail if condition is met
+      ansible.builtin.fail:
+        msg: "Failing due to some condition!"
+      when: true
+
+    - name: This task will not run if the previous fails
+      ansible.builtin.debug:
+        msg: "This will not be printed if the previous task fails."
+

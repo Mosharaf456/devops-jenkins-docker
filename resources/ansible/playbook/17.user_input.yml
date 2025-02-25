@@ -1,0 +1,5 @@
+---
+- name: Show the entered values
+  debug:
+    msg: "Username: {{ username }}, Password: {{ password }}"
+
