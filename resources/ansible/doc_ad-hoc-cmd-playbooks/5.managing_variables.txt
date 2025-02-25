@@ -1,3 +1,5 @@
+https://docs.ansible.com/ansible/latest/reference_appendices/general_precedence.html#id6
+
 Managing variables
 ansible variable is similar to using variables like any programming language.
 That can be used to store values which can be reused throughout files in an entire ansible project.
@@ -97,10 +99,76 @@ ansible_user=root
 
 
 
-##sl41###############Ansible facts##############
+##sl41############### Ansible facts ##############
+***************
+ansible.builtin.set_fact
+Use Case:
+ansible.builtin.set_fact is used to define variables dynamically during playbook execution. These variables persist for the duration of the playbook run and can be used in later tasks.
+
+Dynamic Variable Assignment: Useful when you need to compute and store a value during runtime.
+Conditional Execution: Helps store computed values that can be referenced in subsequent conditional tasks.
+Loop Optimization: Store intermediate results from loops to avoid recomputation.
+Caching for Later Use: Facts set using set_fact remain available throughout the playbook execution.
+
+Example Use Case: 
+- name: Set a dynamic variable
+  ansible.builtin.set_fact:
+    app_version: "1.2.3"
+
+- name: Use the dynamically set variable
+  debug:
+    msg: "The application version is {{ app_version }}"
+
+Accessibility:
+Variables set with set_fact are available only for the duration of the playbook run.
+They do not persist across playbook runs unless explicitly written to a file or stored in a persistent system (e.g., an Ansible inventory plugin).
+Accessible within the same playbook, including in later tasks, conditionals, and loops.
+Can be used across roles if included in a playbook, but not automatically available across separate playbook runs.
+
+
+Key Differences & Use Cases
+Use set_fact when:
+You need to compute a value during playbook execution (e.g., based on task results).
+You want to set a value dynamically inside a loop or condition.
+You need to store a value that depends on runtime environment or host facts.
+
+- name: Get OS type
+  debug:
+    msg: "OS is {{ ansible_os_family }}"
+
+- name: Set package name dynamically
+  ansible.builtin.set_fact:
+    package_name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+
+- name: Install web server
+  ansible.builtin.apt:
+    name: "{{ package_name }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+
+- hosts: all
+  vars:
+    default_port: 80
+
+  tasks:
+    - name: Set a custom port if it's a production environment
+      ansible.builtin.set_fact:
+        web_port: "{{ 443 if ansible_env['ENV'] == 'production' else default_port }}"
+
+    - name: Print the web port
+      debug:
+        msg: "Using port {{ web_port }}"
+
+
+Use vars for static, predefined values.
+Use set_fact when values depend on runtime conditions
+
+************
+
+
 Ansible facts are variables that are automatically discovered by Ansible from a managed host.
 In simple word: Ansible facts are predefined variable.
-
 
 And with the help of setup module from your ansible server, 
 you can retrieve the values of those variables from your managed host at any time.
