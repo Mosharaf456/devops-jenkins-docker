@@ -30,50 +30,79 @@
         msg: "File exists!"
       when: file_status.stat.exists
 
+    - name: Ensure rsync is installed
+      ansible.builtin.apt:
+        name: rsync
+        state: present
+        update_cache: yes
     
-    # Makes the destination an exact copy of the source by deleting extra files.
-    # - name: Mirror local directory to remote (delete extra files)
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     recursive: yes
-    #     delete: yes
+    ## Makes the destination an exact copy of the source by deleting extra files.
+    - name: Mirror local directory to remote (delete extra files)
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--dry-run"
 
 
-    # - name: Copy a local directory to a remote server
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     recursive: yes
-    #     mode: push
+    - name: Copy a local directory to a remote server
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        recursive: yes
+        mode: push
 
-    # - name: Fetch a remote directory to local machine
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     recursive: yes
-    #     mode: pull
+    - name: Fetch a remote directory to local machine
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        recursive: yes
+        mode: pull
 
 
-    # - name: Touch the file, but add/remove some permissions
-    #   ansible.builtin.file:
-    #     path: /tmp/test.log
-    #     state: touch
-    #     mode: u+rw,g-wx,o-rwx
+    - name: Touch the file, but add/remove some permissions
+      ansible.builtin.file:
+        path: /tmp/test1.log
+        state: touch
+        mode: u+rw,g-wx,o-rwx
 
-    # - name: Create a directory if it does not exist
-    #   ansible.builtin.file:
-    #     path: /tmp/test_script_dir
-    #     state: directory
-    #     mode: '0755'
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /tmp/test_script_dir
+        state: directory
+        mode: '0755'
 
-    # - name: Change the working directory to /tmp before executing the command
-    #   ansible.builtin.shell: somescript.sh >> somelog.txt
-    #   args:
-    #     chdir: /tmp
+    - name: Copy somescript.sh to /tmp
+      ansible.builtin.copy:
+        src: /tmp/somescript.sh
+        dest: /tmp/somescript.sh
+        mode: '0755'
 
-    # - name: This command will change the working directory to somedir/
-    #   ansible.builtin.shell:
-    #     cmd: ls -l | grep log
-    #     chdir: tmp/
+    - name: Ensure somescript.sh has execute permissions
+      ansible.builtin.file:
+        path: /tmp/somescript.sh
+        mode: '0755'
+
+    - name: Check if somescript.sh exists
+      ansible.builtin.stat:
+        path: /tmp/somescript.sh
+      register: script_status
+
+    - name: Fail if the script does not exist
+      ansible.builtin.fail:
+        msg: "The script somescript.sh does not exist in /tmp!"
+      when: not script_status.stat.exists
+
+
+    - name: Change the working directory to /tmp before executing the command
+      ansible.builtin.shell: ./somescript.sh >> somelog.txt
+      args:
+        chdir: /tmp
+
+    - name: This command will change the working directory to /tmp
+      ansible.builtin.shell:
+        cmd: ls -l | grep log
+        chdir: /tmp
 
