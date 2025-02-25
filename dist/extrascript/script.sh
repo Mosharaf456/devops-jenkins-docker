@@ -8,7 +8,7 @@ TITLE=$4
 if [ "$SHOW" = "true" ]; then
     echo " My name is $TITLE $NAME $LASTNAME $NICKNAME and date time is $(date)"
 else 
-    echo "SHOW option mark please"
+    echo "SHOW option select please"
 fi
 
 # ssh-keygen -f remote-key
