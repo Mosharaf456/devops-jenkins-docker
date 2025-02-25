@@ -1,5 +1,21 @@
 ---
-- name: Show the entered values
-  debug:
-    msg: "Username: {{ username }}, Password: {{ password }}"
+- hosts: dev
+  become: true
+  become_user: root
+  vars_prompt:
+    - name: username
+      prompt: What is your username?
+      private: false
 
+    - name: password
+      prompt: What is your password?
+
+  roles: 
+    - facts_var
+
+
+# /etc/ansible/roles/facts_var/tasks/main.yml
+# ---
+# - name: Show the entered values
+#   debug:
+#     msg: "Username: {{ username }}, Password: {{ password }}"
