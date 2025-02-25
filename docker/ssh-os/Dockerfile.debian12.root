@@ -34,15 +34,30 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
 
-RUN apt-get update && apt-get install -y \
+# RUN apt-get update && apt-get install -y \
+#     vim \
+#     net-tools \
+#     telnet \
+#     procps \
+#     iputils-ping \
+#     python3 \
+#     && apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
+
+# RUN apt-get update && apt-get install -y  \
+#     net-tools \
+#     telnet \
+#     procps \
+#     vim \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
+
+
+RUN apt-get update && apt-get install -y  \
     vim \
-    net-tools \
-    telnet \
-    procps \
-    iputils-ping \
     python3 \
-    && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # RUN apt update && apt install -y sudo
 # RUN usermod -aG sudo user1

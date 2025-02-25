@@ -1,0 +1,19 @@
+Dashboard -> manage jenkins -> plugins
+install ssh plugins
+
+ssh set pass 
+Dashboard -> manage jenkins -> security-> credentials
+http://192.168.10.59:8082/manage/credentials/
+
+Stores scoped to Jenkins
+system ->  global credentials -> Add credentials
+http://192.168.10.59:8082/manage/credentials/store/system/domain/_/newCredentials
+
+
+
+
+Dashboard -> manage jenkins -> system
+http://192.168.10.59:8082/manage/configure
+
+
+
