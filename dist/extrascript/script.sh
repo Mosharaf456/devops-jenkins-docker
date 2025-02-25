@@ -3,9 +3,10 @@
 NAME=$1
 LASTNAME=$2
 SHOW=$3
+TITLE=$4
 
 if [ "$SHOW" = "true" ]; then
-    echo " My name is $NAME $LASTNAME $NICKNAME and date time is $(date)"
+    echo " My name is $TITLE $NAME $LASTNAME $NICKNAME and date time is $(date)"
 else 
     echo "SHOW option mark please"
 fi
