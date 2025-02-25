@@ -123,6 +123,7 @@ Users can be created depending on the host machine.
 
 for filtering the output
 > ansible dev -m setup -a "filter=ansible_virtualization_type" 
+
 client1 | SUCCESS => {
     "ansible_facts": {
         "ansible_virtualization_type": "docker"
