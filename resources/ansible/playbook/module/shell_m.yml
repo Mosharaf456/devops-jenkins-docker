@@ -1,167 +1,220 @@
 - hosts: dev
   gather_facts: no
   tasks:
-    # - name: Copy a file with specific content
-    #   ansible.builtin.copy:
-    #     dest: /tmp/test.log
-    #     content: |
-    #       hello
-    #       line2
-    #       line3
-    #     owner: root
-    #     group: root
-    #     mode: '0644'
+    - name: Copy a file with specific content
+      ansible.builtin.copy:
+        dest: /tmp/test.log
+        content: |
+          hello
+          line2
+          line3
+        owner: root
+        group: root
+        mode: '0644'
     
-    # - name: Read content of /tmp/test.log
-    #   ansible.builtin.slurp:
-    #     src: /tmp/test.log
-    #   register: log_content
+    - name: Read content of /tmp/test.log
+      ansible.builtin.slurp:
+        src: /tmp/test.log
+      register: log_content
 
-    # - name: Show log file content
-    #   ansible.builtin.debug:
-    #     msg: "{{ log_content['content'] | b64decode }}"
+    - name: Show log file content
+      ansible.builtin.debug:
+        msg: "{{ log_content['content'] | b64decode }}"
 
-    # - name: Check if a file exists
-    #   ansible.builtin.stat:
-    #     path: /tmp/test.log
-    #   register: file_status
+    - name: Check if a file exists
+      ansible.builtin.stat:
+        path: /tmp/test.log
+      register: file_status
 
-    # - name: Show file existence status
-    #   ansible.builtin.debug:
-    #     msg: "File exists!"
-    #   when: file_status.stat.exists
+    - name: Show file existence status
+      ansible.builtin.debug:
+        msg: "File exists!"
+      when: file_status.stat.exists
 
-    # - name: Ensure rsync is installed
-    #   ansible.builtin.apt:
-    #     name: rsync
-    #     state: present
-    #     update_cache: yes
+    - name: Ensure rsync is installed
+      ansible.builtin.apt:
+        name: rsync
+        state: present
+        update_cache: yes
     
-    # ## Makes the destination an exact copy of the source by deleting extra files.
-    # - name: Mirror local directory to remote (delete extra files)
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     delete: yes
-    #     recursive: yes
-    #     rsync_opts:
-    #       - "--dry-run"
+    ## Makes the destination an exact copy of the source by deleting extra files.
+    - name: Mirror local directory to remote (delete extra files)
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--dry-run"
 
 
-    # - name: synchronize a local directory to a remote server
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     recursive: yes
-    #     mode: push
+    - name: synchronize a local directory to a remote server
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        recursive: yes
+        mode: push
 
-    # - name: Fetch a remote directory to local machine
-    #   ansible.builtin.synchronize:
-    #     src: /tmp/test.log
-    #     dest: /tmp/test.log
-    #     recursive: yes
-    #     mode: pull
-
-
-    # - name: Touch the file, but add/remove some permissions
-    #   ansible.builtin.file:
-    #     path: /tmp/test1.log
-    #     state: touch
-    #     mode: u+rw,g-wx,o-rwx
-
-    # - name: Create a directory if it does not exist
-    #   ansible.builtin.file:
-    #     path: /tmp/test_script_dir
-    #     state: directory
-    #     mode: '0755'
-
-    # - name: Copy somescript.sh to /tmp
-    #   ansible.builtin.copy:
-    #     src: /tmp/somescript.sh
-    #     dest: /tmp/somescript.sh
-    #     mode: '0755'
-
-    # - name: Ensure somescript.sh has execute permissions
-    #   ansible.builtin.file:
-    #     path: /tmp/somescript.sh
-    #     mode: '0755'
-
-    # - name: Check if somescript.sh exists
-    #   ansible.builtin.stat:
-    #     path: /tmp/somescript.sh
-    #   register: script_status
-
-    # - name: Fail if the script does not exist
-    #   ansible.builtin.fail:
-    #     msg: "The script somescript.sh does not exist in /tmp!"
-    #   when: not script_status.stat.exists
-
-    # - name: Change the working directory to /tmp before executing the command
-    #   ansible.builtin.shell: ./somescript.sh >> somelog.txt
-    #   args:
-    #     chdir: /tmp
-
-    # - name: This command will change the working directory to /tmp
-    #   ansible.builtin.shell:
-    #     cmd: ls -l | grep log
-    #     chdir: /tmp
-
-    # - name: Define the myfile variable
-    #   ansible.builtin.set_fact:
-    #     myfile: "/tmp/test.log"
-
-    # - name: Show the command being run (for visibility)
-    #   ansible.builtin.debug:
-    #     msg: "Running command: cat {{ myfile | quote }}"
-
-    # - name: Run the command using the templated variable
-    #   ansible.builtin.shell: cat "{{ myfile | quote }}"
-    #   register: command_output
-
-    # - name: Show the output of the command
-    #   ansible.builtin.debug:
-    #     msg: "{{ command_output.stdout }}"
-
-    # - name: Run the command using the templated variable with command module
-    #   ansible.builtin.command:
-    #     cmd: cat "{{ myfile | quote }}"
-    #   register: command_output
-
-    # - name: Show the output of the command
-    #   ansible.builtin.debug:
-    #     msg: "{{ command_output.stdout }}"
+    - name: Fetch a remote directory to local machine
+      ansible.builtin.synchronize:
+        src: /tmp/test.log
+        dest: /tmp/test.log
+        recursive: yes
+        mode: pull
 
 
-  - name: Ensure python3-venv is installed (required for virtualenv)
-    ansible.builtin.package:
-      name: python3-venv
-      state: present
+    - name: Touch the file, but add/remove some permissions
+      ansible.builtin.file:
+        path: /tmp/test1.log
+        state: touch
+        mode: u+rw,g-wx,o-rwx
 
-  - name: Create a virtual environment
-    ansible.builtin.command:
-      cmd: python3 -m venv /tmp/myenv
-      creates: /tmp/myenv
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /tmp/test_script_dir
+        state: directory
+        mode: '0755'
 
-  - name: Install passlib in the virtual environment
-    ansible.builtin.pip:
-      name: passlib
-      virtualenv: /tmp/myenv
-      state: present
+    - name: Copy somescript.sh to /tmp
+      ansible.builtin.copy:
+        src: /tmp/somescript.sh
+        dest: /tmp/somescript.sh
+        mode: '0755'
 
-  - name: Verify passlib installation
-    ansible.builtin.shell:
-      cmd: /tmp/myenv/bin/python -m passlib
-    register: result
-    ignore_errors: yes
+    - name: Ensure somescript.sh has execute permissions
+      ansible.builtin.file:
+        path: /tmp/somescript.sh
+        mode: '0755'
 
-  - name: Show passlib installation result
-    ansible.builtin.debug:
-      msg: "{{ result.stdout }}"
+    - name: Check if somescript.sh exists
+      ansible.builtin.stat:
+        path: /tmp/somescript.sh
+      register: script_status
+
+    - name: Fail if the script does not exist
+      ansible.builtin.fail:
+        msg: "The script somescript.sh does not exist in /tmp!"
+      when: not script_status.stat.exists
+
+    - name: Change the working directory to /tmp before executing the command
+      ansible.builtin.shell: ./somescript.sh >> somelog.txt
+      args:
+        chdir: /tmp
+
+    - name: This command will change the working directory to /tmp
+      ansible.builtin.shell:
+        cmd: ls -l | grep log
+        chdir: /tmp
+
+    - name: Define the myfile variable
+      ansible.builtin.set_fact:
+        myfile: "/tmp/test.log"
+
+    - name: Show the command being run (for visibility)
+      ansible.builtin.debug:
+        msg: "Running command: cat {{ myfile | quote }}"
+
+    - name: Run the command using the templated variable
+      ansible.builtin.shell: cat "{{ myfile | quote }}"
+      register: command_output
+
+    - name: Show the output of the command
+      ansible.builtin.debug:
+        msg: "{{ command_output.stdout }}"
+
+    - name: Run the command using the templated variable with command module
+      ansible.builtin.command:
+        cmd: cat "{{ myfile | quote }}"
+      register: command_output
+
+    - name: Show the output of the command
+      ansible.builtin.debug:
+        msg: "{{ command_output.stdout }}"
+
+
+  #  will check down below later , passlib package issue 
+
+  # - name: Ensure python3-venv is installed (required for virtualenv)
+  #   ansible.builtin.package:
+  #     name: python3-venv
+  #     state: present
+
+  # - name: Create a virtual environment
+  #   ansible.builtin.command:
+  #     cmd: python3 -m venv /tmp/myenv
+  #     creates: /tmp/myenv
+
+  # - name: Install passlib in the virtual environment
+  #   ansible.builtin.pip:
+  #     name: passlib
+  #     virtualenv: /tmp/myenv
+  #     state: present
+
+  # - name: Verify passlib installation
+  #   ansible.builtin.shell:
+  #     cmd: /tmp/myenv/bin/python -m passlib
+  #   register: result
+  #   ignore_errors: yes
+
+  # - name: Show passlib installation result
+  #   ansible.builtin.debug:
+  #     msg: "{{ result.stdout }}"
     
-    # - name: Remove a user and their home directory
-    #   ansible.builtin.user:
-    #     name: newuser
-    #     state: absent
-    #     remove: yes
+  # - name: Create a new user
+  #   ansible.builtin.user:
+  #     name: newuser
+  #     state: present   # ensures the user is created
+  #     shell: /bin/bash
+  #     groups: sudo     # add user to the sudo group
+  #     home: /home/newuser
+  #     password: "{{ 'brotecs' | password_hash('sha512') }}"  # Set a password
+
+  # - name: Remove a user and their home directory
+  #   ansible.builtin.user:
+  #     name: newuser
+  #     state: absent
+  #     remove: yes
+ 
+  # - name: Unarchive a .tar.gz file to a remote directory
+  #   ansible.builtin.unarchive:
+  #     src: /tmp/myarchive.tar.gz   # Local archive file
+  #     dest: /opt/myapp/           # Remote directory to extract the contents
+  #     remote_src: yes             # Archive already exists on the remote host
+  #     owner: root                 # Set file owner
+  #     group: root                 # Set file group
+  #     mode: '0755'                # Set permissions for extracted files
+
+  # - name: Archive a directory to a .tar.gz file
+  #   ansible.builtin.archive:
+  #     src: /opt/myapp/            # Directory to archive
+  #     dest: /tmp/myarchive.tar.gz # Destination archive file
+  #     format: gz                  # Archive format
+  #     owner: root                 # Set file owner
+  #     group: root                 # Set file group
+  #     mode: '0755'                # Set permissions for the archive file
+
+  # - name: Wait for file to appear
+  #   ansible.builtin.wait_for:
+  #     path: /tmp/test.log
+  #     state: present  # Wait for the file to be present
+  #     timeout: 120     # Wait up to 2 minutes
+  #     delay: 5         # Wait 5 seconds before starting the check
+
+  # - name: Show the inventory hostname
+  #   debug:
+  #     msg: "This task is running on host {{ inventory_hostname }}"
+
+  # - name: Wait for MySQL service to start
+  #   ansible.builtin.wait_for:
+  #     host: "{{ inventory_hostname }}"
+  #     port: 3306
+  #     state: started
+  #     timeout: 600  # Maximum wait time: 10 minutes
+  #     delay: 5      # Initial delay: 5 seconds
+  #     sleep: 10     # Check every 10 seconds
+  #     msg: "MySQL service is now available"
+
+
+
 
 
