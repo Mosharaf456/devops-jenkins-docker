@@ -1,0 +1,29 @@
+---
+- name: Set a dynamic variable
+  ansible.builtin.set_fact:
+    app_version: "1.2.3"
+
+- name: Use the dynamically set variable
+  debug:
+    msg: "The application version is {{ app_version }}"
+
+- name: Get OS type
+  debug:
+    msg: "OS is {{ ansible_os_family }}"
+
+- name: Set package name dynamically
+  ansible.builtin.set_fact:
+    package_name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+
+- name: Get package_name dynamic setted value 
+  debug:
+    msg: "package_name is {{ package_name }}"
+
+- name: Install web server
+  ansible.builtin.apt:
+    name: "{{ package_name }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+
+
