@@ -1,0 +1,79 @@
+- hosts: dev
+  gather_facts: no
+  tasks:
+    - name: Copy a file with specific content
+      ansible.builtin.copy:
+        dest: /tmp/test.log
+        content: |
+          hello
+          line2
+          line3
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Read content of /tmp/test.log
+      ansible.builtin.slurp:
+        src: /tmp/test.log
+      register: log_content
+
+    - name: Show log file content
+      ansible.builtin.debug:
+        msg: "{{ log_content['content'] | b64decode }}"
+
+    - name: Check if a file exists
+      ansible.builtin.stat:
+        path: /tmp/test.log
+      register: file_status
+
+    - name: Show file existence status
+      ansible.builtin.debug:
+        msg: "File exists!"
+      when: file_status.stat.exists
+
+    
+    # Makes the destination an exact copy of the source by deleting extra files.
+    # - name: Mirror local directory to remote (delete extra files)
+    #   ansible.builtin.synchronize:
+    #     src: /tmp/test.log
+    #     dest: /tmp/test.log
+    #     recursive: yes
+    #     delete: yes
+
+
+    # - name: Copy a local directory to a remote server
+    #   ansible.builtin.synchronize:
+    #     src: /tmp/test.log
+    #     dest: /tmp/test.log
+    #     recursive: yes
+    #     mode: push
+
+    # - name: Fetch a remote directory to local machine
+    #   ansible.builtin.synchronize:
+    #     src: /tmp/test.log
+    #     dest: /tmp/test.log
+    #     recursive: yes
+    #     mode: pull
+
+
+    # - name: Touch the file, but add/remove some permissions
+    #   ansible.builtin.file:
+    #     path: /tmp/test.log
+    #     state: touch
+    #     mode: u+rw,g-wx,o-rwx
+
+    # - name: Create a directory if it does not exist
+    #   ansible.builtin.file:
+    #     path: /tmp/test_script_dir
+    #     state: directory
+    #     mode: '0755'
+
+    # - name: Change the working directory to /tmp before executing the command
+    #   ansible.builtin.shell: somescript.sh >> somelog.txt
+    #   args:
+    #     chdir: /tmp
+
+    # - name: This command will change the working directory to somedir/
+    #   ansible.builtin.shell:
+    #     cmd: ls -l | grep log
+    #     chdir: tmp/
+
