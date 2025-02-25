@@ -1,5 +1,49 @@
 https://docs.ansible.com/ansible/latest/reference_appendices/general_precedence.html#id6
 
+🟥 Direct Assignment > 🟧 Variables > 🟨 Playbook Keywords > 🟩 CLI Options > 🟦 Config Settings
+
+1️⃣ Direct Assignment (🔝 Highest)
+Example: set_fact, vars_prompt, register
+Overrides everything else
+
+2️⃣ Variables
+Includes extra vars (-e), inventory vars, role defaults, etc.
+-e (CLI) > host_vars > group_vars > vars_files > defaults/main.yml
+
+> ansible-playbook myplaybook.yml -e "app_version=1.2.3"
+> ansible-playbook myplaybook.yml -e '{"app_version": "1.2.3", "env": "production"}'
+
+The @ symbol tells Ansible to read variables from a file.
+> ansible-playbook myplaybook.yml -e "@vars.yml"
+vars.yml
+app_version: "1.2.3"
+env: "production"
+
+3️⃣ Playbook Keywords
+Includes vars, environment, become, handlers, etc.
+Overrides configuration settings
+
+4️⃣ Command-line Options
+Example: ansible-playbook -i inventory.yml -e var=value
+Overrides playbook and config settings
+
+5️⃣ Configuration Settings (⚙️ Lowest)
+Defined in ansible.cfg
+Can be overridden by all other categories
+📌 Rule of Thumb: "Last defined wins."
+
+
+Precedence Order (Highest to Lowest)
+1️⃣ Direct Assignment (set_fact, vars_prompt, register)
+2️⃣ Extra Vars (-e var=value) (Highest among variables)
+3️⃣ Other Variables (host_vars, group_vars, defaults/main.yml)
+4️⃣ Playbook Keywords (vars, environment, become)
+5️⃣ Other Command-line Options (-i inventory.yml, etc.)
+6️⃣ Configuration Settings (ansible.cfg)
+
+
+
+
 Managing variables
 ansible variable is similar to using variables like any programming language.
 That can be used to store values which can be reused throughout files in an entire ansible project.
