@@ -1,0 +1,8 @@
+> ssh-keygen -f remote-key 
+
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 1234
+Enter same passphrase again: 1234
+
+
+
