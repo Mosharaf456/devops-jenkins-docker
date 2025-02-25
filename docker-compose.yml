@@ -9,6 +9,7 @@ services:
       dockerfile: docker/jenkins-ansible/Dockerfile.jenkinsansible
     ports:
       - "8082:8080"  # Jenkins web UI  mosharaf/brotecs
+      # - "50000:50000" # Agent communication.
     volumes:
       - var-jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
@@ -22,6 +23,7 @@ services:
         ipv4_address: 192.168.1.100
 
     # environment:
+    #   JENKINS_OPTS="--prefix=/jenkins" # Sets the Jenkins web context path.
     #   JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"  # Disable initial setup wizard
     deploy:
       resources:
