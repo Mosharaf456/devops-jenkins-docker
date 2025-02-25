@@ -68,7 +68,7 @@
       when: "'db' in group_names"
 
     - name: Set Python interpreter to the virtual environment
-      set_fact:
+      ansible.builtin.set_fact:
         ansible_python_interpreter: /opt/venv/bin/python
       when: "'db' in group_names"
 

@@ -55,4 +55,47 @@ https://oms.brotecs.com:3000/Brotecs/cloud-computing-kb/src/branch/ippbx_automat
 
 
 
+ref: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/set_fact_module.html
+ansible.builtin.set_fact module – Set host variable(s) and fact(s).
+---
+- name: Configure Web and Database Servers
+  hosts: dev, db
+  vars:
+    ansible_python_interpreter: /usr/bin/python3 
+  become: true
+  tasks:
+    - name: Set Python interpreter to the virtual environment
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /opt/venv/bin/python
+      when: "'db' in group_names"
 
+  
+# recommended that booleans be set using the complex argument style:
+- name: Setting booleans using complex argument style
+  ansible.builtin.set_fact:
+    one_fact: yes
+    other_fact: no
+
+- name: Creating list and dictionary variables using 'shorthand' YAML
+  ansible.builtin.set_fact:
+    two_dict: {'something': here2, 'other': somewhere}
+    two_list: [1,2,3]
+
+
+- name: Setting facts so that they will be persisted in the fact cache
+  ansible.builtin.set_fact:
+    one_fact: something
+    other_fact: "{{ local_var * 2 }}"
+    cacheable: yes
+
+- name: Setting host facts using key=value pairs, this format can only create strings or booleans
+  ansible.builtin.set_fact: one_fact="something" other_fact="{{ local_var }}"
+
+- name: Setting host facts using complex arguments
+  ansible.builtin.set_fact:
+    one_fact: something
+    other_fact: "{{ local_var * 2 }}"
+    another_fact: "{{ some_registered_var.results | map(attribute='ansible_facts.some_fact') | list }}"
+
+
+       
