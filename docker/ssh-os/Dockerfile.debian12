@@ -71,9 +71,9 @@ RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
 # Optional: Add the user to specific groups (e.g., sudo)
 RUN usermod -aG sudo unixadm
 
-RUN apt-get update && apt-get install -y python3-apt
-# Update the apt package list
-RUN apt-get update && apt-get install -y python3-pip
+# RUN apt-get update && apt-get install -y python3-apt
+# # Update the apt package list
+# RUN apt-get update && apt-get install -y python3-pip
 
 # RUN apt-get update \
 #     && apt-get install -y nginx \ 
