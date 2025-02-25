@@ -1,0 +1,12 @@
+touch /tmp/hello
+echo  "Hello World" > /tmp/hello
+ls -al /tmp 
+cat /tmp/hello
+echo "current date is $(date)"
+#NAME=MH
+echo "HELLO , $NAME. current and date is $(date)"
+echo "HELLO , $NAME. current and date is $(date)" > /tmp/info
+cat /tmp/info
+
+/tmp/script.sh $NAME $LASTNAME true $TITLE
+
