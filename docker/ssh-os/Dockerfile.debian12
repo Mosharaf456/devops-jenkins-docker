@@ -46,6 +46,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 #     net-tools \
 #     telnet \
 #     procps \
+#     iputils-ping \
 #     vim \
 #     && apt-get clean \
 #     && rm -rf /var/lib/apt/lists/*
@@ -57,12 +58,6 @@ RUN apt-get update && apt-get install -y  \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update \ 
-    && apt-get install -y python3 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 
 # # but if I add this all permission and user goes at root
