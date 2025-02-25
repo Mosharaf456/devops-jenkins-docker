@@ -19,7 +19,7 @@ Organizing things into roles allows you to reuse the common configuration steps 
 
 TO create a Ansible roles, use ansible-galaxy command which has the template to create it. 
 
-#ansible-galaxy init /etc/ansible/roles/apache --offline 
+> ansible-galaxy init /etc/ansible/roles/apache --offline 
 
 --apache was created successfully 
 
@@ -29,7 +29,7 @@ apache is the name of the role
 offline - create offline mode rather than getting from online repository .
 
 
-root@mosharaf-desktop:/etc/ansible# ansible-galaxy init roles/apache --offline
+root@mosharaf-desktop:/etc/ansible# ansible-galaxy init roles/facts_var --offline
 - Role roles/apache was created successfully
 root@mosharaf-desktop:/etc/ansible/roles# tree
 .
