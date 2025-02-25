@@ -106,3 +106,19 @@
         cmd: ls -l | grep log
         chdir: /tmp
 
+    - name: Define the myfile variable
+      ansible.builtin.set_fact:
+        myfile: "/tmp/test.log"
+
+    - name: Show the command being run (for visibility)
+      ansible.builtin.debug:
+        msg: "Running command: cat {{ myfile | quote }}"
+
+    - name: Run the command using the templated variable
+      ansible.builtin.shell: cat "{{ myfile | quote }}"
+      register: command_output
+
+    - name: Show the output of the command
+      ansible.builtin.debug:
+        msg: "{{ command_output.stdout }}"
+
