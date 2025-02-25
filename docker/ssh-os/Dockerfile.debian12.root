@@ -33,6 +33,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
     echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
+# END SSH 
 
 # RUN apt-get update && apt-get install -y \
 #     vim \
@@ -44,13 +45,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 #     && apt-get clean && \
 #     rm -rf /var/lib/apt/lists/*
 
-# RUN apt-get update && apt-get install -y  \
-#     net-tools \
-#     telnet \
-#     procps \
-#     vim \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+
 
 
 RUN apt-get update && apt-get install -y  \
@@ -66,21 +61,20 @@ RUN apt-get update && apt-get install -y  \
 
 # Add a new user with a password
 RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
-
 # Optional: Add the user to specific groups (e.g., sudo)
 RUN usermod -aG sudo unixadm
 
 RUN apt-get update && apt-get install -y python3-apt
-
 # Update the apt package list
 RUN apt-get update && apt-get install -y python3-pip
 
 
-# install nginx service 
-# RUN apt-get update && apt-get install -y nginx && apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#     && apt-get install -y nginx \ 
+#     && apt-get clean \ 
+#     && rm -rf /var/lib/apt/lists/*
 
 
-# Expose necessary ports
 EXPOSE 80 22
 
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
