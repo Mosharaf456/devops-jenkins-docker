@@ -86,14 +86,7 @@ RUN apt-get update && apt-get install -y python3-pip
 #     && rm -rf /var/lib/apt/lists/*
 
 
+EXPOSE 80 22
 
-# Expose HTTP port
-EXPOSE 80
-
-
-# Expose SSH port
-EXPOSE 22
-
-# Start the SSH service
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
 
