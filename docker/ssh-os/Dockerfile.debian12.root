@@ -35,6 +35,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
 # END SSH 
 
+## Optional: Uncomment these lines if you need
 # RUN apt-get update && apt-get install -y \
 #     vim \
 #     net-tools \

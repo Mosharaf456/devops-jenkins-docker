@@ -42,6 +42,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
     echo "AllowUsers mh user2 root" >> /etc/ssh/sshd_config
 ## end OpenSSH server
 
+## Optional: Uncomment these lines if you need
 # RUN apt-get update && apt-get install -y  \
 #     net-tools \
 #     telnet \
