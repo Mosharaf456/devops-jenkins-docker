@@ -1,0 +1,25 @@
+- hosts: dev
+  gather_facts: no
+  tasks:
+    - name: Touch the file, but add/remove some permissions
+      ansible.builtin.file:
+        path: /tmp/test.log
+        state: touch
+        mode: u+rw,g-wx,o-rwx
+
+    - name: Return motd to registered var
+      ansible.builtin.command: cat /tmp/test.log
+      register: mymotd
+
+    - name: Print the registered var
+      ansible.builtin.debug:
+        var: mymotd
+
+    # - name: Run command if /path/to/database does not exist (without 'args')
+    #   ansible.builtin.command: /usr/bin/make_database.sh db_user db_name creates=/path/to/database
+
+    # - name: Run command if /path/to/database does not exist (with 'args' keyword)
+    #   ansible.builtin.command: /usr/bin/make_database.sh db_user db_name
+    #   args:
+    #     creates: /path/to/database
+
