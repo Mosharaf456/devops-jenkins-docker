@@ -8,5 +8,5 @@ echo "HELLO , $NAME. current and date is $(date)"
 echo "HELLO , $NAME. current and date is $(date)" > /tmp/info
 cat /tmp/info
 
-/tmp/script.sh $NAME $LASTNAME true $TITLE
+/tmp/script.sh $NAME $LASTNAME $SHOW $TITLE
 
