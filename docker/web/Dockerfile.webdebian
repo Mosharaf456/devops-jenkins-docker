@@ -27,6 +27,7 @@ RUN PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;") &&
 
 RUN ls /etc/php/
 
+USER root
 
 WORKDIR /var/www/html
 
