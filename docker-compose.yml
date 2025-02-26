@@ -1,5 +1,4 @@
-version: '3.8'
-
+---
 services:
   jenkins_instance:
     container_name: jenkins_con
@@ -181,12 +180,7 @@ volumes:
   # jenkins-temp-vol:
   #   name: jenkins-temp-vol
 
+
 # one named volume to another named volume copy
 # docker run --rm -it  -v  devops-jenkins-docker_var-jenkins_home:/from -v var-jenkins_home:/to  nginx bash -c "cd /from ; cp -av . /to"
 # docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  nginx bash -c "cd /from ; cp -av . /to"
-
-
-
-
-
-

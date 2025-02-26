@@ -1,4 +1,5 @@
-FROM jenkins/jenkins:latest 
+# FROM jenkins/jenkins:latest
+FROM jenkins/jenkins:lts
 
 LABEL maintainer="Mosharaf Hossain, Software Engineer, mosharaf111hossain@gmail.com" 
 
