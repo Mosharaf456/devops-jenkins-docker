@@ -1,0 +1,5 @@
+
+ssh -i /tmp/ansible/remote-key root@client1_remote
+
+ssh -i /tmp/ansible/remote-key root@client2_remote
+
