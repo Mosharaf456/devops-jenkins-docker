@@ -1,6 +1,6 @@
 FROM jenkins/jenkins:latest 
 
-LABEL maintainer="Software Engineer mosharaf111hossain@gmail.com" 
+LABEL maintainer="Mosharaf Hossain, Software Engineer, mosharaf111hossain@gmail.com" 
 
 ARG DEBIAN_FRONTEND=noninteractive
 
