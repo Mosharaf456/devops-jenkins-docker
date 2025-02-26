@@ -43,7 +43,8 @@ services:
       - backup-temp-c1:/tmp
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian_only_root1
+      dockerfile: docker/ssh-os/Dockerfile.debian12  # mh pass: 1234, user2 pass, root pass
+      # docker/ssh-os/Dockerfile.debian_only_root
       # docker/ssh-os/Dockerfile.debian12  # mh pass: 1234, user2 pass, root pass
       # docker/ssh-os/Dockerfile.debian12.passless
       # docker/ssh-os/Dockerfile.debian12.passwithkey

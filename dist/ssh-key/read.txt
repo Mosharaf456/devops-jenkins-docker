@@ -1,3 +1,11 @@
+
+>  ssh-keygen -t rsa -b 4096 -C "container_client_key" -f remote-key
+
+
+chmod 600 remote-key          # Private key should only be readable by you
+chmod 655 remote-key.pub      # Public key can be world-readable
+
+
 docker cp remote-key jenkins_con:/tmp/ansible/remote-key
 
 ssh -v -i /tmp/ansible/remote-key root@client1_remote
