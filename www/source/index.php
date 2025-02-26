@@ -60,7 +60,7 @@
               if ($con->connect_error) {
                   die("<tr><td colspan='4' class='text-danger text-center'>Connection failed: " . $con->connect_error . "</td></tr>");
               }
-              $sql = "SELECT id, name, lastname, age FROM register  WHERE age > 20 ";
+              $sql = "SELECT id, name, lastname, age FROM register  WHERE age > 23 ";
               $result = $con->query($sql);
               if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
