@@ -16,3 +16,9 @@ chmod 655 remote-key.pub      # Public key can be world-readable
 ssh -i /tmp/ansible/remote-key root@client1_remote
 
 ssh -i /tmp/ansible/remote-key root@client2_remote
+
+
+
+ ansible-playbook -i inven.ini play.yml 
+
+ 
