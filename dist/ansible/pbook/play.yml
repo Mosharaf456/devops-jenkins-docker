@@ -1,5 +1,8 @@
-- hosts: test1
+- hosts: dev
   tasks:
+    - name: Set a variable
+      set_fact:
+        MSG: "Hello, ansible playbook running!"
     - debug:
         msg: "{{ MSG }}"
     
