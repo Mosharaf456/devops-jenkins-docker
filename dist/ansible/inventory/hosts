@@ -1,11 +1,9 @@
 [all:vars]
 ansible_connection = ssh
 
+
 [dev]
-client1 ansible_host=192.168.1.101  ansible_user=mh ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+client1 ansible_host=192.168.1.101  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
-client2 ansible_host=192.168.1.102 ansible_user=user1
-
-client3 ansible_host=192.168.1.102  ansible_user=user2 ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
-
-client4 ansible_host=192.168.1.102  ansible_user=root ansible_password=brotecs1230 ansible_python_interpreter=/usr/bin/python3
+[db]
+client2 ansible_host=192.168.1.102  ansible_user=root ansible_password=1234 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
