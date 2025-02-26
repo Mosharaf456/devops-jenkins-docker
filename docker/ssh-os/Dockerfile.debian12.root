@@ -2,7 +2,7 @@ FROM debian:12-slim
 
 RUN apt-get update && \
     apt-get install -y openssh-server && \
-    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/sshd
 
@@ -54,8 +54,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 #     procps \
 #     iputils-ping \
 #     python3 \
-#     && apt-get clean && \
-#     rm -rf /var/lib/apt/lists/*
+#     && rm -rf /var/lib/apt/lists/*
 
 
 
@@ -63,7 +62,6 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 RUN apt-get update && apt-get install -y  \
     vim \
     python3 \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # RUN apt update && apt install -y sudo
@@ -83,7 +81,6 @@ RUN usermod -aG sudo unixadm
 
 # RUN apt-get update \
 #     && apt-get install -y nginx \ 
-#     && apt-get clean \ 
 #     && rm -rf /var/lib/apt/lists/*
 
 

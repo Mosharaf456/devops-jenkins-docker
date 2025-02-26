@@ -1,5 +1,5 @@
-# FROM jenkins/jenkins:latest
-FROM jenkins/jenkins:lts
+# FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:latest
 
 LABEL maintainer="Mosharaf Hossain, Software Engineer, mosharaf111hossain@gmail.com" 
 
@@ -7,20 +7,24 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip pipx curl vim sshpass ansible && \
-    apt-get clean
+# RUN apt-get update && \
+#     apt-get install -y python3 python3-pip pipx curl vim sshpass ansible && \
+#     apt-get clean
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip pipx curl vim sshpass ansible \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Install AWS CLI using pipx
 RUN pipx install awscli
 
 # Optional: Uncomment these lines if you need net-tools, telnet, procps
-# RUN apt-get update && apt-get install -y \
+# RUN apt-get update && apt-get install -y --no-install-recommends \
 #     net-tools \
 #     telnet \
 #     procps \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+#     && rm -rf /var/lib/apt/lists/*   #Ensures future builds don’t re-download everything.
 
 RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
 

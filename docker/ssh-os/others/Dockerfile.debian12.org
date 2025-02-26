@@ -4,7 +4,7 @@ FROM --platform=linux/amd64 debian:12-slim
 ## Install OpenSSH server 
 RUN apt-get update && \
     apt-get install -y openssh-server && \
-    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/sshd
 RUN useradd -m remote_user && \
@@ -24,14 +24,12 @@ RUN apt-get update && apt-get install -y  \
     net-tools \
     telnet \
     procps \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y iputils-ping && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \ 
     && apt-get install -y python3 \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Expose SSH port
