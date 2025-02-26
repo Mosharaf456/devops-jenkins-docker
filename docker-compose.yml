@@ -15,9 +15,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # - jenkins-temp-vol:/tmp
       - ./dist/extrascript/script.sh:/tmp/script.sh 
-      # - ./dist/ssh-key/remote-key:/tmp/ansible/remote-key
+      - ./dist/ssh-key/remote-key:/tmp/ansible/remote-key
       - ./dist/ansible/inventory/hosts:/tmp/ansible/hosts
-      - ./dist/ansible/inventory/inventory.ini:/tmp/ansible/inventory.ini
+      - ./dist/ansible/pbook/inven.ini:/tmp/ansible/inven.ini
       - ./dist/ansible/pbook/:/tmp/ansible/pbook
     networks:
       jenkins_net:
