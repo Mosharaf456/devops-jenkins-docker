@@ -1,4 +1,4 @@
-FROM remote-host-ssh-test-image:v2.0.0
+FROM client1_remote-image:v2.0.0
 # FROM debian:12
 
 RUN apt-get update && \
