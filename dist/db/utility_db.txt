@@ -1,0 +1,5 @@
+docker cp ./jinja_template/table.j2 jenkins_con:/tmp/ansible/pbook
+
+
+ansible-playbook -i inven.ini people.yml -e "PEOPLE_AGE=25" 
+

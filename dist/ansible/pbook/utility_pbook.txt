@@ -19,6 +19,11 @@ ssh -i /tmp/ansible/remote-key root@client2_remote
 
 
 
- ansible-playbook -i inven.ini play.yml 
+ansible-playbook -i inven.ini play.yml 
 
- 
+ansible -m ping dev -i inven.ini 
+
+ansible -m ping web -i inven.ini 
+
+
+

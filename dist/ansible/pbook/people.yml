@@ -1,0 +1,10 @@
+- hosts: web1
+  tasks: 
+    - name : Transfer template to web server 
+      template:
+        src:  ./table.j2
+        dest: /var/www/html/index.php
+        owner: root
+        group: root
+        mode: 0644
+
