@@ -23,14 +23,17 @@ RUN pipx install awscli
 
 RUN apt-get update && apt-get install -y iputils-ping && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /tmp/ansible/ && chmod -R 755 /tmp/ansible
-COPY ./dist/ssh-key/remote-key /tmp/ansible/remote-key
-COPY ./dist/ansible/inventory/hosts /tmp/ansible/hosts  
-COPY ./dist/ansible/pbook/ /tmp/ansible
-COPY ./dist/extrascript/script.sh /tmp/script.sh 
-
 
 USER jenkins
+
+RUN mkdir -p /tmp/ansible/ && chmod -R 755 /tmp/ansible
+COPY ./dist/ssh-key/remote-key /tmp/ansible/remote-key
+
+COPY ./dist/ansible/inventory/hosts /tmp/ansible/hosts  
+COPY ./dist/ansible/pbook/ /tmp/ansible/pbook
+
+COPY ./dist/extrascript/script.sh /tmp/script.sh 
+
 
 EXPOSE 8080
 
