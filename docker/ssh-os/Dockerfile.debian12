@@ -13,7 +13,6 @@ RUN useradd -m mh && \
     echo "mh:1234" | chpasswd && \
     mkdir /home/mh/.ssh && \
     chmod 700 /home/mh/.ssh
-
 COPY ./dist/ssh-key/remote-key.pub /home/mh/.ssh/authorized_keys
 RUN chmod 600 /home/mh/.ssh/authorized_keys && \
     chown -R mh:mh /home/mh/.ssh
@@ -23,7 +22,6 @@ RUN useradd -m user2 && \
     mkdir -p /home/user2/.ssh && \
     chmod 700 /home/user2/.ssh 
 COPY ./dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys
-
 RUN chmod 600 /home/user2/.ssh/authorized_keys && \
     chown -R user2:user2 /home/user2/.ssh
 
