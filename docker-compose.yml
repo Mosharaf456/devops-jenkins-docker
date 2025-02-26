@@ -124,6 +124,8 @@ services:
       MYSQL_PASSWORD: brotecs1230
     volumes:
       - db-data-vol:/var/lib/mysql
+      - ./dist/db/jenkins-ansible_db.sh:/tmp/jenkins-ansible_db.sh
+      - ./dist/db/jenkins_people_db.txt:/tmp/jenkins_people_db.txt
     networks:
       jenkins_net:
         ipv4_address: 192.168.1.104

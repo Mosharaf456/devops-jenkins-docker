@@ -15,4 +15,5 @@ while [ $counter -lt 10 ]; do
 done
 
 # docker cp jenkins_people_db.txt  test-db:/tmp
+# docker cp jenkins-ansible_db.sh  test-db:/tmp
 
