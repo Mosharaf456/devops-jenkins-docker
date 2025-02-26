@@ -104,8 +104,8 @@ services:
     depends_on:
       - client1_remote
       - mariadb_db_instance
-    volumes:
-      - "./www/source:/var/www/html"
+    # volumes:
+    #   - "./www/source:/var/www/html"
 
   mariadb_db_instance:
     container_name: test-db
