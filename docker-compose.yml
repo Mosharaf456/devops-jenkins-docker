@@ -19,6 +19,8 @@ services:
       - ./dist/ansible/inventory/hosts:/tmp/ansible/hosts
       - ./dist/ansible/pbook/inven.ini:/tmp/ansible/inven.ini
       - ./dist/ansible/pbook/:/tmp/ansible/pbook
+      - ./dist/db/jenkins-ansible_db.sh:/tmp/jenkins-ansible_db.sh
+      - ./dist/db/jenkins_people_db.txt:/tmp/jenkins_people_db.txt
     networks:
       jenkins_net:
         ipv4_address: 192.168.1.100
@@ -87,69 +89,70 @@ services:
       
     
   # it is working but skip for now down below 
-  # web:
-  #   container_name: web-ansible
-  #   image: web-ansible-image:v1.0.0
-  #   build: 
-  #     context: .
-  #     dockerfile: docker/web/Dockerfile.webdebian
-  #     # dockerfile: docker/web/Dockerfile.webcentos
-  #   ports:
-  #     - "8088:80"
-  #   networks:
-  #     jenkins_net:
-  #       ipv4_address: 192.168.1.103
-  #   depends_on:
-  #     - client1_remote
-  #     - mariadb_db_instance
-  #   volumes:
-  #     - "./www/source:/var/www/html"
+  web:
+    container_name: web-ansible
+    image: web-ansible-image:v1.0.0
+    build: 
+      context: .
+      dockerfile: docker/web/Dockerfile.webdebian
+      # dockerfile: docker/web/Dockerfile.webcentos
+    ports:
+      - "8088:80"
+    networks:
+      jenkins_net:
+        ipv4_address: 192.168.1.103
+    depends_on:
+      - client1_remote
+      - mariadb_db_instance
+    volumes:
+      - "./www/source:/var/www/html"
 
-  # mariadb_db_instance:
-  #   container_name: test-db
-  #   image: db-test-image:v2.0.0
-  #   build: 
-  #     context: .
-  #     dockerfile: docker/db/Dockerfile.mariadb
-  #   ports:
-  #     - "3308:3306"
-  #   restart: always
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: brotecs1230
-  #     MYSQL_DATABASE: testdb
-  #     MYSQL_USER: admin
-  #     MYSQL_PASSWORD: brotecs1230
-  #   volumes:
-  #     - db-data-vol:/var/lib/mysql
-  #   networks:
-  #     jenkins_net:
-  #       ipv4_address: 192.168.1.104
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 1G
-  #       reservations:
-  #         memory: 512M
+  mariadb_db_instance:
+    container_name: test-db
+    image: db-test-image:v2.0.0
+    build: 
+      context: .
+      dockerfile: docker/db/Dockerfile.mariadb
+
+    ports:
+      - "3308:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: brotecs1230
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: brotecs1230
+    volumes:
+      - db-data-vol:/var/lib/mysql
+    networks:
+      jenkins_net:
+        ipv4_address: 192.168.1.104
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
   
-  # phpmyadmin_instance:
-  #   container_name: test-dbmanager
-  #   image: phpmyadmin:latest
-  #   links:
-  #     - mariadb_db_instance
-  #   networks:
-  #     jenkins_net:
-  #       ipv4_address: 192.168.1.105
-  #   environment:
-  #     - PMA_ARBITRARY=1
-  #   ports:
-  #     - 8081:80
-  #   restart: always
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 256M
-  #       reservations:
-  #         memory: 128M
+  phpmyadmin_instance:
+    container_name: test-dbmanager
+    image: phpmyadmin:latest
+    links:
+      - mariadb_db_instance
+    networks:
+      jenkins_net:
+        ipv4_address: 192.168.1.105
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8081:80
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
 
 
 networks:

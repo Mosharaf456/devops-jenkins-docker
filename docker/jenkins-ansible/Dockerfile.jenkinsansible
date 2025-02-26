@@ -32,7 +32,8 @@ COPY ./dist/ssh-key/remote-key /tmp/ansible/remote-key
 COPY ./dist/ansible/inventory/hosts /tmp/ansible/hosts  
 COPY ./dist/ansible/pbook/ /tmp/ansible/pbook
 
-COPY ./dist/extrascript/script.sh /tmp/script.sh 
+COPY ./dist/db/jenkins-ansible_db.sh /tmp/jenkins-ansible_db.sh
+COPY ./dist/db/jenkins_people_db.txt /tmp/jenkins_people_db.txt
 
 
 EXPOSE 8080
