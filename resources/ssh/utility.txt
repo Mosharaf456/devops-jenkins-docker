@@ -6,3 +6,8 @@ Enter same passphrase again: 1234
 
 
 
+>  ssh-keygen -t rsa -b 4096 -C "container_client_key" -f remote-key
+
+
+chmod 600 remote-key          # Private key should only be readable by you
+chmod 655 remote-key.pub      # Public key can be world-readable

@@ -2,87 +2,49 @@ FROM debian:12-slim
 
 ## Install OpenSSH server 
 RUN apt-get update && \
-    apt-get install -y openssh-server && \
-    apt-get clean
+    apt-get install -y openssh-server python3 vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /run/sshd
+
+# Create users and set up their passwords
 RUN useradd -m mh && \
     echo "mh:1234" | chpasswd && \
     mkdir /home/mh/.ssh && \
     chmod 700 /home/mh/.ssh
 
-# Skip but if add this all permission and user goes same as root 
-# RUN apt update && apt install -y sudo   
-# RUN usermod -aG sudo mh 
-# RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# end of but if  add this all permission and user goes same as root 
-
 COPY ./dist/ssh-key/remote-key.pub /home/mh/.ssh/authorized_keys
-RUN chown mh:mh -R /home/mh/.ssh/ && \
-    chmod 600 /home/mh/.ssh/authorized_keys
-
+RUN chmod 600 /home/mh/.ssh/authorized_keys && \
+    chown -R mh:mh /home/mh/.ssh
 
 RUN useradd -m user2 && \
-    echo "user2:1234" | chpasswd
+    echo "user2:1234" | chpasswd && \
+    mkdir -p /home/user2/.ssh && \
+    chmod 700 /home/user2/.ssh 
+COPY ./dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys
 
-RUN echo "root:1234" | chpasswd
+RUN chmod 600 /home/user2/.ssh/authorized_keys && \
+    chown -R user2:user2 /home/user2/.ssh
 
-# Setup SSH keys for user2 and root
-RUN mkdir -p /home/user2/.ssh && \
-    mkdir -p /root/.ssh 
-COPY ./dist/ssh-key/remote-key.pub /home/user2/.ssh/authorized_keys 
-COPY ./dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys
-
-RUN chmod 700 /home/user2/.ssh /root/.ssh && \
-    chmod 600 /home/user2/.ssh/authorized_keys /root/.ssh/authorized_keys && \
-    chown -R user2:user2 /home/user2/.ssh && \
+RUN echo "root:1234" | chpasswd && \
+    mkdir -p /root/.ssh && \
+    chmod 700 /root/.ssh
+COPY ./dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys 
+RUN chmod 600 /root/.ssh/authorized_keys && \
     chown -R root:root /root/.ssh
 
+# Modify sshd_config to allow SSH access
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-    echo "AllowUsers mh user2 root" >> /etc/ssh/sshd_config
-## end OpenSSH server
-
-## Optional: Uncomment these lines if you need
-# RUN apt-get update && apt-get install -y  \
-#     net-tools \
-#     telnet \
-#     procps \
-#     iputils-ping \
-#     vim \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+    echo "AllowUsers mh user2 root" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
 
 
-RUN apt-get update && apt-get install -y  \
-    python3 \
-    vim \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-
-
-# # but if I add this all permission and user goes at root
-# RUN apt update && apt install -y sudo   
-# RUN usermod -aG sudo mh 
-# RUN echo "mh ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# # end of but if I add this all permission and user goes at root
-
-# Add a new user with a password
 RUN useradd -m unixadm && echo "unixadm:1234" | chpasswd
-# Optional: Add the user to specific groups (e.g., sudo)
-RUN usermod -aG sudo unixadm
-
-# RUN apt-get update && apt-get install -y python3-apt
-# # Update the apt package list
-# RUN apt-get update && apt-get install -y python3-pip
-
-# RUN apt-get update \
-#     && apt-get install -y nginx \ 
-#     && apt-get clean \ 
-#     && rm -rf /var/lib/apt/lists/*
 
 
 EXPOSE 80 22
 
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
-

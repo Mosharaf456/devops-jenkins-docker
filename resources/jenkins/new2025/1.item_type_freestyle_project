@@ -15,4 +15,8 @@ echo "HELLO , $NAME. current and date is $(date)" > /tmp/info
 cat /tmp/info
 
 
-
+Build Steps
+Execute shell script on remote host using ssh
+Command
+NAME=Mosharaf
+echo "Hello $NAME, Current date and time is $(date)" > /tmp/remote-info

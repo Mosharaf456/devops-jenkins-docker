@@ -31,9 +31,20 @@ RUN chmod 700 /home/user1/.ssh /root/.ssh && \
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     echo "AllowUsers user1 root passless" >> /etc/ssh/sshd_config && \
     echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config && \
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "ChallengeResponseAuthentication no" >> /etc/ssh/sshd_config
 # END SSH 
+
+
+# SSH Configuration deep dive 
+# RUN sed -i \
+#     -e 's/#PermitRootLogin.*/PermitRootLogin yes/' \
+#     -e 's/PasswordAuthentication.*/PasswordAuthentication yes/' \
+#     -e 's/#PubkeyAuthentication.*/PubkeyAuthentication yes/' \
+#     /etc/ssh/sshd_config && \
+#     echo "AllowUsers user1 root passless" >> /etc/ssh/sshd_config
+
 
 ## Optional: Uncomment these lines if you need
 # RUN apt-get update && apt-get install -y \
