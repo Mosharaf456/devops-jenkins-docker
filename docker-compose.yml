@@ -135,25 +135,25 @@ services:
         reservations:
           memory: 512M
   
-  # phpmyadmin_instance:
-  #   container_name: test-dbmanager
-  #   image: phpmyadmin:latest
-  #   links:
-  #     - mariadb_db_instance
-  #   networks:
-  #     jenkins_net:
-  #       ipv4_address: 192.168.1.105
-  #   environment:
-  #     - PMA_ARBITRARY=1
-  #   ports:
-  #     - 8081:80
-  #   restart: always
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 256M
-  #       reservations:
-  #         memory: 128M
+  phpmyadmin_instance:
+    container_name: test-dbmanager
+    image: phpmyadmin:latest
+    links:
+      - mariadb_db_instance
+    networks:
+      jenkins_net:
+        ipv4_address: 192.168.1.105
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8081:80
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
 
 
 networks:
