@@ -15,7 +15,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # - jenkins-temp-vol:/tmp
       - ./dist/extrascript/script.sh:/tmp/script.sh 
-      - ./dist/ssh-key/remote-key:/tmp/ansible/remote-key
+      # - ./dist/ssh-key/remote-key:/tmp/ansible/remote-key
       - ./dist/ansible/inventory/hosts:/tmp/ansible/hosts
       - ./dist/ansible/inventory/inventory.ini:/tmp/ansible/inventory.ini
       - ./dist/ansible/pbook/:/tmp/ansible/pbook
@@ -43,7 +43,8 @@ services:
       - backup-temp-c1:/tmp
     build:
       context: .
-      dockerfile: docker/ssh-os/Dockerfile.debian12  # mh pass: 1234, user2 pass, root pass
+      dockerfile: docker/ssh-os/Dockerfile.debian_only_root1
+      # docker/ssh-os/Dockerfile.debian12  # mh pass: 1234, user2 pass, root pass
       # docker/ssh-os/Dockerfile.debian12.passless
       # docker/ssh-os/Dockerfile.debian12.passwithkey
       # dockerfile: docker/ssh-os/Dockerfile.centos

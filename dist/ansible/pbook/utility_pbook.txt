@@ -1,5 +1,18 @@
+ssh-keygen -p -f remote-key
+
+chmod 600 remote-key          # Private key should only be readable by you
+chmod 655 remote-key.pub      # Public key can be world-readable
+
+
+
+
+
+
+ssh-keygen -t rsa -b 4096 -f remote-key
+chmod 600 remote-key          # Private key should only be readable by you
+chmod 655 remote-key.pub      # Public key can be world-readable
+
 
 ssh -i /tmp/ansible/remote-key root@client1_remote
 
 ssh -i /tmp/ansible/remote-key root@client2_remote
-

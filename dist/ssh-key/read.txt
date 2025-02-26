@@ -1,0 +1,3 @@
+docker cp remote-key jenkins_con:/tmp/ansible/remote-key
+
+ssh -v -i /tmp/ansible/remote-key root@client1_remote

@@ -1,0 +1,39 @@
+FROM debian:12-slim
+
+RUN apt-get update && apt-get install -y \
+    sudo \
+    openssh-server \
+    python3 \
+    vim \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN echo 'root:1234' | chpasswd
+
+# Create an SSH directory for the root user
+RUN mkdir -p /root/.ssh
+
+# Copy the public key into the container and ensure the right permissions
+COPY ./dist/ssh-key/remote-key.pub /root/.ssh/id_rsa.pub
+
+# Set appropriate permissions for the public key
+RUN chmod 644 /root/.ssh/id_rsa.pub && \
+    chown -R root:root /root/.ssh
+
+# Copy the public key into authorized_keys
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+# Configure SSH server to allow root login with the key
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "AuthorizedKeysFile .ssh/authorized_keys" >> /etc/ssh/sshd_config
+
+
+
+# Create the missing privilege separation directory
+RUN mkdir -p /run/sshd
+
+EXPOSE 80 22
+
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]

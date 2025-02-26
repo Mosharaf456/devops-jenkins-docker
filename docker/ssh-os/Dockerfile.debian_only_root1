@@ -1,0 +1,30 @@
+FROM debian:bullseye
+
+# Update packages and install OpenSSH Server
+RUN apt-get update && \
+    apt-get install -y openssh-server python3 vim sudo openssh-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configure SSH
+RUN mkdir /var/run/sshd 
+
+# Disable password authentication in sshd_config
+RUN sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+RUN sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+
+# Set root password (change 'your_password' to a secure password)
+RUN echo "root:1234" | chpasswd
+
+# Set up SSH key authentication
+RUN mkdir -p /root/.ssh && \
+    chmod 700 /root/.ssh
+COPY ./dist/ssh-key/remote-key.pub /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/authorized_keys
+
+
+
+EXPOSE 80 22
+
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]
