@@ -1,3 +1,8 @@
+# NOTE: in this setting http://192.168.10.59:8082/manage/configure 
+# Jenkins Location
+# Jenkins URL(http://192.168.10.59:8082/) need to properly set as your host IP , portkept same
+# Otherwise UI will slow down the whole project
+
 # FROM jenkins/jenkins:lts
 FROM jenkins/jenkins:latest
 
