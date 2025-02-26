@@ -5,8 +5,8 @@ counter=0
 while [ $counter -lt 10 ]; do
     let counter=counter+1
 
-    name=$(nl people.txt | grep -w $counter | awk '{print $2}' | awk -F ',' '{print $1}')
-    lastname=$(nl people.txt | grep -w $counter | awk '{print $2}' | awk -F ',' '{print $2}')
+    name=$(nl jenkins_people_db.txt | grep -w $counter | awk '{print $2}' | awk -F ',' '{print $1}')
+    lastname=$(nl jenkins_people_db.txt | grep -w $counter | awk '{print $2}' | awk -F ',' '{print $2}')
     age=$(shuf -i 20-25 -n 1)
     echo "Name: $name, id: $counter, Lastname: $lastname, age: $age"
 
@@ -14,5 +14,5 @@ while [ $counter -lt 10 ]; do
     echo "inserted data $counter $name $lastname $age to the database people"
 done
 
-# docker cp people.txt  test-db:/tmp
+# docker cp jenkins_people_db.txt  test-db:/tmp
 
