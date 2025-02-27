@@ -45,4 +45,7 @@ services:
 
 
 
+https://oms.brotecs.com:3000/Brotecs/cloud-computing-kb/src/branch/agcg_automation/Jenkinsfile
+submodule 
 
+def executeGitSCMCheckout() {} 
