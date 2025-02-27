@@ -74,11 +74,21 @@ http://gitlab:8929/jenkins/jenkins_test_project1.git
 GIT HOOKS: like a trigger , pushes any branch , trigger a script , trigger new download 
 push event 
 
-mkdir /var/opt/gitlab/git-data/repositories/jenkins/jenkins_test_project1 
+
+
+> Project.find_by_full_path('jenkins/jenkins_test_project1')
+> project.disk_path
+=> "@hashed/6b/86/6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+
+
+//gitlab-rake gitlab:repo:check
 
 hooks bash: 
 
 #!/bin/bash 
+
+#  Get branch name from ref head 
+
 if ! [ -t 0 ]; then 
   read -a ref
 fi 
@@ -86,8 +96,8 @@ IFS='/' read -ra REF <<<"${ref[2]}"
 branch="${REF[2]}"
 
 if [ $branch == 'main'];
-crumb = $(curl -u "mosharaf:brotecs" -s 'http://192.168.30.29.14:8082/crumbIssuer/api/xm?xpath=concat(//crumbRequestField, ":", //crumb)')
-curl -u "mosharaf:brotecs" -H "$crumb" -X POST http://192.168.30.29.14:8082/job/clone_gitlab_repo_with_cred/build?delay=0sec
+crumb = $(curl -u "mosharaf:brotecs" -s 'http://jenkins_con:8082/crumbIssuer/api/xm?xpath=concat(//crumbRequestField, ":", //crumb)')
+curl -u "mosharaf:brotecs" -H "$crumb" -X POST http://jenkins_con:8082/job/clone_gitlab_repo_with_cred/build?delay=0sec
 
     if [ $? -eq 0 ] ; then
       echo "*** Ok"
@@ -95,4 +105,42 @@ curl -u "mosharaf:brotecs" -H "$crumb" -X POST http://192.168.30.29.14:8082/job/
       echo "*** Error"
     fi 
 fi 
+
+docker exec -it gitlab bash 
+> gitlab-rails console
+
+user = User.find_by(email: 'mosharaf111hossain@gmail.com')
+user.locked_at = nil
+user.save!
+
+
+> user = User.find_by(email: 'mosharaf111hossain@gmail.com')
+> user.state
+
+The state attribute will return the current status of the user, for example:
+
+active: The user account is active and should have access.
+blocked: The account is blocked and cannot be used to log in.
+pending_approval: The account is waiting for approval.
+
+> user.state = 'active'
+> user.confirm unless user.confirmed?
+> user.save!
+> user.reload.state  # Should return 'active'
+
+
+
+#  gitlab-ctl restart
+
+
+// /var/opt/gitlab/git-data/repositories/@hashed/6b/86/6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b.git
+
+mkdir custom_hoooks 
+vim post-receive
+// paste the bash script 
+/var/opt/gitlab/git-data/repositories/@hashed/6b/86/6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b.git/custom_hooks
+
+
+chown git:git custom_hooks/ -R
+
 
