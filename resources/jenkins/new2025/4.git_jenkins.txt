@@ -56,3 +56,9 @@ jenkins@8e57e789cef6:/tmp/jenkins_test_project1$ git config user.name "mosharaf"
 jenkins@8e57e789cef6:/tmp/jenkins_test_project1$ git config user.email "mosharaf111hossain@gmail.com"
 #username/password:  mosharaf / 9/fbH=/M4jugXyB
     
+let,s go to credentials: 
+http://gitlab.example.com:8929/jenkins/jenkins_test_project1.git
+for container: 
+http://gitlab:8929/jenkins/jenkins_test_project1.git
+
+
