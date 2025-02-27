@@ -35,7 +35,8 @@ services:
           memory: 512M
     # depends_on:
     #   - client1_remote
-    #   - mariadb_db_instance
+    #   - client2_remote
+    #   - test-db
   
   client1_remote:
     container_name: client1_remote
