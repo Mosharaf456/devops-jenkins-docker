@@ -37,7 +37,30 @@ services:
     #   - client1_remote
     #   - client2_remote
     #   - test-db
-  
+
+  gitlab:
+    image: gitlab/gitlab-ee:latest
+    container_name: gitlab
+    restart: on-failure
+    hostname: 'gitlab.example.com'
+    # environment:
+    #   GITLAB_OMNIBUS_CONFIG: |
+    #     external_url 'http://gitlab.example.com:8929'
+    #     gitlab_rails['gitlab_shell_ssh_port'] = 2424
+    ports:
+      - '8090:80'
+      - '8929:8929'
+      # - '443:443'
+      # - '2424:22'
+    volumes:
+      - data_opt_gitlab:/var/opt/gitlab'
+      - logs_gitlab:/var/log/gitlab
+      - config_etc_gitlab:/etc/gitlab
+    shm_size: '256m'
+    networks:
+      jenkins_net:
+        ipv4_address: 192.168.1.106
+    
   client1_remote:
     container_name: client1_remote
     image: client1_remote-image:v2.0.0
@@ -177,6 +200,12 @@ volumes:
     name: backup-temp-c1
   backup-temp-c2:
     name: backup-temp-c2
+  data_opt_gitlab: 
+    name: opt_gitlab
+  logs_gitlab:
+    name: logs_gitlab
+  config_etc_gitlab:
+    name: config_etc_gitlab
     
   # jenkins-temp-vol:
   #   name: jenkins-temp-vol
