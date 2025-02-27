@@ -12,5 +12,22 @@ Role-based Authorization StrategyVersion
 743.v142ea_b_d5f1d3
 
 
+Dashboard > Manage Jenkins > Security
+Select and save it.
+Authorization  --  Role-Based Strategy  
+to use that plugin 
+
+Create user from 
+Dashboard > Manage Jenkins > Users 
+
+
+
+Now uses of that plugin: 
+Dashboard > Manage Jenkins > Manage and Assign Roles 
+
+Roles are basically defined some permissions.
+
+
+
 
 
