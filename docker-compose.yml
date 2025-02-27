@@ -39,16 +39,16 @@ services:
     #   - test-db
 
   gitlab:
-    image: gitlab/gitlab-ee:latest
-    container_name: gitlab
+    image: gitlab/gitlab-ee:latest  #Current version: gitlab-ee=17.9.1-ee.0
+    container_name: gitlab-server
     restart: on-failure
     hostname: 'gitlab.example.com'
-    # environment:
-    #   GITLAB_OMNIBUS_CONFIG: |
-    #     external_url 'http://gitlab.example.com:8929'
-    #     gitlab_rails['gitlab_shell_ssh_port'] = 2424
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com:8929'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
     ports:
-      - '8090:80'
+      # - '8099:80'
       - '8929:8929'
       # - '443:443'
       # - '2424:22'
