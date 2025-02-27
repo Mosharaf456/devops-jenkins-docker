@@ -1,0 +1,16 @@
+Dashboard > Manage Jenkins > Security 
+
+
+Allow users to sign up? , it,s not a good practice to turn on.
+
+Install Security plugin to do role based login.
+ 
+Dashboard > Manage Jenkins > Plugins
+search role 
+Actual plugin is : 
+Role-based Authorization StrategyVersion
+743.v142ea_b_d5f1d3
+
+
+
+
