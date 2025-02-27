@@ -42,9 +42,10 @@ services:
 # if register and login user issue on gitlab the attach the container and run the command 
 #  docker exec -it gitlab bash
 #  gitlab-ctl restart
+# git clone http://gitlab.example.com:8929/jenkins/jenkins_test_project1.git
   gitlab:
     image: gitlab/gitlab-ee:latest  #Current version: gitlab-ee=17.9.1-ee.0 
-    container_name: gitlab   #username/password:  mosharaf/9/fbH=/M4jugXyB
+    container_name: gitlab   #username/password:  mosharaf / 9/fbH=/M4jugXyB
     restart: on-failure
     hostname: 'gitlab.example.com'
     environment:

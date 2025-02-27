@@ -49,3 +49,10 @@ https://oms.brotecs.com:3000/Brotecs/cloud-computing-kb/src/branch/agcg_automati
 submodule 
 
 def executeGitSCMCheckout() {} 
+
+git clone http://gitlab.example.com:8929/jenkins/jenkins_test_project1.git
+
+jenkins@8e57e789cef6:/tmp/jenkins_test_project1$ git config user.name "mosharaf"
+jenkins@8e57e789cef6:/tmp/jenkins_test_project1$ git config user.email "mosharaf111hossain@gmail.com"
+#username/password:  mosharaf / 9/fbH=/M4jugXyB
+    

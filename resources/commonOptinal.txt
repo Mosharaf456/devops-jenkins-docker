@@ -12,3 +12,5 @@ why not work ? == where client root access available then this root cmd works fo
 ansible -i hosts -m command -a "ping" dev --become -k 
 
 
+sudo apt-mark hold anydesk  # to hold the anydesk package upgrade
+
