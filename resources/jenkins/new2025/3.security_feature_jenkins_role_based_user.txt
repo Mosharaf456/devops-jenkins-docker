@@ -28,6 +28,17 @@ Dashboard > Manage Jenkins > Manage and Assign Roles
 Roles are basically defined some permissions.
 
 
+Dashboard > Manage Jenkins > Manage and Assign Roles > Manage Roles
+
+Item roles
+Role to add --- name of the role 
+Pattern- of the role
+first name matches as ansible then any 
+ansible-.*
 
 
+^ansible-.*$
+
+^ ensures it matches the start of the job name.
+$ ensures it matches till the end.
 
