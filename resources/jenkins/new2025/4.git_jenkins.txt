@@ -1,0 +1,25 @@
+git server plugin 
+git client 
+git plugin 
+
+everything job , item , saved under workspace:  /var/jenkins_home/workspace
+/var/jenkins_home/workspace/clone_public_git_repo
+
+
+Dashboard
+clone_public_git_repo (item name)
+Configuration
+
+Source Code Management
+git 
+
+////////////// 
+#### Jenkins & Git ####
+google search : git lab docker reuirements 
+
+
+
+
+
+
+
