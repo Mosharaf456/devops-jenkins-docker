@@ -58,7 +58,7 @@ services:
       # - '443:443'
       # - '2424:22'
     volumes:
-      - data_opt_gitlab:/var/opt/gitlab'
+      - data_opt_gitlab:/var/opt/gitlab
       - logs_gitlab:/var/log/gitlab
       - config_etc_gitlab:/etc/gitlab
     shm_size: '256m'
@@ -206,7 +206,7 @@ volumes:
   backup-temp-c2:
     name: backup-temp-c2
   data_opt_gitlab: 
-    name: opt_gitlab
+    name: data_opt_gitlab
   logs_gitlab:
     name: logs_gitlab
   config_etc_gitlab:
