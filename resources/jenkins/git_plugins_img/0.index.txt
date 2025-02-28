@@ -17,3 +17,34 @@ Note that ,, when configure the item on jenkins use credentials and git option
 and also make sure that branch name is matched correctly.
 
 
+http://mosharaf:brotecs@192.168.0.104:8082/project/git_private_repo_clone
+How to Percent-Encode the URL
+
+invalid url 
+solved: 
+
+If your Jenkins username or password contains special characters, you need to encode them in a way that browsers or servers can correctly interpret. For instance:
+
+    : becomes %3A
+    @ becomes %40
+    / becomes %2F
+    ? becomes %3F
+
+http://mosharaf%3Abrotecs%40192.168.0.104:8082/project/git_private_repo_clone
+
+
+Hook execution failed: URL is blocked: Host cannot be resolved or invalid  "http://mosharaf%3Abrotecs%40192.168.0.104:8082/project/git_private_repo_clone
+
+
+http://mosharaf:brotecs@192.168.0.104:8082/job/git_private_repo_clone/build
+
+http://192.168.0.104:8082/project/git_private_repo_clone
+
+and token used....
+
+message from gitlab web hook create:
+The form contains the following error:
+
+    Url is blocked: Requests to the local network are not allowed
+
+
