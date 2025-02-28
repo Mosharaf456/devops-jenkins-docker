@@ -1,0 +1,19 @@
+Note: 
+Need to install plugins for gitlab: 
+gitlab 
+gitlab api 
+
+After that need to create 
+Personal access tokens 
+https://gitlab.com/-/user_settings/personal_access_tokens
+
+After that create credentials usernamewithpassword
+your real username or email  of gitlab 
+and password as use that Personal access tokens ...
+
+
+Note that ,, when configure the item on jenkins use credentials and git option 
+
+and also make sure that branch name is matched correctly.
+
+
