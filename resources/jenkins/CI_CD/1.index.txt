@@ -252,10 +252,9 @@ pipeline {
 
 
 //// post actions on Jenkinsfile
-
-///////////Credential on piepline
-// built in defined credentials function 
-// TEST will be the name of defined credentials, can be any as of cred inside
+// unstable means job was failing and now recovered..
+/// echo 0 means success and 1 means fails in bash script.
+// here exit 1  means fails.
 
 pipeline {
     agent any 
@@ -264,6 +263,36 @@ pipeline {
         stage ('Test') {
             steps {
                 sh 'echo "Fail!"; exit 1'
+            }
+        }
+    }
+
+    post  {
+        always {
+            echo 'I will always get executed :D'
+        }
+        success {
+            echo 'I will only get executed, if it success'
+        }
+        failure {
+            echo 'I will only get executed, if it fails'
+        }
+        unstable {
+            echo 'I will not executed, if not stable'
+        }
+    }
+}
+
+
+
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage ('Test') {
+            steps {
+                sh 'echo "success!"'
             }
         }
     }
