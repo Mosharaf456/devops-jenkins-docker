@@ -153,4 +153,27 @@ stage('Build') {
 
 
 
-///////
+///////Now from UI of jenkins
+create a new item , it will pipeline project selction
+Pipeline
+Define your Pipeline using Groovy directly or pull it from source control.
+
+
+////Add multistage to your pipeline 
+pipeline {
+    agent any 
+    stages {
+        stage ('Build') {
+            steps {
+                sh 'echo "My first multistage pipeline"'
+                sh '''
+                    echo "By the way can do more stuff here"
+                    ls -lah
+                '''
+            }
+        }
+    }
+}
+
+
+
