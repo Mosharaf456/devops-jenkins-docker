@@ -229,5 +229,24 @@ pipeline {
     }
 }
 
+///////////Credential on piepline
+// built in defined credentials function 
+// TEST will be the name of defined credentials, can be any as of cred inside
+
+pipeline {
+    agent any 
+
+    environment {
+        secret = credentials('TEST')
+    }
+    
+    stages {
+        stage ('Example stage 1') {
+            steps {
+                sh 'echo $secret'
+            }
+        }
+    }
+}
 
 
