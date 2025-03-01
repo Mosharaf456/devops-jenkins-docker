@@ -316,3 +316,83 @@ pipeline {
     }
 }
 
+
+NOTE:: 
+FYI : which one to use DP , SP  
+When we say Declarative Pipeline is "limited to predefined Jenkins DSL features," it means that it follows a structured syntax with specific predefined keywords and constructs that Jenkins supports. Unlike Scripted Pipeline, which allows full Groovy scripting, Declarative Pipelines have built-in restrictions on what you can do.
+Examples of These Limitations:
+
+1️⃣ No Direct Use of Groovy Code
+
+    In Declarative Pipeline, you can't freely use Groovy logic anywhere. You must use script {} blocks for complex scripting.
+    Example (❌ Not Allowed in Declarative directly):
+
+def myVar = "Hello"
+echo myVar
+
+    This must be wrapped inside script {} to work:
+
+    pipeline {
+        agent any
+        stages {
+            stage('Example') {
+                steps {
+                    script {
+                        def myVar = "Hello"
+                        echo myVar
+                    }
+                }
+            }
+        }
+    }
+
+2️⃣ Limited Dynamic Stage Creation
+
+    Scripted Pipeline allows full dynamic logic, like looping over a list to create stages dynamically.
+    Example (❌ Not Allowed in Declarative):
+
+    def stages = ['Build', 'Test', 'Deploy']
+    for (stageName in stages) {
+        stage(stageName) {
+            steps {
+                echo "Running ${stageName}"
+            }
+        }
+    }
+
+        Allowed in Scripted Pipeline but not Declarative!
+
+3️⃣ Limited Conditionals and Logic
+
+    Declarative Pipeline has basic when {} conditions but does not support complex Groovy conditions like in Scripted Pipeline.
+    Example of what doesn't work in Declarative:
+
+    if (env.BRANCH_NAME == 'main') {
+        echo "Deploying to production"
+    }
+
+        Must be inside script {} in Declarative.
+
+4️⃣ Cannot Use try-catch-finally Directly
+
+    In Scripted Pipeline, we can use standard Groovy error handling:
+
+    try {
+        stage('Deploy') {
+            echo 'Deploying...'
+        }
+    } catch (Exception e) {
+        echo "Deployment failed: ${e.message}"
+    }
+
+    In Declarative, you must use post { failure { ... } } instead.
+
+
+
+
+Declarative Pipeline restricts you to using only Jenkins DSL-supported features like pipeline {}, stages {}, steps {}, when {}, post {}.
+For advanced scripting logic, you need Scripted Pipeline or script {} blocks inside Declarative.
+If you need full Groovy control, use Scripted Pipeline!
+If you prefer a cleaner, safer syntax, use Declarative Pipeline!
+Scripted Pipeline is best to use.
+
