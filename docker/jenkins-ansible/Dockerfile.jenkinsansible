@@ -33,6 +33,32 @@ RUN pipx install awscli
 #     && rm -rf /var/lib/apt/lists/*
 
 
+# docker engine installation
+RUN apt-get update && \
+    apt-get install ca-certificates && \
+    install -m 0755 -d /etc/apt/keyrings 
+COPY ./dist/web/dockerengine/gpg /etc/apt/keyrings/docker.asc 
+RUN chmod a+r /etc/apt/keyrings/docker.asc  && \
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# # end of docker engine installation
+# RUN usermod -aG docker jenkins 
+
+# Create an entrypoint script
+# RUN echo '#!/bin/sh' > /usr/local/bin/docker-permissions.sh && \
+#     echo 'chown root:docker /var/run/docker.sock' >> /usr/local/bin/docker-permissions.sh && \
+#     echo 'chmod 660 /var/run/docker.sock' >> /usr/local/bin/docker-permissions.sh && \
+#     chmod +x /usr/local/bin/docker-permissions.sh
+
+# Add jenkins user to the docker group
+RUN usermod -aG docker jenkins
+
+
 USER jenkins
 
 RUN mkdir -p /tmp/ansible/ && chmod -R 755 /tmp/ansible
@@ -44,7 +70,10 @@ COPY ./dist/ansible/pbook/ /tmp/ansible/pbook
 COPY ./dist/db/jenkins-ansible_db.sh /tmp/jenkins-ansible_db.sh
 COPY ./dist/db/jenkins_people_db.txt /tmp/jenkins_people_db.txt
 
-
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
+
+# Modify ENTRYPOINT to run the permission script before starting Jenkins
+# ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/docker-permissions.sh && java -jar /usr/share/jenkins/jenkins.war"]
+
