@@ -1,1 +1,174 @@
-https://oms.brotecs.com:3000/Brotecs/cloud-computing-kb/src/branch/agcg_automation/Jenkinsfile
+//git ignore 
+
+#!/usr/bin/env groovy
+
+def printSuccessMessage(message) {
+    echo "\u001B[32m[SUCCESS]\u001B[0m ${message}"
+}
+
+def printFailMessage(message) {
+    echo "\u001B[31m[FAIL]\u001B[0m ${message}"
+}
+
+def printWarningMessage(message) {
+    echo "\u001B[33m[WARNING]\u001B[0m ${message}"
+}
+
+def printInfoMessage(message) {
+    echo "\u001B[34m[INFO]\u001B[0m ${message}"
+}
+
+def cleanup_workspace() {
+    dir("$QA_SUBMODULE_LOCAL_PATH") {
+            sh 'npm run clearAllure'
+    }
+}
+
+def executeGitSCMCheckout() {
+    checkout([
+                $class: 'GitSCM',
+                branches: [[name: "*/$DEV_GIT_BRANCH"]],
+                extensions: [[$class: 'CleanCheckout'],
+                            [$class: 'CloneOption', timeout: 720]],
+                submoduleCfg: [],
+                userRemoteConfigs: [[ url: "https://$TOKEN@$DEV_GIT_URL"]]
+           ])
+
+    sh label: 'Git SCM', script: '''#!/bin/bash
+                    git config --global url."https://$TOKEN@abc:3840".insteadOf "https://abc.com:3840"
+                    git reset --hard HEAD
+                    git pull origin $DEV_GIT_BRANCH
+                    git submodule deinit -f .
+                    git submodule update --init --recursive
+                    git submodule update --remote
+               '''
+    cleanup_workspace()
+}
+
+def check_pre_requisites() {
+    printInfoMessage('Checking Pre-requisites...')
+    def git_domain = 'abc.com'
+    def git_port = '3840'
+    def google_domain = 'google.com'
+    def google_port = '80'
+    def timeoutSeconds = 5
+    printInfoMessage('Checking Internet Connectivity...')
+    checkConnectivity(google_domain, google_port, timeoutSeconds)
+    printSuccessMessage('Internet Connectivity Check Successful...')
+    printInfoMessage('Checking Connectivity to git...')
+    checkConnectivity(git_domain, git_port, timeoutSeconds)
+    printSuccessMessage('Git Connectivity Check Successful...')
+    printInfoMessage('Checking Connectivity to MMMM Server...')
+    checkConnectivity(env.My_Automation_MMMM_SERVER_IP, '22', timeoutSeconds)
+    printSuccessMessage('MMMM Server Connectivity Check Successful...')
+}
+
+pipeline {
+    agent any
+    environment {
+        TOKEN = credentials('git_token')
+        PLAYWRIGHT_ENV_PATH = '/var/jenkins_home/devsecops/My_Automation/env_files/.env.test'
+        ANSIBLE_TRAINING_HOSTS_PATH = '/var/jenkins_home/devsecops/My_Automation/hosts.training'
+        ANSIBLE_STAGING_HOSTS_PATH = '/var/jenkins_home/devsecops/My_Automation/hosts.staging'
+        ANSIBLE_PRODUCTION_HOSTS_PATH = '/var/jenkins_home/devsecops/My_Automation/hosts.production'
+        ANSIBLE_SYNC_PLAYBOOK_PATH = '/var/jenkins_home/devsecops/My_Automation/sync_code.yml'
+        ANSIBLE_RESTORE_PLAYBOOK_PATH = '/var/jenkins_home/devsecops/My_Automation/restore_code.yml'
+        ANSIBLE_VAULT_PATH = '/var/jenkins_home/devsecops/My_Automation/vault_pass.txt'
+        QA_SUBMODULE_LOCAL_PATH = 'well_dev-qa/Automation/My_Automation'
+        IS_DEPLOYED = false
+        DEV_GIT_URL = 'your_git_URL'
+        DEV_GIT_BRANCH = 'branch_name'
+        QA_GIT_BRANCH = 'master'
+        AUTOMATION_ENVIRONMENT_FILEPATH = '/var/jenkins_home/devsecops/Environment_variables/MMMM'
+        ANSIBLE_HOSTS_PYTHON_SCRIPT = '/var/jenkins_home/devsecops/My_Automation/dynamic_inventory.py'
+
+    }
+    options {
+        ansiColor('xterm')
+    }
+    stages {
+        stage('Pre-requisites Check') {
+            steps {
+                script {
+                        // getTestInfo()
+                        check_pre_requisites()
+                }
+            }
+        }
+        stage('Git Checkout Code') {
+            steps {
+                script {
+                    try {
+                        executeGitSCMCheckout()
+                    } catch (Exception e) {
+                        printFailMessage('Git Checkout Failed, trying again...')
+                        sleep(secs: 5)
+                        executeGitSCMCheckout()
+                    }
+                }
+            }
+        }
+        // stage('Build Code') {
+        //     steps {
+        //         script {
+        //                 IS_DEPLOYED = true
+        //             try {
+        //                 executeBuildScripts()
+        //             } catch (Exception e) {
+        //                 printFailMessage('Build Failed, trying again...')
+        //                 sleep(secs: 5)
+        //                 executeBuildScripts()
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Test Code') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 executeTestScripts()
+        //             } catch (Exception e) {
+        //                 printFailMessage('Test Failed...')
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage('Publish Report') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 publishTestResult()
+        //             } catch (Exception e) {
+        //                 printFailMessage('Publishing Report Failed... trying again')
+        //                 sleep(secs: 5)
+        //                 publishTestResult()
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Rollback (if required)') {
+        //     steps {
+        //         script {
+        //                 try {
+        //                     rollbackInput()
+        //                 } catch (Exception e) {
+        //                     printFailMessage('Rollback Failed...')
+        //                 }
+        //         }
+        //     }
+        // }
+    }
+    post {
+            success {
+                printSuccessMessage('Automation Test Successful...')
+            }
+            failure {
+                printFailMessage('Automation Test Failed, issues needs to be fixed...')
+            }
+
+            always {
+                echo 'Pipeline execution finished'
+            }
+    }
+}

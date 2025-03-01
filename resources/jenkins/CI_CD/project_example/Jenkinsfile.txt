@@ -1,0 +1,8 @@
+// will read it later
+// ref : branch a_automation
+// cloud-computing-kb/src/branch/agcg_automation/Jenkinsfile
+
+
+
+
+

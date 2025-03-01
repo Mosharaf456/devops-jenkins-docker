@@ -1,0 +1,28 @@
+#!/usr/bin/env groovy
+
+def printSuccessMessage(message) {
+    echo "\u001B[32m[SUCCESS]\u001B[0m ${message}"
+}
+
+def printFailMessage(message) {
+    echo "\u001B[31m[FAIL]\u001B[0m ${message}"
+}
+
+def printWarningMessage(message) {
+    echo "\u001B[33m[WARNING]\u001B[0m ${message}"
+}
+
+def printInfoMessage(message) {
+    echo "\u001B[34m[INFO]\u001B[0m ${message}"
+}
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            // get some from github
+            git https://github.com/Mosharaf456/login-page-angular17.2.git
+        }
+    }
+}
