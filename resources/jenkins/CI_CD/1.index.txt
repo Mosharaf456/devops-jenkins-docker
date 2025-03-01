@@ -1,0 +1,27 @@
+CI/CD is nothing else but a methodology/strategy to deploy code faster to production! 
+
+The process is defined by some steps, starting at CI which is Continuous Integration, where you build an test your code; optionally, you could pass to Continuous Delivery, which deploys your built and tested app to a dev/stg/qa env (just to test again) and finally you deploy to production
+
+1. CODE -> Continuous Integration (Commit --> Unit,Integration,functional testing)
+
+2. Continuous Delivery -> 
+Deploy to testing Env 
+-> Acceptance Testing 
+
+3. Continuous Deployment -> Deploy /Promote to production
+
+###################
+
+Continuous Integration is nothing but building and testing our application.
+
+Continuous Delivery is optional , nothing but app acceptance testing , normally deploy to our test 
+environment.
+
+Continuous Deployment is final steps : is to time deploy to production
+
+
+###########
+It,s nothing else a strategy that allows us to automate the code Delivery,
+reducing errors and reducing manual human effort.
+
+
