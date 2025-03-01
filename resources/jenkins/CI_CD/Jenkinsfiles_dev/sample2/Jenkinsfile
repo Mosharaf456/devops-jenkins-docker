@@ -1,0 +1,119 @@
+#!/usr/bin/env groovy
+
+def printSuccessMessage(message) {
+    echo "\u001B[32m[SUCCESS]\u001B[0m ${message}"
+}
+
+def printFailMessage(message) {
+    echo "\u001B[31m[FAIL]\u001B[0m ${message}"
+}
+
+def printWarningMessage(message) {
+    echo "\u001B[33m[WARNING]\u001B[0m ${message}"
+}
+
+def printInfoMessage(message) {
+    echo "\u001B[34m[INFO]\u001B[0m ${message}"
+}
+
+def runGitSCMCheckout() {
+    checkout([
+                $class: 'GitSCM',
+                branches: [[name: "*/$DEV_GIT_BRANCH"]],
+                extensions: [[$class: 'CleanCheckout'],
+                            [$class: 'CloneOption', timeout: 720]],
+                submoduleCfg: [],
+                userRemoteConfigs: [[ url: "https://$TOKEN@$DEV_GIT_URL"]]
+           ])
+
+    sh label: 'Git SCM', script: '''#!/bin/bash
+                    git config --global url."https://$TOKEN@$DEV_GIT_URL".insteadOf "$DEV_GIT_URL"
+                    git reset --hard HEAD
+                    git pull origin $DEV_GIT_BRANCH
+                    git submodule deinit -f .
+                    git submodule update --init --recursive
+                    git submodule update --remote
+               '''
+}
+
+def gitPull(repoUrl, branch, credentialsId) {
+    script {
+        try {
+            echo "Fetching latest changes from ${branch} branch..."
+            echo "Pulling code from branch: ${branch} in repository: ${repoUrl}"
+            echo "....credentialsId..1..: ${credentialsId}"
+
+            // working 
+            // checkout([
+            //     $class: 'GitSCM',
+            //     branches: [[name: "*/${branch}"]],
+            //     userRemoteConfigs: [[url: repoUrl, credentialsId: credentialsId]]
+            // ])
+
+            printSuccessMessage("Custom Git pull successful from ${branch}!")
+
+        } catch (Exception e) {
+            printFailMessage("Git pull failed: ${e.getMessage()}")
+            error("Stopping pipeline due to Git pull failure.")
+        }
+    }
+}
+
+
+
+pipeline {
+    agent any
+    
+    environment {
+        GIT_REPO = 'https://gitlab.com/jenkins5033609/git_test1.git'
+        GIT_BRANCH = 'master'
+        GIT_CREDENTIALS_ID = 'your-jenkins-credentials-id'
+    }
+
+    parameters {
+        string(name: 'GIT_REPO', defaultValue: 'https://gitlab.com/jenkins5033609/git_test1.git', description: 'Git repository URL')
+        string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'Branch to pull from')
+        string(name: 'GIT_CREDENTIALS_ID', defaultValue: 'your-jenkins-credentials-id', description: 'Jenkins credentials ID for Git')
+    }
+
+    stages {
+        stage('Build') {
+            steps {   // **Steps block is required**
+                script {
+                    sh 'echo "Build process done..."'
+                    printSuccessMessage('Build DONE')
+                }
+            }
+        }
+        stage('Git Pull') {
+            steps {
+                script {
+                    // Clean the workspace
+                    deleteDir()
+
+                    // gitPull(env.GIT_REPO, env.GIT_BRANCH, env.GIT_CREDENTIALS_ID)
+                    
+
+                    gitPull(params.GIT_REPO, params.GIT_BRANCH, params.GIT_CREDENTIALS_ID)
+
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                printSuccessMessage('Automation Test Successful...')
+            }
+        }
+        failure {
+            script {
+                printFailMessage('Automation Test Failed, issues need to be fixed...')
+            }
+        }
+        always {
+            echo 'Pipeline execution finished'
+        }
+    }
+}
