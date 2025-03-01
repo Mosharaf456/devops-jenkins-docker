@@ -16,13 +16,32 @@ def printInfoMessage(message) {
     echo "\u001B[34m[INFO]\u001B[0m ${message}"
 }
 
-
 pipeline {
     agent any
     stages {
         stage('Build') {
-            // get some from github
-            git https://github.com/Mosharaf456/login-page-angular17.2.git
+            steps {   // **Steps block is required**
+                script {
+                    sh 'echo "Build process done..."'
+                    printSuccessMessage('Build DONE')
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                printSuccessMessage('Automation Test Successful...')
+            }
+        }
+        failure {
+            script {
+                printFailMessage('Automation Test Failed, issues need to be fixed...')
+            }
+        }
+        always {
+            echo 'Pipeline execution finished'
         }
     }
 }
