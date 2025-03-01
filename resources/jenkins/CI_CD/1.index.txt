@@ -38,7 +38,7 @@ about programming , normally SysAdmins or people that do not develop the applica
 
 Jenkinsfile template down below: 
 
-Jenkinsfile (Declarative pipeline)
+***********Jenkinsfile (Declarative pipeline)************
 pipeline {
     agent any
     stages {
@@ -68,7 +68,7 @@ You need to define every single thing in grooovy as something like java.
 You need to learn groovy and java.
 
 Jenkinsfile template down below: 
-Jenkinsfile (Scripted pipeline )
+******* Jenkinsfile (Scripted pipeline )*********
 node {
     stage('Build') {
         //
@@ -94,6 +94,63 @@ Install jenkins piepline plugins:
 search this:
 pipeline
 
+###########create our first pipeline ----
+
+go to jenkins-data folder 
+/var/jenkins_home
+
+
+find by default recursivly do searching...
+For example, this will search for any file or directory named data recursively from the current directory (.):
+> find . -name "data"
+If you want to search only for directories named data:
+> find . -type f -name "data"
+If you want to search only for files named data:
+> find . -type d -name "data"
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo "building..."
+            }
+        }
+        stage('Test') {
+            steps {
+                echo "Testing..."
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "deploying..."
+            }
+        }
+    }
+}
+
+agent any is nothing how pipeline will be executed, 
+is it docker or another source.
+
+Any available agent will going to build this pipeline.
+
+You can declare as much as stages , you want.
+
+steps inside -- Normally ths accept bash
+, you can do like bash commands.
+In this steps section you can all of this magic,
+executing script.
 
 
 
+stage('Build') {
+    steps {
+        echo "Normally ths accept bash"
+    }
+}
+
+
+
+
+///////
