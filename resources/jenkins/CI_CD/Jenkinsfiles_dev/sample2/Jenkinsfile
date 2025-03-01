@@ -44,11 +44,11 @@ def gitPull(repoUrl, branch, credentialsId) {
             echo "....credentialsId..1..: ${credentialsId}"
 
             // working 
-            // checkout([
-            //     $class: 'GitSCM',
-            //     branches: [[name: "*/${branch}"]],
-            //     userRemoteConfigs: [[url: repoUrl, credentialsId: credentialsId]]
-            // ])
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: "*/${branch}"]],
+                userRemoteConfigs: [[url: repoUrl, credentialsId: credentialsId]]
+            ])
 
             printSuccessMessage("Custom Git pull successful from ${branch}!")
 
