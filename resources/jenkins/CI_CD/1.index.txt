@@ -408,3 +408,6 @@ srw-rw---- 1 root docker 0 Mar  1 08:59 /var/run/docker.sock
 mosharaf@pop-os:/media/mosharaf/b3895e0f-cba7-401b-a0b3-0b473deecea13/workstation-devsecops/1.devops-project-jenkins/devops-jenkins-docker$ ls -al /var/run/docker.sock
 srw-rw---- 1 mosharaf mosharaf 0 Mar  1 08:59 /var/run/docker.sock
 
+>> ISSUES FIXED WHEN USED 
+sudo chown 1000:1000 /var/run/docker.sock
+
