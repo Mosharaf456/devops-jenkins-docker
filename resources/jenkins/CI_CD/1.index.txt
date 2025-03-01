@@ -256,6 +256,9 @@ pipeline {
 /// echo 0 means success and 1 means fails in bash script.
 // here exit 1  means fails.
 
+
+/// for fail action 
+
 pipeline {
     agent any 
     
@@ -284,7 +287,7 @@ pipeline {
 }
 
 
-
+/// for success
 
 pipeline {
     agent any 
