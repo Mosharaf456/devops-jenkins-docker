@@ -176,4 +176,58 @@ pipeline {
 }
 
 
+////////////////retry::: stages Timeout as for reference
+
+pipeline {
+    agent any 
+    stages {
+        stage ('Timeout') {
+            steps {
+                retry(3) {
+                    sh 'I am not going to work'
+                }
+            }
+        }
+    }
+}
+
+
+///////name of the stage can be define anything you want. 
+
+pipeline {
+    agent any 
+    stages {
+        stage ('Deploy') {
+            steps {
+                retry(3) {
+                    sh 'echo Hello'
+                }
+                timeout(time: 3, unit: 'SECONDS') {
+                    sh 'sleep 5'
+                }
+            }
+        }
+    }
+}
+
+///////////// environment variable 
+
+pipeline {
+    agent any 
+
+    environment {
+        NAME = 'Mosharaf'
+        LAST = "Hossain"
+    }
+    
+    stages {
+        stage ('Building pipeline') {
+            steps {
+                sh 'echo $NAME $LAST'
+            }
+        }
+    }
+}
+
+
 
