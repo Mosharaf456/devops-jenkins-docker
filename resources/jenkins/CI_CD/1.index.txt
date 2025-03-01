@@ -24,4 +24,76 @@ Continuous Deployment is final steps : is to time deploy to production
 It,s nothing else a strategy that allows us to automate the code Delivery,
 reducing errors and reducing manual human effort.
 
+jenkins pipeline, normally known as jenkins as code, pipeline as code.
+
+stages means step of our workflow.
+
+Jenkins, we have got two types of pipeline.
+1. Declarative pipeline
+2. Scripted pipeline
+
+1.
+normally Declarative pipeline is well, who don,t know 
+about programming , normally SysAdmins or people that do not develop the applications.
+
+Jenkinsfile template down below: 
+
+Jenkinsfile (Declarative pipeline)
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                //
+            }
+        }
+        stage('Test') {
+            steps {
+                //
+            }
+        }
+        stage('Deploy') {
+            steps {
+                //
+            }
+        }
+    }
+}
+
+
+
+2.
+Scripted pipelineis is actually written on Groovy language.
+You need to define every single thing in grooovy as something like java.
+You need to learn groovy and java.
+
+Jenkinsfile template down below: 
+Jenkinsfile (Scripted pipeline )
+node {
+    stage('Build') {
+        //
+    }
+    stage('Test') {
+        //
+    }
+    stage('Deploy') {
+        //
+    }
+}
+
+
+Both of this pipelines work for same thing.  
+
+So, we gonna talk about Declarative pipeline.
+Simple to use.
+inside the stages -> steps-> 
+we can do whatever we want using any programming language.
+Or any bash or Ansible or Python.
+
+Install jenkins piepline plugins:
+search this:
+pipeline
+
+
+
 
