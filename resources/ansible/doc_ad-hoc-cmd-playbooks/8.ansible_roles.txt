@@ -22,6 +22,9 @@ offline - create offline mode rather than getting from online repository
 
 > ansible-galaxy init /etc/ansible/roles/apache --offline 
 
+// for online 
+> ansible-galaxy init /etc/ansible/roles/apache
+
 --apache was created successfully 
 
 Where , ansible-galaxy is the command to create the role using the template 
