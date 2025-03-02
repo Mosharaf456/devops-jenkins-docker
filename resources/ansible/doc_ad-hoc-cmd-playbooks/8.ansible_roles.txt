@@ -81,3 +81,32 @@ meta to store author like which patient
 
 main file is tasks 
 
+
+
+> ansible-galaxy role init my_local_role
+
+> ansible-galaxy init /etc/ansible/roles/project1 --offline 
+
+for online
+> ansible-galaxy init /etc/ansible/roles/apache
+
+Run the Playbook with a Custom Role Path
+
+Since the role is not in /etc/ansible/roles/, tell Ansible where to find it:
+
+cd ~/my_ansible_project
+ansible-playbook -i inventory site.yml --roles-path=roles/
+
+Alternatively, you can define the role path in ansible.cfg:
+[defaults]
+roles_path = ~/my_ansible_project/roles
+
+//then simply run 
+ansible-playbook -i inventory site.yml
+
+Key Takeaways:
+    You don’t have to place roles in /etc/ansible/roles/.
+    Use the --roles-path option or ansible.cfg to specify custom paths.
+    The playbook will still run normally as long as it can locate the roles.
+
+
