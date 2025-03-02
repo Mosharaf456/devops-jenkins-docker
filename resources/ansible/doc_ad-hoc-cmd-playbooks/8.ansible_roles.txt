@@ -110,3 +110,4 @@ Key Takeaways:
     The playbook will still run normally as long as it can locate the roles.
 
 
+ansible-playbook -i $ANSIBLE_TRAINING_HOSTS_PATH $ANSIBLE_CON_TEST_PLAYBOOK_PATH --limit dev
