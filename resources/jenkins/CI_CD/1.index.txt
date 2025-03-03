@@ -411,3 +411,11 @@ srw-rw---- 1 mosharaf mosharaf 0 Mar  1 08:59 /var/run/docker.sock
 >> ISSUES FIXED WHEN USED 
 sudo chown 1000:1000 /var/run/docker.sock
 
+
+https://plugins.jenkins.io/docker-workflow/
+Docker Pipeline
+
+ref: 
+https://www.jenkins.io/doc/pipeline/tour/hello-world/#examples
+
+
