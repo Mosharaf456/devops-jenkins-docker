@@ -38,34 +38,6 @@ services:
     #   - client2_remote
     #   - test-db
 
-# wait it,s takes time to start the container of gitlab
-# if register and login user issue on gitlab the attach the container and run the command 
-#  docker exec -it gitlab bash
-#  gitlab-ctl restart
-# git clone http://gitlab.example.com:8929/jenkins/jenkins_test_project1.git
-  # gitlab:
-  #   image: gitlab/gitlab-ee:latest  #Current version: gitlab-ee=17.9.1-ee.0 
-  #   container_name: gitlab   #username/password:  mosharaf / 9/fbH=/M4jugXyB
-  #   restart: on-failure
-  #   hostname: 'gitlab.example.com'
-  #   environment:
-  #     GITLAB_OMNIBUS_CONFIG: |
-  #       external_url 'http://gitlab.example.com:8929'
-  #       gitlab_rails['gitlab_shell_ssh_port'] = 2424
-  #   ports:
-  #     # - '8099:80'
-  #     - '8929:8929'
-  #     # - '443:443'
-  #     # - '2424:22'
-  #   volumes:
-  #     - data_opt_gitlab:/var/opt/gitlab
-  #     - logs_gitlab:/var/log/gitlab
-  #     - config_etc_gitlab:/etc/gitlab
-  #   shm_size: '256m'
-  #   networks:
-  #     jenkins_net:
-  #       ipv4_address: 192.168.1.106
-    
   client1_remote:
     container_name: client1_remote
     image: client1_remote-image:v2.0.0
@@ -219,3 +191,4 @@ volumes:
 # one named volume to another named volume copy
 # docker run --rm -it  -v  devops-jenkins-docker_var-jenkins_home:/from -v var-jenkins_home:/to  nginx bash -c "cd /from ; cp -av . /to"
 # docker run --rm -it  -v  devops-jenkins-docker_db-data-vol:/from -v db-data-vol:/to  nginx bash -c "cd /from ; cp -av . /to"
+
