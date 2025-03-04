@@ -111,3 +111,17 @@ Key Takeaways:
 
 
 ansible-playbook -i $ANSIBLE_TRAINING_HOSTS_PATH $ANSIBLE_CON_TEST_PLAYBOOK_PATH --limit dev
+
+
+ansible-galaxy role init "/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT REPOS/1.git-devops/cloud-computing-kb/AGCGPlaybook/AGCG_Automation/roles/backup" -v --force 
+
+ansible-galaxy role init "/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT REPOS/1.git-devops/cloud-computing-kb/AGCGPlaybook/AGCG_Automation/roles/build" -v --force
+
+ansible-galaxy role init "/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT REPOS/1.git-devops/cloud-computing-kb/AGCGPlaybook/AGCG_Automation/roles/deploy" -v --force 
+
+ansible-galaxy role init "/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT REPOS/1.git-devops/cloud-computing-kb/AGCGPlaybook/AGCG_Automation/roles/rollback" -v --force
+
+
+ansible-galaxy role init "/var/jenkins_home/devsecops/roles/backup" -v --force 
+
+
