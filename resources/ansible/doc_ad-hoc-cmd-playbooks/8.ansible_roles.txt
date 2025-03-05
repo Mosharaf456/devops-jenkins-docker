@@ -125,3 +125,9 @@ ansible-galaxy role init "/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/
 ansible-galaxy role init "/var/jenkins_home/devsecops/roles/backup" -v --force 
 
 
+ansible-vault decrypt hosts --ask-vault-pass
+
+ansible-vault encrypt hosts --ask-vault-pass
+
+ansible-vault encrypt hosts --vault-password-file  /etc/ansible/password.txt
+
