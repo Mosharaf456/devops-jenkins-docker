@@ -134,43 +134,6 @@ ansible-vault encrypt hosts --vault-password-file  /etc/ansible/password.txt
 
 
 
-// handlers added
-- name: restart httpd service
-  service:
-    name: httpd
-    state: restarted
-  become: yes
-  ignore_errors: true
-  tags: restart_httpd
-  listen: "restart httpd service"
-
-
-we can call this handlers using
-
-> ansible-playbook playbook.yml --tags restart_httpd
-
-
-ansible-vault create db_secrets.yml
-
-dbhost: "localhost"
-dbname: "honeywell_agcg"
-dbuser: "root"
-dbpass: "sTiteL2015"
-
-
-> ansible-playbook backup_run.yml -i hosts.training --ask-vault-pass
-
-> ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt
-
-
-ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "backup_web_code=true backup_db=true" 
-
-
-ansible-playbook rollback_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "rollback_web_code=true"
-
-
-
-
 
 > tree 
 
@@ -218,3 +181,48 @@ for db  secret
     - backup 
 
 
+
+
+
+
+
+
+// handlers added
+- name: restart httpd service
+  service:
+    name: httpd
+    state: restarted
+  become: yes
+  ignore_errors: true
+  tags: restart_httpd
+  listen: "restart httpd service"
+  when: ansible_facts['os_family'] == "RedHat"
+
+we can call this handlers using
+
+> ansible-playbook playbook.yml --tags restart_httpd
+
+
+ansible-vault create db_secrets.yml
+
+dbhost: "localhost"
+dbname: "honeywell_agcg"
+dbuser: "root"
+dbpass: "sTiteL2015"
+
+
+> ansible-playbook backup_run.yml -i hosts.training --ask-vault-pass
+
+> ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt
+
+
+ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "backup_web_code=true backup_db=true" 
+
+
+ansible-playbook rollback_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "rollback_web_code=true"
+
+
+
+
+  
+  
