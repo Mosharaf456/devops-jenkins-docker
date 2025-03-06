@@ -131,3 +131,90 @@ ansible-vault encrypt hosts --ask-vault-pass
 
 ansible-vault encrypt hosts --vault-password-file  /etc/ansible/password.txt
 
+
+
+
+// handlers added
+- name: restart httpd service
+  service:
+    name: httpd
+    state: restarted
+  become: yes
+  ignore_errors: true
+  tags: restart_httpd
+  listen: "restart httpd service"
+
+
+we can call this handlers using
+
+> ansible-playbook playbook.yml --tags restart_httpd
+
+
+ansible-vault create db_secrets.yml
+
+dbhost: "localhost"
+dbname: "honeywell_agcg"
+dbuser: "root"
+dbpass: "sTiteL2015"
+
+
+> ansible-playbook backup_run.yml -i hosts.training --ask-vault-pass
+
+> ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt
+
+
+ansible-playbook backup_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "backup_web_code=true backup_db=true" 
+
+
+ansible-playbook rollback_run.yml -i hosts.training --vault-password-file vault_pass.txt --extra-vars "rollback_web_code=true"
+
+
+
+
+
+> tree 
+
+> ansible-galaxy init /var/jenkins_home/devsecops/AGCG_Automation/roles/backup
+
+> ansible-galaxy init /var/jenkins_home/devsecops/AGCG_Automation/roles/build
+
+> ansible-galaxy init /var/jenkins_home/devsecops/AGCG_Automation/roles/deploy 
+
+> ansible-galaxy init /var/jenkins_home/devsecops/AGCG_Automation/roles/rollback
+
+
+ansible-vault encrypt /var/jenkins_home/devsecops/AGCG_Automation/hosts.training  --vault-password-file /var/jenkins_home/devsecops/AGCG_Automation/vault_pass.txt
+
+ansible-vault decrypt /var/jenkins_home/devsecops/AGCG_Automation/hosts.training --vault-password-file /var/jenkins_home/devsecops/AGCG_Automation/vault_pass.txt
+
+
+
+ansible-vault decrypt hosts.training --ask-vault-pass
+
+ansible-vault encrypt hosts.training --ask-vault-pass
+
+ansible-vault decrypt hosts --ask-vault-pass
+
+ansible-vault encrypt hosts --ask-vault-pass
+
+
+ansible-galaxy role init "/var/jenkins_home/devsecops/AGCG_Automation/roles/backup" -v --force 
+
+
+
+for db  secret 
+
+---
+# This playbook backup the whole application stack in this site.
+
+- name: Backup agcg code
+  hosts: agcgservers
+  remote_user: root
+  become: yes
+  vars_files:
+    - roles/backup/vars/db_secrets.yml  # Reference the vault file for credentials
+
+  roles:
+    - backup 
+
+
