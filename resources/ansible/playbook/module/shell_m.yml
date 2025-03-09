@@ -217,4 +217,40 @@
 
 
 
+# ansible-playbook 100.sync.yml -i inventory.ini --limit agcgservers
+# ansible-playbook 100.sync.yml -i inventory.ini --limit dev --extra-vars "sync_src_path='/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT_REPOS/abc/portal' sync_dest_path='/var/www/html' sync_status=true" 
+
+# default file for sync
+
+---
+# defaults file for sync
+sync_src_path: /media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT_REPOS/abc/portal
+sync_dest_path: /var/www/html
+sync_status: true
+
+---
+- name: Ensure rsync is installed for synchronize module
+  ansible.builtin.dnf:
+    name: rsync
+    state: present
+    update_cache: yes
+
+# - name: DEBUG paths 
+#   debug: 
+#     msg: "sync_src_path:{{ sync_src_path }}  sync_dest_path: {{sync_dest_path}}" 
+      
+- name: Synchronize code base to remote server
+  ansible.builtin.synchronize:
+    src: "{{ sync_src_path }}"
+    dest: "{{ sync_dest_path }}"
+    recursive: yes
+    mode: push
+  when: sync_status | default(false) | bool
+  register: sync_result
+
+# - name: Debug synchronization output
+#   ansible.builtin.debug:
+#   var: sync_result
+#   when: sync_status | default(false) | 
+  
 
