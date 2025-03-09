@@ -215,7 +215,7 @@
   #     msg: "MySQL service is now available"
 
 
-
+# sync added
 
 # ansible-playbook 100.sync.yml -i inventory.ini --limit agcgservers
 # ansible-playbook 100.sync.yml -i inventory.ini --limit dev --extra-vars "sync_src_path='/media/btl-671/915d77f5-a895-4107-aadf-337891150b1343/1.GIT_REPOS/abc/portal' sync_dest_path='/var/www/html' sync_status=true" 
